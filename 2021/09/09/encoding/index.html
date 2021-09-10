@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpg">
+  <link rel="mask-icon" href="/images/favicon.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"github.com","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文主要解决以下几个问题：  常用的字符编码方式有哪些？ Visual Stdio的默认编码方式是什么？vscode的编码方式是什么？gcc&#x2F;g++编译后显示结果时编码方式是什么？ 跨编辑器和编译器导致的中文乱码改怎么解决？ 你敢用这段代码:printf(&quot;%c%c%c%c%c%c\n&quot;,206,210,176,174,196,227);去表白吗？ 编译结果为烫烫烫烫烫是怎么回">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符编码">
+<meta property="og:url" content="https://github.com/Satoing/Satoing.github.io/2021/09/09/encoding/index.html">
+<meta property="og:site_name" content="學習軌跡">
+<meta property="og:description" content="本文主要解决以下几个问题：  常用的字符编码方式有哪些？ Visual Stdio的默认编码方式是什么？vscode的编码方式是什么？gcc&#x2F;g++编译后显示结果时编码方式是什么？ 跨编辑器和编译器导致的中文乱码改怎么解决？ 你敢用这段代码:printf(&quot;%c%c%c%c%c%c\n&quot;,206,210,176,174,196,227);去表白吗？ 编译结果为烫烫烫烫烫是怎么回">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/encoding/2.png">
+<meta property="og:image" content="https://github.com/encoding/1.png">
+<meta property="og:image" content="https://github.com/encoding/3.png">
+<meta property="og:image" content="https://github.com/encoding/4.jpg">
+<meta property="og:image" content="https://github.com/encoding/5.jpg">
+<meta property="article:published_time" content="2021-09-09T15:49:53.419Z">
+<meta property="article:modified_time" content="2021-09-10T13:07:27.738Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="C语言复习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/encoding/2.png">
+
+
+<link rel="canonical" href="https://github.com/Satoing/Satoing.github.io/2021/09/09/encoding/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://github.com/Satoing/Satoing.github.io/2021/09/09/encoding/","path":"2021/09/09/encoding/","title":"字符编码"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>字符编码 | 學習軌跡</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">學習軌跡</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">脱三日坊主</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-主页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a></li>
+        <li class="menu-item menu-item-归档"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-标签"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-分类"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-关于"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-%E5%BA%8F%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0. 序言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">字符编码方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ASCII"><span class="nav-number">2.1.</span> <span class="nav-text">ASCII</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBK"><span class="nav-number">2.2.</span> <span class="nav-text">GBK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ANSI"><span class="nav-number">2.3.</span> <span class="nav-text">ANSI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#utf-8"><span class="nav-number">2.4.</span> <span class="nav-text">utf-8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E5%B7%A5%E5%85%B7%E7%9A%84%E7%BC%96%E7%A0%81%E6%96%B9%E5%BC%8F"><span class="nav-number">2.5.</span> <span class="nav-text">各种工具的编码方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8GBK%E7%BC%96%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">开始使用GBK编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%83%AB%E7%83%AB%E7%83%AB"><span class="nav-number">4.</span> <span class="nav-text">烫烫烫</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sato"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Sato</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Satoing" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Satoing"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/Satoing" title="gitee → https:&#x2F;&#x2F;gitee.com&#x2F;Satoing" rel="noopener" target="_blank">gitee</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/09/09/encoding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Sato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="學習軌跡">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字符编码
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-09 23:49:53" itemprop="dateCreated datePublished" datetime="2021-09-09T23:49:53+08:00">2021-09-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-10 21:07:27" itemprop="dateModified" datetime="2021-09-10T21:07:27+08:00">2021-09-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>本文主要解决以下几个问题：</strong></p>
+<ul>
+<li>常用的字符编码方式有哪些？</li>
+<li>Visual Stdio的默认编码方式是什么？vscode的编码方式是什么？gcc/g++编译后显示结果时编码方式是什么？</li>
+<li>跨编辑器和编译器导致的中文乱码改怎么解决？</li>
+<li>你敢用这段代码:<code>printf(&quot;%c%c%c%c%c%c\n&quot;,206,210,176,174,196,227);</code>去表白吗？</li>
+<li>编译结果为烫烫烫烫烫是怎么回事？系统过热警告？</li>
+</ul>
+<p><strong>如果大神们都知道，也请继续看下去。希望能找出本文的一些错误或者给本萌新一些建议。</strong></p>
+<span id="more"></span>
+
+<h1 id="0-序言"><a href="#0-序言" class="headerlink" title="0. 序言"></a>0. 序言</h1><p>有的人可能知道，我会玩一些需要转区的游戏。调整windows的地区，再重启电脑后，许多文档的内容都变成了一堆乱码——这就是不同地区的编码方式不同所产生的问题。然而我之前都忽视了这个问题。</p>
+<p><img src="/encoding/2.png"></p>
+<p>最近开始了解编码的契机，就是我从VS转用vscode的时候，发现以前写的和Github上克隆一些代码在vscode中中文显示乱码，或者显示正常但gcc编译后中文乱码。</p>
+<p><img src="/encoding/1.png"></p>
+<p>本文最终将会给出这个问题的解决方案。</p>
+<h1 id="字符编码方式"><a href="#字符编码方式" class="headerlink" title="字符编码方式"></a>字符编码方式</h1><p>先来看看编码的定义（摘自维基百科）：</p>
+<blockquote>
+<p>编码是<strong>信息 从一种 形式 或 格式 转换为另一种形式的过程</strong></p>
+</blockquote>
+<p>字符编码当然就是针对字符的转换。常用的字符编码方式有ASCII，GBK，ANSI，utf-8。</p>
+<h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h2><p>ASCII的全称是American Standard Code for Information Interchange，即美国信息交换标准码。（小白注意缩写的后两位是ii不是LL也不是Ⅱ，会出大丑的。）ASCII码定义了128个字符，用到了7位二进制位。而我们知道，C语言中的char位一个字节，多出来的最高位MSB通常填0，或者作为奇偶校检位。</p>
+<p>ASCII码的出现年代较早。后来制定的大多数编码都是向下兼容ASCII码的。</p>
+<p>经常用到的ASCII码：</p>
+<ul>
+<li>A to Z：65 to 90</li>
+<li>a to z：97 to 122</li>
+</ul>
+<h2 id="GBK"><a href="#GBK" class="headerlink" title="GBK"></a>GBK</h2><p>GB想必都不会陌生了，而K是扩（充）的拼音首字母。GBK是我国制定的针对中文的字符编码，从GB2312扩充而来。</p>
+<p>中国汉字博大精深，GBK的编码方式也比较复杂。要用的时候直接查表即可。下面给出查找GBK编码并进行转化的一个实例。</p>
+<ol>
+<li>首先在网上查到<strong>“我”</strong>的GBK16进制内码为CED2。</li>
+<li>将CED2拆分，分别求十进制码。</li>
+<li>用windows自带的程序员计算器得出CE<del>16</del>=206<del>10</del>，D2<del>16</del>=210.</li>
+<li>206,210分别转化为二进制后拼接在一起即为“我”的二进制编码。</li>
+</ol>
+<h2 id="ANSI"><a href="#ANSI" class="headerlink" title="ANSI"></a>ANSI</h2><p>ANSI准确来说并不能算字符编码，而应该说是一组兼容ASCII码的集合，包括了GBK。</p>
+<p>windows设置的地区不同，ANSI指的编码方式也不同。比如我们的电脑现在的地区为中国大陆，那么此时ANSI=GBK；如果设置为台湾，那么ANSI=Big5。当然，如果设置为日本，其编码就是日本语的编码。这就是玩某些游戏需要转区的原因，不然你的文字显示就是一团乱码。</p>
+<h2 id="utf-8"><a href="#utf-8" class="headerlink" title="utf-8"></a>utf-8</h2><p>utf-8是国际统一的编码方式，用于应对世界各地的编码太乱的统一方案。对应的字符集为unicode。</p>
+<p>utf-8的编码方式有点麻烦，不做介绍。</p>
+<p>utf-8可跨语言，具有很强的兼容性。实际上，现在很多程序员都坚持使用的utf-8编码。</p>
+<h2 id="各种工具的编码方式"><a href="#各种工具的编码方式" class="headerlink" title="各种工具的编码方式"></a>各种工具的编码方式</h2><p>VS的默认编码方式，经过我的测试，为下面的规则：</p>
+<ul>
+<li>全英文为utf-8编码</li>
+<li>有中文为ANSI(GBK)编码</li>
+</ul>
+<p>VS的编译器MSVC对于中文的编码方式为ANSI，所以ANSI编辑的代码运行时不会中文乱码。</p>
+<hr>
+<p>vscode的编码方式可以通过**首选项—设置—搜索”encoding”**进行修改。这时vscode只是相当于一个编辑器，用于读写文件。比如：用vscode编辑的文件为自己通过上面方式设置的编码（写）。而来自外部的文件，如果为该编码方式，就能正确显示；不是该编码，则会出现乱码。</p>
+<p><img src="/encoding/3.png"></p>
+<hr>
+<p>vscode要编译C语言只能借助插件和外部的编译器。我使用的是GNU套件，clang应该也一样。下面说说gcc编译后显示的编码。</p>
+<p>如你所想，gcc显示的编码和你的windows编码同步，毕竟结果就在命令行显示。比如你的windows默认编码方式为GBK，那么结果显示的编码就是GBK编码。你用utf-8编码方式编辑的文件在运行后就会出现中文乱码。</p>
+<p><strong>然而，坚持使用utf-8编码仍是一个好的选择。那么，utf-8编码的.c文件怎么用gcc编译而不乱码呢？</strong></p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>gcc有一条命令可以控制编译后按哪种编码来显示：<code>-fexec-charset=GBK</code></p>
+<p>在编译命令后面加一条这个命令就可以了:<code>g++ &#39;a.cpp&#39; -o a -fexec-charset=GBK</code> 。</p>
+<p>但是，如果每次都这样输入，肯定十分麻烦。我们可以把这句命令加进vscode的插件Code Runner的编译命令中去。具体操作方式如下：</p>
+<ol>
+<li>打开Code Runner的setting.json，找到**”code-runner.executorMap”**。</li>
+<li>将C语言的命令修改为：<code>&quot;c&quot;: &quot;cd $dir &amp;&amp; gcc &#39;$fileName&#39; -o &#39;$fileNameWithoutExt.exe&#39; -Wall -g -O2 -static-libgcc -std=c11 -fexec-charset=GBK &amp;&amp; &amp;&#39;$dir$fileNameWithoutExt&#39;&quot;,</code></li>
+<li>将C++的命令修改为：<code>&quot;cpp&quot;: &quot;cd $dir &amp;&amp; g++ &#39;$fileName&#39; -o &#39;$fileNameWithoutExt.exe&#39; -Wall -g -O2 -static-libgcc -std=c++17 -fexec-charset=GBK &amp;&amp; &amp;&#39;$dir$fileNameWithoutExt&#39;&quot;,</code></li>
+</ol>
+<p>上面的命令直接整行粘贴就可以了，没有问题。</p>
+<h2 id="开始使用GBK编码"><a href="#开始使用GBK编码" class="headerlink" title="开始使用GBK编码"></a>开始使用GBK编码</h2><p><code>printf(&quot;%c%c%c%c%c%c\n&quot;,206,210,176,174,196,227);</code></p>
+<p>如果你看了上面关于GBK编码的内容，你很快就会发现，这条语句使用了GBK编码。</p>
+<p>按照我之前演示的方式的逆操作，就可以知道，打印的结果为：我爱你（♂）</p>
+<p><img src="/encoding/4.jpg"></p>
+<p>这样是不是格局一下子就大起来了。</p>
+<p>这里把每两个数识别为一组，因为%c%c%c%c%c%c是没有断开的，如果在中间断开，就会出问题。</p>
+<p><img src="/encoding/5.jpg"></p>
+<p>所以，你敢用这段代码去表白吗？我直接失败。</p>
+<h1 id="烫烫烫"><a href="#烫烫烫" class="headerlink" title="烫烫烫"></a>烫烫烫</h1><p>有一对对联对得好，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">手持两把锟斤拷, (GBK与UTF-8)</span><br><span class="line">口中疾呼烫烫烫。(VC++)</span><br><span class="line">脚踏千朵屯屯屯, (VC++)</span><br><span class="line">笑看万物锘锘锘。(HTML)</span><br></pre></td></tr></table></figure>
+
+<p>锟斤拷就是GBK与UTF-8转换时的问题。然而现在电脑已经被调教得太好了所以我弄半天都弄不出来。详见<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%94%9F%E6%96%A4%E6%8B%B7?fr=aladdin">锟斤拷_百度百科 </a></p>
+<p>而其中的烫烫烫大概就是和我一样的初学者一定遇到过的问题。</p>
+<p>在Visual Studio中的Debug模式下，如果声明一个变量，但是没有初始化，微软会给未初始化的内存复制为0xCC。给为初始化的内存赋0xCC是有原因的，0xCC其实是INT3中断指令，所以如果在Debug模式下试图去执行这块未初始化的内存的话就会中断程序。但VS中调试器默认的字符集是MBCS，而在MBCS中0xCCCC正好就是中文中的“烫”，所以显示出来就都是烫……</p>
+<p>所以烫烫烫是只有VS或VC会出现的问题。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C%E8%AF%AD%E8%A8%80%E5%A4%8D%E4%B9%A0/" rel="tag"># C语言复习</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/25/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-chevron-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sato</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.6/pdfobject.min.js","integrity":"sha256-77geM50MfxCD17eqyJR+Dag1svjJOLN+BJ2F/DMqMEY="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
