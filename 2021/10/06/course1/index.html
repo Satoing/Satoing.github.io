@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpg">
+  <link rel="mask-icon" href="/images/favicon.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"github.com","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="由于某些原因，文中的视频现阶段只能在PC端播放，请使用电脑以获得更好的阅读体验。  1.1 什么是C++(function(){var player &#x3D; new DPlayer({&quot;container&quot;:document.getElementById(&quot;dplayer0&quot;),&quot;theme&quot;:&quot;#FADFA3&quot;,&quot;loop&quot;:true,&quot;video&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;link.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一讲：C++课程简介">
+<meta property="og:url" content="https://github.com/Satoing/Satoing.github.io/2021/10/06/course1/index.html">
+<meta property="og:site_name" content="學習軌跡">
+<meta property="og:description" content="由于某些原因，文中的视频现阶段只能在PC端播放，请使用电脑以获得更好的阅读体验。  1.1 什么是C++(function(){var player &#x3D; new DPlayer({&quot;container&quot;:document.getElementById(&quot;dplayer0&quot;),&quot;theme&quot;:&quot;#FADFA3&quot;,&quot;loop&quot;:true,&quot;video&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;link.js">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-06T07:57:18.959Z">
+<meta property="article:modified_time" content="2021-10-09T16:08:05.307Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="C++程序设计">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://github.com/Satoing/Satoing.github.io/2021/10/06/course1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://github.com/Satoing/Satoing.github.io/2021/10/06/course1/","path":"2021/10/06/course1/","title":"第一讲：C++课程简介"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第一讲：C++课程简介 | 學習軌跡</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<script src="/assets/js/DPlayer.min.js"></script></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">學習軌跡</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">脱三日坊主</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-主页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a></li>
+        <li class="menu-item menu-item-归档"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-标签"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-分类"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-关于"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AFC"><span class="nav-number">1.</span> <span class="nav-text">1.1 什么是C++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E7%9A%84%E5%8E%86%E5%8F%B2"><span class="nav-number">1.1.</span> <span class="nav-text">C++的历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">C++的应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-2-%E4%BD%A0%E8%83%BD%E5%AD%A6%E5%88%B0%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">1.2 你能学到什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-3-%E8%AF%BE%E7%A8%8B%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">1.3 课程结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-4-%E6%AD%A3%E5%BC%8F%E5%BC%80%E5%A7%8B"><span class="nav-number">4.</span> <span class="nav-text">1.4 正式开始</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sato"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Sato</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Satoing" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Satoing"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/Satoing" title="gitee → https:&#x2F;&#x2F;gitee.com&#x2F;Satoing" rel="noopener" target="_blank">gitee</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/10/06/course1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Sato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="學習軌跡">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第一讲：C++课程简介
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-06 15:57:18" itemprop="dateCreated datePublished" datetime="2021-10-06T15:57:18+08:00">2021-10-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-10-10 00:08:05" itemprop="dateModified" datetime="2021-10-10T00:08:05+08:00">2021-10-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>由于某些原因，文中的视频现阶段只能在PC端播放，请使用电脑以获得更好的阅读体验。</p>
+</blockquote>
+<h1 id="1-1-什么是C"><a href="#1-1-什么是C" class="headerlink" title="1.1 什么是C++"></a>1.1 什么是C++</h1><div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","loop":true,"video":{"url":"https://link.jscdn.cn/sharepoint/aHR0cHM6Ly9zdGR1ZXN0Y2VkdWNuLW15LnNoYXJlcG9pbnQuY29tLzp2Oi9nL3BlcnNvbmFsLzIwMjAwODA5MTAwMDRfc3RkX3Vlc3RjX2VkdV9jbi9FVTY1aG9XQndxWkFwNGlpZE1Pbk5oRUJwREZyUkZCbVBWaC1NM2dHM01GaGVnP2U9QzBSbThk.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+
+<span id="more"></span>
+
+<p> 说实话，我对历史还挺感兴趣的。 上一次了解计算机领域的历史，还是看吴军先生的《浪潮之巅》的时候。纵观近十年的“浪潮”：2010年的云计算、2014年的大数据、2017年的人工智能，我不禁想，下一次的“浪潮”是什么，又在什么时候。</p>
+<p>看了1.1之后，我才发现，C++背后原来也有很多故事！</p>
+<h2 id="C-的历史"><a href="#C-的历史" class="headerlink" title="C++的历史"></a>C++的历史</h2><p>C++起源于BCPL(Basic Combined Programming Language),即B语言的前身。B语言是一种Typeless语言，当时主要用于开发Multics(Unix的前身)。后来，Brian Kernighan和Dennis Ritchie一起开发了C语言，该版本史称K&amp;R C。Dennis自曝他一段时间称C语言为New B，今天看来，C语言确实牛逼。</p>
+<p>Bjarne Stroustrup在C语言的基础上，渐渐Simual，引进了面向对象等思想，这个版本的C++被称为C with Classes。后来的C++不断继承、借鉴、更新，相继发布了C++98、C++03、C++11、C++14、C++17、C++20。C++一直与时俱进。</p>
+<h2 id="C-的应用"><a href="#C-的应用" class="headerlink" title="C++的应用"></a>C++的应用</h2><p>除个别规则不同外，C++都是兼容C语言的，C和C++的应用极其广泛。</p>
+<ol>
+<li><p>GUI。现在的界面更多用的是前端的框架，HTML、CSS、JavaScript、Vue……但是C++是完全可以胜任GUI的构建的，比如说QT。</p>
+</li>
+<li><p>操作系统。Linux完全是用C写成的，Windows是用C++写的，apple的ios和Mac是用Object C写的，这也是一种类C语言。</p>
+</li>
+<li><p>数据库。（不太了解）</p>
+</li>
+<li><p>云计算。（不太了解）</p>
+</li>
+<li><p>浏览器。Chrome内核是由C++写成的，而Chrome内核被当今流行的很多浏览器所使用，比如Chrome，edge，国产的360浏览器（不推荐）等。</p>
+</li>
+<li><p>库。我现在用到的一个C++库就是OpenGL。C++还有很多库支撑起了C++强大的生态系统。</p>
+<hr>
+</li>
+</ol>
+<p>说到当今的著名公司，和C++有一腿的，我首先想到的就是我的一位老师不久前才讲过的MathWork。由于时代太早，C语言刚刚出现，而作为第一个高级语言的FORTRAN已经发展了一段时间，所以MATLAB最先的开发语言是FORTRAN。FORTRAN与其他高级语言一个的区别是它的数组是按列储存的，而其他高级语言大多数都是行储存。对于基于矩阵的MATLAB来说，这点是致命的。后来MathWork公司声明已经用C++重新写了一遍MATLAB的底层实现。</p>
+<p>由于C++是偏底层、偏硬件的语言，同时具有面向对象的特点，C++在游戏制作领域是一门必修课。所以为什么有的数媒专业的同学不选C++而选了Java?</p>
+<p>因为C语言是神，而C++是魔鬼！！！</p>
+<hr>
+<h1 id="1-2-你能学到什么？"><a href="#1-2-你能学到什么？" class="headerlink" title="1.2 你能学到什么？"></a>1.2 你能学到什么？</h1><div id="dplayer1" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer1"),"theme":"#FADFA3","loop":true,"video":{"url":"https://link.jscdn.cn/sharepoint/aHR0cHM6Ly9zdGR1ZXN0Y2VkdWNuLW15LnNoYXJlcG9pbnQuY29tLzp2Oi9nL3BlcnNvbmFsLzIwMjAwODA5MTAwMDRfc3RkX3Vlc3RjX2VkdV9jbi9FWUsteHg2ekVJRkRtckRlVTNXV2Zjc0JsYkVBLUNMVGZLRG5oM1EwMnpaMm53P2U9UUM2MlEw.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+
+<p>自己明白自己重点要学什么就行。</p>
+<p>就我个人而言，我学C++主要希望学到以下几点：</p>
+<ul>
+<li>学会面向对象的特性。</li>
+<li>更加深入地学会内存管理。</li>
+<li>借助OpenGL库，学习C++的图形化使用。（计算机图形学）</li>
+</ul>
+<h1 id="1-3-课程结构"><a href="#1-3-课程结构" class="headerlink" title="1.3 课程结构"></a>1.3 课程结构</h1><div id="dplayer2" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer2"),"theme":"#FADFA3","loop":true,"video":{"url":"https://link.jscdn.cn/sharepoint/aHR0cHM6Ly9zdGR1ZXN0Y2VkdWNuLW15LnNoYXJlcG9pbnQuY29tLzp2Oi9nL3BlcnNvbmFsLzIwMjAwODA5MTAwMDRfc3RkX3Vlc3RjX2VkdV9jbi9FZGxxQ2wxRlVqQk1pbVRLS2FsUlB2UUJhY3BoZVdOeXEwNmtva1hWTjZxdlpnP2U9QkVIalFB.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+
+<h1 id="1-4-正式开始"><a href="#1-4-正式开始" class="headerlink" title="1.4 正式开始"></a>1.4 正式开始</h1><div id="dplayer3" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer3"),"theme":"#FADFA3","loop":true,"video":{"url":"https://link.jscdn.cn/sharepoint/aHR0cHM6Ly9zdGR1ZXN0Y2VkdWNuLW15LnNoYXJlcG9pbnQuY29tLzp2Oi9nL3BlcnNvbmFsLzIwMjAwODA5MTAwMDRfc3RkX3Vlc3RjX2VkdV9jbi9FWk1jUHE4WE8waE5pSEVJWTIxODVISUJVUzVQVTIzUHJwbl9LaVpObFF5aW9BP2U9dXFWMjMx.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" rel="tag"># C++程序设计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/03/ubuntu/" rel="prev" title="记第一次用Ubuntu时的血压飙升">
+                  <i class="fa fa-chevron-left"></i> 记第一次用Ubuntu时的血压飙升
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/13/seqlist/" rel="next" title="顺序表及其基本操作">
+                  顺序表及其基本操作 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sato</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.6/pdfobject.min.js","integrity":"sha256-77geM50MfxCD17eqyJR+Dag1svjJOLN+BJ2F/DMqMEY="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
