@@ -258,7 +258,7 @@
         <p><strong>先尝试回答一下以下问题：</strong></p>
 <ol>
 <li>C语言的数据类型有哪些？基本数据类型可以怎样分类？</li>
-<li>int可以表示的整数的数量级？char默认有符号还是无符号？为什么下面代码的c=26 (%d)？<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char a=175; char b=107; char c=a+b;</span><br></pre></td></tr></table></figure></li>
+<li>int可以表示的整数的数量级？char默认有符号还是无符号？为什么下面代码的c=26 (%d)？<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char <span class="attribute">a</span>=175; char <span class="attribute">b</span>=107; char <span class="attribute">c</span>=a+b;</span><br></pre></td></tr></table></figure></li>
 <li>几种算数运算符对整数、浮点数分别是怎么处理的？结果是整数还是浮点数？</li>
 <li>奇葩的逗号表达式是怎么回事？</li>
 <li>scanf_s被报错了是怎么回事？格式控制字符串怎么理解？<span id="more"></span></li>
@@ -268,7 +268,7 @@
 <p>C语言的基本类型可以按照如下方式分类：</p>
 <p><img src="https://satoing.gitee.io/img/C%E8%AF%AD%E8%A8%801/2.JPEG"></p>
 <p>值得一提的是char被划分在整型数据里面，其实这是很合理的：字符型变量真正存储的是一串8位的数码，而当编译器知道这个变量是字符型后，就会通过该编码找到对应的字符。所以char可以当作1byte的整数使用；同理，int也可以当作char使用，如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int a=65; printf(&quot;%c\n&quot;,a);</span><br></pre></td></tr></table></figure>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">65</span>; <span class="keyword">printf</span>(<span class="string">&quot;%c\n&quot;</span>,a);</span><br></pre></td></tr></table></figure>
 
 <p>最后会打印A，因为在格式说明里已经要求把int按照char输出了。但这种用法除了学习价值外就毫无意义了。</p>
 <blockquote>
@@ -282,20 +282,20 @@
 <hr>
 <p>C语言的char是默认有符号的，即MSB填0。这也是ASCII码区别其他编码的特点，因为其他大多数编码都是兼容ASCII码的，自然要取得比ASCII码更大，即MSB为1。编译器可以通过这个特点区分ASCII码和其他编码。</p>
 <p>关于下面c的结果为26，其实就是溢出造成的。（这更容易体会到低位是多么容易溢出！）</p>
-   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char a=175; char b=107; char c=a+b;</span><br></pre></td></tr></table></figure>
+   <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char <span class="attribute">a</span>=175; char <span class="attribute">b</span>=107; char <span class="attribute">c</span>=a+b;</span><br></pre></td></tr></table></figure>
 
 <p>175+107=282，282-256=26，所以结果为26，真的是这样吗？</p>
 <p>前面说过，char默认有符号，所以175就已经越界了！大于127就算越界了！所以应该是107-81=26。</p>
 <p><img src="https://satoing.gitee.io/img/C%E8%AF%AD%E8%A8%801/3.JPG"></p>
 <hr>
 <p>不知你是否见过这样的用法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef unsigned char uint8;</span><br><span class="line">typedef unsigned short unit16;</span><br><span class="line">typedef unsigned long uint32;</span><br><span class="line">typedef unsigned long long uint64;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> uint8;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">short</span> unit16;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> uint32;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> uint64;</span><br></pre></td></tr></table></figure>
 
 <p>虽然是换汤不换药的做法，但是能实现用户自定义类型，极大提高程序的兼容性。而且老师还叮嘱过我们，以后看到这样的代码，一定要去精读——这绝逼是好代码。</p>
 <h1 id="基本运算"><a href="#基本运算" class="headerlink" title="基本运算"></a>基本运算</h1><p>双目运算中的算术运算应该是我们最熟悉的了，同时它也包括了自动类型转换，这点值得我们注意。</p>
 <ol>
 <li><p>两个数均为整数，+，-，*，/后的结果也为整数。不过两数相除的结果可能是小数，C语言一律向下取整。即<code>3/5=0</code>。如果想要向上取整，规范的做法是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w/64+!!(w%64)</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w/<span class="number">64</span>+!!(w<span class="comment">%64)</span></span><br></pre></td></tr></table></figure>
 
 <p>这里连续使用两次“!”的技巧性很强。实际上，C语言后来还定义了向下取整函数floor和ceil，但是floor基本没人用，因为C语言自动会向下取整所以何必呢？ceil用得也很少，因为<code>w/64+!!(w%64)</code>的做法已经成为向上取整约定俗成的方式了，性能也很好。</p>
 </li>
@@ -307,10 +307,10 @@
 <hr>
 <p>逗号经常作为变量表，形参表等列表元素之间的分隔符，这样用逗号是没问题的。但是，当看到逗号运算符时，却往往脑壳疼，因为这样的语句可读性是很低的。自己写程序时不应该用，但是别人用了要读得懂。</p>
 <p>逗号表达式的意思是从左至右依次计算各表达式的值，表达式最终的结果为最右端表达式的值。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int a=3/5,3/5+!!(3%5);//最终a的值为1</span><br></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">int</span> a=<span class="number">3</span>/<span class="number">5</span>,<span class="number">3</span>/<span class="number">5</span>+!!(<span class="number">3</span>%<span class="number">5</span>);//最终a的值为<span class="number">1</span></span><br></pre></td></tr></table></figure>
 
 <p>明白了这个，那么请分析下面的用法。有人依此说return是一个函数，错在哪里？</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return (0);</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> (<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
 
 <p>当然，根本没有报错：</p>
 <p><img src="https://satoing.gitee.io/img/C%E8%AF%AD%E8%A8%801/4.JPG"></p>
@@ -333,7 +333,7 @@
 <p><img src="https://satoing.gitee.io/img/C%E8%AF%AD%E8%A8%801/6.JPG"></p>
 <p>这里同样溢出了，但是打印了b；不同于上面什么都没有输出。但是问题都是一样的——一个汉字应该视为两个字符，所以也不难解释为什么要<code>printf(&quot;%c%c%c%c%c%c\n&quot;,206,210,176,174,196,227);</code>这样了。</p>
 <p>scanf()的格式控制字符串要求使用者在输入数据时原封不动地将普通字符也打上去，所以，下面的代码就有点傻逼了：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scanf(“请输入一个数字：%d”，&amp;a);</span><br></pre></td></tr></table></figure>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scanf(“请输入一个数字：<span class="comment">%d”，&amp;a);</span></span><br></pre></td></tr></table></figure>
 
 <p>本意是想作为提示，结果最后用户还要把“请输入一个数字：”打上去，自己以前的做法有点搞笑。</p>
 <p>一般scanf()的格式控制字符串都使用空格或逗号分隔：<code>&quot;%d %d&quot;</code>或<code>&quot;%d,%d&quot;</code>,不分隔的话就要说明长度，就要用到scanf_s。</p>
