@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"github.com","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="这次讲一个可以说过时，但是也可以说永不过时的内容：C&#x2F;C++的编译与链接。说它过时，因为我们学习C语言的时候，第一个讲的就是这个知识点；而它不过时，是因为它是程序运行的基础。比如在一个C&#x2F;C++工程中，可能会有很多的.c&#x2F;.cpp、.h&#x2F;.hpp文件，这时候我们要运行这个工程，就离不开编译与链接。 接下来将在命令行一步步地进行这个过程。 编译与链接C&#x2F;C++的执行过程包括预处理(Prepocess">
+<meta name="description" content="这次讲一个可以说过时，但是也可以说永不过时的内容：C&#x2F;C++的编译与链接。说它过时，因为我们学习C语言的时候，第一个讲的就是这个知识点；而它不过时，是因为它是程序运行的基础。比如在一个C&#x2F;C++工程中，可能会有很多的.c&#x2F;.cpp、.h&#x2F;.hpp文件，这时候我们要运行这个工程，就离不开编译与链接。 接下来将在命令行一步步地进行这个过程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C&#x2F;C++的执行过程与make初步">
 <meta property="og:url" content="https://github.com/Satoing/Satoing.github.io/2021/10/18/compilation/index.html">
 <meta property="og:site_name" content="學習軌跡">
-<meta property="og:description" content="这次讲一个可以说过时，但是也可以说永不过时的内容：C&#x2F;C++的编译与链接。说它过时，因为我们学习C语言的时候，第一个讲的就是这个知识点；而它不过时，是因为它是程序运行的基础。比如在一个C&#x2F;C++工程中，可能会有很多的.c&#x2F;.cpp、.h&#x2F;.hpp文件，这时候我们要运行这个工程，就离不开编译与链接。 接下来将在命令行一步步地进行这个过程。 编译与链接C&#x2F;C++的执行过程包括预处理(Prepocess">
+<meta property="og:description" content="这次讲一个可以说过时，但是也可以说永不过时的内容：C&#x2F;C++的编译与链接。说它过时，因为我们学习C语言的时候，第一个讲的就是这个知识点；而它不过时，是因为它是程序运行的基础。比如在一个C&#x2F;C++工程中，可能会有很多的.c&#x2F;.cpp、.h&#x2F;.hpp文件，这时候我们要运行这个工程，就离不开编译与链接。 接下来将在命令行一步步地进行这个过程。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://satoing.gitee.io/img/compilation/2.png">
 <meta property="og:image" content="https://satoing.gitee.io/img/compilation/3.png">
@@ -39,11 +39,11 @@
 <meta property="og:image" content="https://satoing.gitee.io/img/compilation/11.png">
 <meta property="og:image" content="https://satoing.gitee.io/img/compilation/12.png">
 <meta property="article:published_time" content="2021-10-18T09:15:56.011Z">
-<meta property="article:modified_time" content="2021-10-21T05:43:42.089Z">
+<meta property="article:modified_time" content="2021-10-21T05:44:59.732Z">
 <meta property="article:author" content="Sato">
 <meta property="article:tag" content="C++程序设计">
 <meta property="article:tag" content="C语言复习">
-<meta property="article:tag" content="Cmake">
+<meta property="article:tag" content="make">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://satoing.gitee.io/img/compilation/2.png">
 
@@ -241,7 +241,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-21 13:43:42" itemprop="dateModified" datetime="2021-10-21T13:43:42+08:00">2021-10-21</time>
+        <time title="修改时间：2021-10-21 13:44:59" itemprop="dateModified" datetime="2021-10-21T13:44:59+08:00">2021-10-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -265,6 +265,8 @@
     <div class="post-body" itemprop="articleBody">
         <p>这次讲一个可以说过时，但是也可以说永不过时的内容：C/C++的编译与链接。说它过时，因为我们学习C语言的时候，第一个讲的就是这个知识点；而它不过时，是因为它是程序运行的基础。比如在一个C/C++工程中，可能会有很多的<code>.c/.cpp</code>、<code>.h/.hpp</code>文件，这时候我们要运行这个工程，就离不开编译与链接。</p>
 <p>接下来将在命令行一步步地进行这个过程。</p>
+<span id="more"></span>
+
 <h1 id="编译与链接"><a href="#编译与链接" class="headerlink" title="编译与链接"></a>编译与链接</h1><p>C/C++的执行过程包括预处理(Prepocessing)、编译(Compilnation)、汇编(Assembly)、链接(Link)四步。我们常常忽略预处理与汇编，直接把这个过程称为编译与链接；有时候甚至直接用编译来代指这整个过程（虽然可能是不标准的说法）。</p>
 <p><strong>下面两张图总结C/C++的编译与链接：</strong></p>
 <p><img src="https://satoing.gitee.io/img/compilation/2.png"></p>
@@ -338,7 +340,7 @@
           <div class="post-tags">
               <a href="/tags/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" rel="tag"># C++程序设计</a>
               <a href="/tags/C%E8%AF%AD%E8%A8%80%E5%A4%8D%E4%B9%A0/" rel="tag"># C语言复习</a>
-              <a href="/tags/Cmake/" rel="tag"># Cmake</a>
+              <a href="/tags/make/" rel="tag"># make</a>
           </div>
 
         
