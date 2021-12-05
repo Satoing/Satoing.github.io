@@ -45,7 +45,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<script src="/assets/js/DPlayer.min.js"></script></head>
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -180,6 +180,381 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1.1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Sato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="學習軌跡">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1.1/" class="post-title-link" itemprop="url">命名空间与io</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-11-16 18:27:22 / 修改时间：23:51:25" itemprop="dateCreated datePublished" datetime="2021-11-16T18:27:22+08:00">2021-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>[toc]</p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>学习一门语言，一般都是从<code>Hello,world!</code>开始的。我们先来看一下C++的<code>Hello,world!</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Hello,world!&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时初学者一般会有两个疑惑：</p>
+<ol>
+<li>namespace是什么鬼？</li>
+<li>cout又是什么？</li>
+</ol>
+<p>这两个问题将在本节解决。</p>
+<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>在使用C语言进行协同项目开发时，可能会有这样的情况：A和B在编写各自的模块时，都定义了相同名字的函数。他们各自的代码能够编译通过，但是最后合并的时候，编译器却会报错。这个问题就是重定义。</p>
+<p>如下图，A和B都定义了一个名叫foo的函数。我们分别编译A和B的代码，是没有问题的。但是，最后链接的时候，编译器报错”<code>ambiguating new declaration</code>“。</p>
+<p><img src="/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1/1.jpg"></p>
+<p>这个问题在C语言中是没有解决的（至少我不会/脸黑）。但是就这个问题，C++给出的明确的解决方案就是使用”命名空间”。</p>
+<h2 id="命名空间的作用"><a href="#命名空间的作用" class="headerlink" title="命名空间的作用"></a>命名空间的作用</h2><p>简单点说，我们把名字关进命名空间这个”小黑屋”，你的变量名字即使同我的一样，但是本质是不一样的，使用时我们按照一定的方式打开”小黑屋”(取出命名空间中的成员)即可。</p>
+<p>严谨点来说，==命名空间通过将标识(zhi)符的名称本地化，防止相同名字标识符之间产生冲突==。</p>
+<h2 id="命名空间的定义"><a href="#命名空间的定义" class="headerlink" title="命名空间的定义"></a>命名空间的定义</h2><p>使用<code>namespace</code>关键字：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Mynamespace&#123;</span><br><span class="line">    <span class="comment">//存放变量</span></span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="comment">//存放函数</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="命名空间的使用"><a href="#命名空间的使用" class="headerlink" title="命名空间的使用"></a>命名空间的使用</h2><p>使用命名空间有三种方法：</p>
+<ol>
+<li><p>==暴力导入==，一次性全部释放出命名空间中的成员：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Mynamespace; </span><br></pre></td></tr></table></figure>
+
+<p>这样确实省力，但是全部释放后这个命名空间就相当于不存在了，没有起到命名空间的作用。==所以，这种方法要慎用！！！==</p>
+</li>
+<li><p>==使用using导入==，想好自己要用到这命名空间中的哪些成员，先单独释放出来：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//释放出命名空间中的a变量</span></span><br><span class="line"><span class="keyword">using</span> Mynamespace::a;</span><br></pre></td></tr></table></figure>
+
+<p>这要求我们提前想好要使用命名空间的哪些成员(当然也可以用到时加)。这种使用方法适用于使用比较频繁的成员。</p>
+</li>
+<li><p>==使用命名空间名称和作用域限制符==。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::cout&lt;&lt;<span class="string">&quot;Hello,World!&quot;</span>&lt;&lt;std::endl;</span><br></pre></td></tr></table></figure>
+
+<p>这样就不需要使用<code>using namespace std;</code>了。</p>
+</li>
+</ol>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>工程中推荐用第二种和第三种方法来使用命名空间，各有优劣：</p>
+<p>第二种适用于导入使用比较频繁的成员，第三种适用于使用不是那么频繁的成员，这样可以减少代码。<del>（反正我就是喜欢偷懒和摸鱼）</del></p>
+<h1 id="输入和输出"><a href="#输入和输出" class="headerlink" title="输入和输出"></a>输入和输出</h1><h2 id="为什么叫cin和cout"><a href="#为什么叫cin和cout" class="headerlink" title="为什么叫cin和cout"></a>为什么叫cin和cout</h2><p>想必这个问题会困扰初学者许久。也许你会认为因为是C++，所以在前面加了个C。但是，实际上并不是这样。</p>
+<ul>
+<li><code>cin</code>是<code>clavier input</code>的缩写，即键盘输入。表示程序接收这个来自键盘的输入。</li>
+<li><code>cout</code>是<code>console output</code>的缩写，即控制台输出。表示将值输出到控制台（命令行）。</li>
+<li><code>endl</code>是<code>end line</code>的缩写，即换行，同转义字符<code>\n</code>。</li>
+</ul>
+<h2 id="cout"><a href="#cout" class="headerlink" title="cout"></a>cout</h2><p><code>cout</code>支持连续输入和自动类型推断。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;Hello,World!&quot;</span>&lt;&lt;endl&lt;&lt;<span class="string">&quot;换行后继续输出\n&quot;</span>&lt;&lt;<span class="string">&quot;再次换行后继续输出&quot;</span>&lt;&lt;a;</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>endl</code>和<code>\n</code>等价。</p>
+<p>但是，cout不能控制输出的格式。比如，对于一个int型，不能指定以八进制或十六进制输出，这时我们应该使用<code>printf</code>。</p>
+<blockquote>
+<p>cout之所以支持自动类型推断，是因为对<code>&lt;&lt;</code>进行了运算符重载：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;i~~~~<span class="keyword">operator</span>&lt;&lt;(ostream&amp; <span class="keyword">this</span>,<span class="keyword">int</span> i);</span><br><span class="line">cout&lt;&lt;d~~~~<span class="keyword">operator</span>&lt;&lt;(ostream&amp; <span class="keyword">this</span>,<span class="keyword">double</span> d);</span><br><span class="line"><span class="comment">//其他类型同理</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="cin"><a href="#cin" class="headerlink" title="cin"></a>cin</h2><p><code>cin</code>支持连续输入。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int <span class="selector-tag">a</span>;</span><br><span class="line">char <span class="selector-tag">b</span>;</span><br><span class="line">//连续输入<span class="selector-tag">a</span>和<span class="selector-tag">b</span></span><br><span class="line">cin&gt;&gt;<span class="selector-tag">a</span>&gt;&gt;<span class="selector-tag">b</span>;</span><br></pre></td></tr></table></figure>
+
+<p>但是，<code>cin</code>不能指定以什么样的方式输入（空格，不空格，换行……），这时我们应该使用<code>scanf</code>。</p>
+<h2 id="说明-1"><a href="#说明-1" class="headerlink" title="说明"></a>说明</h2><p><code>scanf</code> 与 <code>printf</code> 其实是 C 语言提供的函数。大多数情况下，它们的速度比 <code>cin</code> 和 <code>cout</code> 更快，并且能够==方便地控制输入输出格式==。</p>
+<p>与之相比，<code>cin</code>和<code>cout</code>的使用更加灵活。它不需要我们去说明输出的格式，可以自己推导，并且能够==连续输入和输出==。</p>
+<p>实际使用中，对于应该使用<code>scanf</code> , <code>printf</code> 还是<code>cin</code>和<code>cout</code>，需要我们根据自己的需求进行选择。（用哪个方便就行，<del>反正我就是懒……</del>）</p>
+<p>值得一提的是，OI可能会涉及到一些卡常的技巧。为了使程序运行得更快，推荐使用<code>cin</code>和<code>cout</code>，因为它们得到了编译器充分的优化。但毕竟那是竞赛，时间很重要；我们平时使用时还是用简单的就行了。</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p><strong>什么是<code>std</code>？</strong></p>
+<p><code>std</code>是 C++ 标准库所使用的 <strong>命名空间</strong>。<code>cin</code>和<code>cout</code>都放在命名空间<code>std</code>里面。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/11/05/OPENGL/learnOpenGL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Sato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="學習軌跡">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/05/OPENGL/learnOpenGL/" class="post-title-link" itemprop="url">OpenGL到底是什么</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-11-05 19:16:04 / 修改时间：16:08:44" itemprop="dateCreated datePublished" datetime="2021-11-05T19:16:04+08:00">2021-11-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>学习计算机图形学这么久了，OpenGL对我来说依然是个很迷惑的东西<del>（对不起我承认我上课在打飞机）</del>。所以接下来我们将从头开始研究，OpenGL到底是什么。</p>
+<ul>
+<li><p>OpenGL是一个标准和规范(Specification)。它严格规定了每个函数的功能，输入和输出，而并没有规定一个函数应该如何实现。实现这些函数的开发者一般是显卡厂商，以使图形和自家造的显卡相匹配。这是一种普遍的开发方式：比如说，对于一个项目，我们首先关注的是它具体要做什么，然后将它划分为不同的模块，交给不同的人来实现，当性能达标后，我们最后再将它们统一起来。当然，实现该模块的时候开发者应该严格遵循之前定制的标准。</p>
+</li>
+<li><p>OpenGL是一个状态机(State Machine)。我并不是很明白Machine在英语中是否还有除了机器外的其他含义，我认为这里应该强调的是状态这个词。这一系列的状态描述了OpenGL该如何运行。这些状态被称为上下文(Context)。OpenGL应当被看成一系列状态的集合。</p>
+</li>
+<li><p>值得注意的是，OpenGL里面的功能都是很底层的，同时也没有指定任何用于建立和使用窗口的 API。这时我们使用一些实用库和工具库，对使用OpenGL的工作流程进行简化。如果足够大佬的话，也可以不用glut或glfw。</p>
+<p><img src="/Satoing/Satoing.github/1.png"></p>
+</li>
+</ul>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/11/05/learnOpenGL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Sato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="學習軌跡">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/05/learnOpenGL/" class="post-title-link" itemprop="url">OpenGL到底是什么</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-05 19:15:56" itemprop="dateCreated datePublished" datetime="2021-11-05T19:15:56+08:00">2021-11-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-11-08 15:58:13" itemprop="dateModified" datetime="2021-11-08T15:58:13+08:00">2021-11-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>学习计算机图形学这么久了，OpenGL对我来说依然是个很迷惑的东西<del>（对不起我承认我上课在打飞机）</del>。所以接下来我们将从头开始研究，OpenGL到底是什么。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/05/learnOpenGL/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/10/31/front-end2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Sato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="學習軌跡">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/31/front-end2/" class="post-title-link" itemprop="url">蚂蚁前端成电行</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-10-31 19:17:30 / 修改时间：19:37:52" itemprop="dateCreated datePublished" datetime="2021-10-31T19:17:30+08:00">2021-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天学习的是JavaScript。但是，由于我之前几乎没有碰过这个语言，加之在一天之内边玩边学，效率不高，所以今天的内容还有很多都没有弄明白。下面就简单梳理下今天所学的内容，希望能加深对今日所学内容的理解。</p>
+<h1 id="JavaScript简介"><a href="#JavaScript简介" class="headerlink" title="JavaScript简介"></a>JavaScript简介</h1><p>JavaScript是一种运行在JavaScript解释器上的动态弱类型语言，主要运行在浏览器上。</p>
+<p><img src="/Satoing/Satoing.github/1.JPG"></p>
+<p>原生JavaScript的开发标准简称ES。现在所有浏览器都支持ES5，普遍开发和使用的都是ES6。ES7、ES8尚待普及。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -684,352 +1059,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/10/13/seqlist/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/10/06/course1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Sato">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="學習軌跡">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/06/course1/" class="post-title-link" itemprop="url">第一讲：C++课程简介</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-06 15:57:18" itemprop="dateCreated datePublished" datetime="2021-10-06T15:57:18+08:00">2021-10-06</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-18 13:33:21" itemprop="dateModified" datetime="2021-10-18T13:33:21+08:00">2021-10-18</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>由于某些原因，文中的视频现阶段只能在PC端播放，请使用电脑以获得更好的阅读体验。</p>
-</blockquote>
-<h1 id="1-1-什么是C"><a href="#1-1-什么是C" class="headerlink" title="1.1 什么是C++"></a>1.1 什么是C++</h1><div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","loop":true,"video":{"url":"https://link.jscdn.cn/sharepoint/aHR0cHM6Ly9zdGR1ZXN0Y2VkdWNuLW15LnNoYXJlcG9pbnQuY29tLzp2Oi9nL3BlcnNvbmFsLzIwMjAwODA5MTAwMDRfc3RkX3Vlc3RjX2VkdV9jbi9FVTY1aG9XQndxWkFwNGlpZE1Pbk5oRUJwREZyUkZCbVBWaC1NM2dHM01GaGVnP2U9QzBSbThk.mp4"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/06/course1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/10/03/ubuntu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Sato">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="學習軌跡">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/03/ubuntu/" class="post-title-link" itemprop="url">第一次在物理机装Linux</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-03 14:55:52" itemprop="dateCreated datePublished" datetime="2021-10-03T14:55:52+08:00">2021-10-03</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-16 12:49:37" itemprop="dateModified" datetime="2021-10-16T12:49:37+08:00">2021-10-16</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B8%B8%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">常识</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>昨天从家里翻出了十年前的老电脑。戴尔灵越N3010，奔腾6000的CPU，64位。这配置在当时应该还不错，而且恰逢我学习的C++课程中，老师为了统一环境，让我们统一使用装了debian的虚拟机（因为虽然大多数都是用的windows，但是mac用户也不少）。</p>
-<p>我寻思直接上手Linux也挺好，于是老电脑重装系统，开干！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/03/ubuntu/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/09/24/%E7%AC%AC%E4%BA%8C%E8%AE%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Sato">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="學習軌跡">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/24/%E7%AC%AC%E4%BA%8C%E8%AE%B2/" class="post-title-link" itemprop="url">数据存储区和控制语句</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-09-24 19:05:50 / 修改时间：19:32:57" itemprop="dateCreated datePublished" datetime="2021-09-24T19:05:50+08:00">2021-09-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>先看看下面几个问题：</strong></p>
-<p>1. </p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/09/19/%E7%AC%AC%E4%B8%80%E8%AE%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Sato">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="學習軌跡">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/19/%E7%AC%AC%E4%B8%80%E8%AE%B2/" class="post-title-link" itemprop="url">基本数据类型和运算</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-09-19 22:34:59" itemprop="dateCreated datePublished" datetime="2021-09-19T22:34:59+08:00">2021-09-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-09-20 11:17:48" itemprop="dateModified" datetime="2021-09-20T11:17:48+08:00">2021-09-20</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>先尝试回答一下以下问题：</strong></p>
-<ol>
-<li>C语言的数据类型有哪些？基本数据类型可以怎样分类？</li>
-<li>int可以表示的整数的数量级？char默认有符号还是无符号？为什么下面代码的c=26 (%d)？<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char <span class="attribute">a</span>=175; char <span class="attribute">b</span>=107; char <span class="attribute">c</span>=a+b;</span><br></pre></td></tr></table></figure></li>
-<li>几种算数运算符对整数、浮点数分别是怎么处理的？结果是整数还是浮点数？</li>
-<li>奇葩的逗号表达式是怎么回事？</li>
-<li>scanf_s被报错了是怎么回事？格式控制字符串怎么理解？</li></ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/19/%E7%AC%AC%E4%B8%80%E8%AE%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

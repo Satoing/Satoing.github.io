@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.jpg">
+  <link rel="mask-icon" href="/images/favicon.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"github.com","root":"/","images":"/images","scheme":"Gemini","version":"8.7.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="[toc] 引言学习一门语言，一般都是从Hello,world!开始的。我们先来看一下C++的Hello,world!。 123456#include &lt;iostream&gt;using namespace std;int main()&amp;#123;    cout&lt;&lt;&quot;Hello,world!&quot;&lt;&lt;endl;    return 0;&amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命名空间与io">
+<meta property="og:url" content="https://github.com/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1.1/index.html">
+<meta property="og:site_name" content="學習軌跡">
+<meta property="og:description" content="[toc] 引言学习一门语言，一般都是从Hello,world!开始的。我们先来看一下C++的Hello,world!。 123456#include &lt;iostream&gt;using namespace std;int main()&amp;#123;    cout&lt;&lt;&quot;Hello,world!&quot;&lt;&lt;endl;    return 0;&amp;#125;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1/1.jpg">
+<meta property="article:published_time" content="2021-11-16T10:27:22.343Z">
+<meta property="article:modified_time" content="2021-11-16T15:51:25.664Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="C++程序设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1/1.jpg">
+
+
+<link rel="canonical" href="https://github.com/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1.1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://github.com/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1.1/","path":"2021/11/16/C++/第一章：C++快速入门/1.1/","title":"命名空间与io"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>命名空间与io | 學習軌跡</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">學習軌跡</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">脱三日坊主</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-主页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>主页</a></li>
+        <li class="menu-item menu-item-归档"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-标签"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-分类"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-关于"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="nav-number">2.</span> <span class="nav-text">命名空间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%83%85%E6%99%AF"><span class="nav-number">2.1.</span> <span class="nav-text">情景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">命名空间的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.3.</span> <span class="nav-text">命名空间的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">命名空间的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">2.5.</span> <span class="nav-text">说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA"><span class="nav-number">3.</span> <span class="nav-text">输入和输出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%ABcin%E5%92%8Ccout"><span class="nav-number">3.1.</span> <span class="nav-text">为什么叫cin和cout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cout"><span class="nav-number">3.2.</span> <span class="nav-text">cout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cin"><span class="nav-number">3.3.</span> <span class="nav-text">cin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E-1"><span class="nav-number">3.4.</span> <span class="nav-text">说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Sato"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Sato</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Satoing" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Satoing"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/Satoing" title="gitee → https:&#x2F;&#x2F;gitee.com&#x2F;Satoing" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>gitee</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1.1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Sato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="學習軌跡">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          命名空间与io
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-11-16 18:27:22 / 修改时间：23:51:25" itemprop="dateCreated datePublished" datetime="2021-11-16T18:27:22+08:00">2021-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/" itemprop="url" rel="index"><span itemprop="name">大二上</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>[toc]</p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>学习一门语言，一般都是从<code>Hello,world!</code>开始的。我们先来看一下C++的<code>Hello,world!</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Hello,world!&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时初学者一般会有两个疑惑：</p>
+<ol>
+<li>namespace是什么鬼？</li>
+<li>cout又是什么？</li>
+</ol>
+<p>这两个问题将在本节解决。</p>
+<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>在使用C语言进行协同项目开发时，可能会有这样的情况：A和B在编写各自的模块时，都定义了相同名字的函数。他们各自的代码能够编译通过，但是最后合并的时候，编译器却会报错。这个问题就是重定义。</p>
+<p>如下图，A和B都定义了一个名叫foo的函数。我们分别编译A和B的代码，是没有问题的。但是，最后链接的时候，编译器报错”<code>ambiguating new declaration</code>“。</p>
+<p><img src="/Satoing/Satoing.github.io/2021/11/16/C++/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AC++%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/1/1.jpg"></p>
+<p>这个问题在C语言中是没有解决的（至少我不会/脸黑）。但是就这个问题，C++给出的明确的解决方案就是使用”命名空间”。</p>
+<h2 id="命名空间的作用"><a href="#命名空间的作用" class="headerlink" title="命名空间的作用"></a>命名空间的作用</h2><p>简单点说，我们把名字关进命名空间这个”小黑屋”，你的变量名字即使同我的一样，但是本质是不一样的，使用时我们按照一定的方式打开”小黑屋”(取出命名空间中的成员)即可。</p>
+<p>严谨点来说，==命名空间通过将标识(zhi)符的名称本地化，防止相同名字标识符之间产生冲突==。</p>
+<h2 id="命名空间的定义"><a href="#命名空间的定义" class="headerlink" title="命名空间的定义"></a>命名空间的定义</h2><p>使用<code>namespace</code>关键字：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Mynamespace&#123;</span><br><span class="line">    <span class="comment">//存放变量</span></span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="comment">//存放函数</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="命名空间的使用"><a href="#命名空间的使用" class="headerlink" title="命名空间的使用"></a>命名空间的使用</h2><p>使用命名空间有三种方法：</p>
+<ol>
+<li><p>==暴力导入==，一次性全部释放出命名空间中的成员：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> Mynamespace; </span><br></pre></td></tr></table></figure>
+
+<p>这样确实省力，但是全部释放后这个命名空间就相当于不存在了，没有起到命名空间的作用。==所以，这种方法要慎用！！！==</p>
+</li>
+<li><p>==使用using导入==，想好自己要用到这命名空间中的哪些成员，先单独释放出来：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//释放出命名空间中的a变量</span></span><br><span class="line"><span class="keyword">using</span> Mynamespace::a;</span><br></pre></td></tr></table></figure>
+
+<p>这要求我们提前想好要使用命名空间的哪些成员(当然也可以用到时加)。这种使用方法适用于使用比较频繁的成员。</p>
+</li>
+<li><p>==使用命名空间名称和作用域限制符==。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::cout&lt;&lt;<span class="string">&quot;Hello,World!&quot;</span>&lt;&lt;std::endl;</span><br></pre></td></tr></table></figure>
+
+<p>这样就不需要使用<code>using namespace std;</code>了。</p>
+</li>
+</ol>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>工程中推荐用第二种和第三种方法来使用命名空间，各有优劣：</p>
+<p>第二种适用于导入使用比较频繁的成员，第三种适用于使用不是那么频繁的成员，这样可以减少代码。<del>（反正我就是喜欢偷懒和摸鱼）</del></p>
+<h1 id="输入和输出"><a href="#输入和输出" class="headerlink" title="输入和输出"></a>输入和输出</h1><h2 id="为什么叫cin和cout"><a href="#为什么叫cin和cout" class="headerlink" title="为什么叫cin和cout"></a>为什么叫cin和cout</h2><p>想必这个问题会困扰初学者许久。也许你会认为因为是C++，所以在前面加了个C。但是，实际上并不是这样。</p>
+<ul>
+<li><code>cin</code>是<code>clavier input</code>的缩写，即键盘输入。表示程序接收这个来自键盘的输入。</li>
+<li><code>cout</code>是<code>console output</code>的缩写，即控制台输出。表示将值输出到控制台（命令行）。</li>
+<li><code>endl</code>是<code>end line</code>的缩写，即换行，同转义字符<code>\n</code>。</li>
+</ul>
+<h2 id="cout"><a href="#cout" class="headerlink" title="cout"></a>cout</h2><p><code>cout</code>支持连续输入和自动类型推断。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;Hello,World!&quot;</span>&lt;&lt;endl&lt;&lt;<span class="string">&quot;换行后继续输出\n&quot;</span>&lt;&lt;<span class="string">&quot;再次换行后继续输出&quot;</span>&lt;&lt;a;</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>endl</code>和<code>\n</code>等价。</p>
+<p>但是，cout不能控制输出的格式。比如，对于一个int型，不能指定以八进制或十六进制输出，这时我们应该使用<code>printf</code>。</p>
+<blockquote>
+<p>cout之所以支持自动类型推断，是因为对<code>&lt;&lt;</code>进行了运算符重载：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;i~~~~<span class="keyword">operator</span>&lt;&lt;(ostream&amp; <span class="keyword">this</span>,<span class="keyword">int</span> i);</span><br><span class="line">cout&lt;&lt;d~~~~<span class="keyword">operator</span>&lt;&lt;(ostream&amp; <span class="keyword">this</span>,<span class="keyword">double</span> d);</span><br><span class="line"><span class="comment">//其他类型同理</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="cin"><a href="#cin" class="headerlink" title="cin"></a>cin</h2><p><code>cin</code>支持连续输入。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int <span class="selector-tag">a</span>;</span><br><span class="line">char <span class="selector-tag">b</span>;</span><br><span class="line">//连续输入<span class="selector-tag">a</span>和<span class="selector-tag">b</span></span><br><span class="line">cin&gt;&gt;<span class="selector-tag">a</span>&gt;&gt;<span class="selector-tag">b</span>;</span><br></pre></td></tr></table></figure>
+
+<p>但是，<code>cin</code>不能指定以什么样的方式输入（空格，不空格，换行……），这时我们应该使用<code>scanf</code>。</p>
+<h2 id="说明-1"><a href="#说明-1" class="headerlink" title="说明"></a>说明</h2><p><code>scanf</code> 与 <code>printf</code> 其实是 C 语言提供的函数。大多数情况下，它们的速度比 <code>cin</code> 和 <code>cout</code> 更快，并且能够==方便地控制输入输出格式==。</p>
+<p>与之相比，<code>cin</code>和<code>cout</code>的使用更加灵活。它不需要我们去说明输出的格式，可以自己推导，并且能够==连续输入和输出==。</p>
+<p>实际使用中，对于应该使用<code>scanf</code> , <code>printf</code> 还是<code>cin</code>和<code>cout</code>，需要我们根据自己的需求进行选择。（用哪个方便就行，<del>反正我就是懒……</del>）</p>
+<p>值得一提的是，OI可能会涉及到一些卡常的技巧。为了使程序运行得更快，推荐使用<code>cin</code>和<code>cout</code>，因为它们得到了编译器充分的优化。但毕竟那是竞赛，时间很重要；我们平时使用时还是用简单的就行了。</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p><strong>什么是<code>std</code>？</strong></p>
+<p><code>std</code>是 C++ 标准库所使用的 <strong>命名空间</strong>。<code>cin</code>和<code>cout</code>都放在命名空间<code>std</code>里面。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" rel="tag"># C++程序设计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/05/OPENGL/learnOpenGL/" rel="prev" title="OpenGL到底是什么">
+                  <i class="fa fa-chevron-left"></i> OpenGL到底是什么
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sato</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdn.jsdelivr.net/npm/pdfobject@2.2.6/pdfobject.min.js","integrity":"sha256-77geM50MfxCD17eqyJR+Dag1svjJOLN+BJ2F/DMqMEY="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
