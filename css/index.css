@@ -1,18 +1,16 @@
-@import url "http://cdn.repository.webfont.com/webfonts/nomal/147499/19673/61c5ccd1f629d81290ca67b4.css";
-/**普通指针样式**/
 body {
-  cursor: url("/pointer/1.cur"), default;
+  cursor: url("https://satoing.gitee.io/source/pointer/1.cur"), default;
 }
 /**链接指针样式**/
 a:hover {
-  cursor: url("/pointer/2.cur"), pointer;
+  cursor: url("https://satoing.gitee.io/source/pointer/2.cur"), pointer;
 }
 p.img {
-  cursor: url("/pointer/3.cur"), pointer;
+  cursor: url("https://satoing.gitee.io/source/pointer/3.cur"), pointer;
 }
 @font-face {
   font-family: 'tzy';
-  src: url("/font/1.woff2");
+  src: url("https://cdn.jsdelivr.net/gh/tzy13755126023/BLOG_SOURCE/font/ZhuZiAWan.woff2");
   font-display: swap;
 }
 a,
