@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>字符编码 | Smile Diary</title><meta name="keywords" content="C语言复习"><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文主要解决以下几个问题：  常用的字符编码方式有哪些？ Visual Stdio的默认编码方式是什么？vscode的编码方式是什么？gcc&#x2F;g++编译后显示结果时编码方式是什么？ 跨编辑器和编译器导致的中文乱码改怎么解决？ 你敢用这段代码:printf(&quot;%c%c%c%c%c%c\n&quot;,206,210,176,174,196,227);去表白吗？ 编译结果为烫烫烫烫烫是怎么回">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字符编码">
-<meta property="og:url" content="http://localhost:4000/2021/09/09/encoding/index.html">
+<meta property="og:url" content="http://120.76.41.137/2021/09/09/encoding/index.html">
 <meta property="og:site_name" content="Smile Diary">
 <meta property="og:description" content="本文主要解决以下几个问题：  常用的字符编码方式有哪些？ Visual Stdio的默认编码方式是什么？vscode的编码方式是什么？gcc&#x2F;g++编译后显示结果时编码方式是什么？ 跨编辑器和编译器导致的中文乱码改怎么解决？ 你敢用这段代码:printf(&quot;%c%c%c%c%c%c\n&quot;,206,210,176,174,196,227);去表白吗？ 编译结果为烫烫烫烫烫是怎么回">
 <meta property="og:locale" content="zh_CN">
@@ -11,7 +11,7 @@
 <meta property="article:author" content="Sato">
 <meta property="article:tag" content="C语言复习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://satoing.gitee.io/source/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://localhost:4000/2021/09/09/encoding/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://satoing.gitee.io/source/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://120.76.41.137/2021/09/09/encoding/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
   root: '/',
   algolia: {"appId":"XTWLHTK1ZD","apiKey":"e6cc69448bbfd9e64b0607efa3947f95","indexName":"sato","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
   localSearch: undefined,

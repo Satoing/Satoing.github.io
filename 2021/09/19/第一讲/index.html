@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>基本数据类型和运算 | Smile Diary</title><meta name="keywords" content="C语言复习"><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="先尝试回答一下以下问题：  C语言的数据类型有哪些？基本数据类型可以怎样分类？ int可以表示的整数的数量级？char默认有符号还是无符号？为什么下面代码的c&#x3D;26 (%d)？1char a&#x3D;175; char b&#x3D;107; char c&#x3D;a+b; 几种算数运算符对整数、浮点数分别是怎么处理的？结果是整数还是浮点数？ 奇葩的逗号表达式是怎么回事？ scanf_s被报错了是怎么回事？格式控制字符串怎">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基本数据类型和运算">
-<meta property="og:url" content="http://localhost:4000/2021/09/19/%E7%AC%AC%E4%B8%80%E8%AE%B2/index.html">
+<meta property="og:url" content="http://120.76.41.137/2021/09/19/%E7%AC%AC%E4%B8%80%E8%AE%B2/index.html">
 <meta property="og:site_name" content="Smile Diary">
 <meta property="og:description" content="先尝试回答一下以下问题：  C语言的数据类型有哪些？基本数据类型可以怎样分类？ int可以表示的整数的数量级？char默认有符号还是无符号？为什么下面代码的c&#x3D;26 (%d)？1char a&#x3D;175; char b&#x3D;107; char c&#x3D;a+b; 几种算数运算符对整数、浮点数分别是怎么处理的？结果是整数还是浮点数？ 奇葩的逗号表达式是怎么回事？ scanf_s被报错了是怎么回事？格式控制字符串怎">
 <meta property="og:locale" content="zh_CN">
@@ -11,7 +11,7 @@
 <meta property="article:author" content="Sato">
 <meta property="article:tag" content="C语言复习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://satoing.gitee.io/source/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://localhost:4000/2021/09/19/%E7%AC%AC%E4%B8%80%E8%AE%B2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://satoing.gitee.io/source/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://120.76.41.137/2021/09/19/%E7%AC%AC%E4%B8%80%E8%AE%B2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
   root: '/',
   algolia: {"appId":"XTWLHTK1ZD","apiKey":"e6cc69448bbfd9e64b0607efa3947f95","indexName":"sato","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
   localSearch: undefined,

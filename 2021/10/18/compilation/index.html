@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>C/C++的执行过程与make初步 | Smile Diary</title><meta name="keywords" content="C++程序设计,C语言复习,make"><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这次讲一个可以说过时，但是也可以说永不过时的内容：C&#x2F;C++的编译与链接。说它过时，因为我们学习C语言的时候，第一个讲的就是这个知识点；而它不过时，是因为它是程序运行的基础。比如在一个C&#x2F;C++工程中，可能会有很多的.c&#x2F;.cpp、.h&#x2F;.hpp文件，这时候我们要运行这个工程，就离不开编译与链接。 接下来将在命令行一步步地进行这个过程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C&#x2F;C++的执行过程与make初步">
-<meta property="og:url" content="http://localhost:4000/2021/10/18/compilation/index.html">
+<meta property="og:url" content="http://120.76.41.137/2021/10/18/compilation/index.html">
 <meta property="og:site_name" content="Smile Diary">
 <meta property="og:description" content="这次讲一个可以说过时，但是也可以说永不过时的内容：C&#x2F;C++的编译与链接。说它过时，因为我们学习C语言的时候，第一个讲的就是这个知识点；而它不过时，是因为它是程序运行的基础。比如在一个C&#x2F;C++工程中，可能会有很多的.c&#x2F;.cpp、.h&#x2F;.hpp文件，这时候我们要运行这个工程，就离不开编译与链接。 接下来将在命令行一步步地进行这个过程。">
 <meta property="og:locale" content="zh_CN">
@@ -13,7 +13,7 @@
 <meta property="article:tag" content="C语言复习">
 <meta property="article:tag" content="make">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://satoing.gitee.io/source/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://localhost:4000/2021/10/18/compilation/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://satoing.gitee.io/source/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://120.76.41.137/2021/10/18/compilation/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
   root: '/',
   algolia: {"appId":"XTWLHTK1ZD","apiKey":"e6cc69448bbfd9e64b0607efa3947f95","indexName":"sato","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
   localSearch: undefined,

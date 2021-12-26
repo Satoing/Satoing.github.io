@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>线性表的应用1：就地逆置 | Smile Diary</title><meta name="keywords" content="数据结构与算法"><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="就地逆置就是将动态数组中的所有元素逆置，空间复杂度为O(1)。 它可以说是线性表最重要的应用了，下面用多种方法分别实现顺序表和单链表的就地逆置。 顺序表的就地逆置回顾顺序表的定义： 123456typedef int ElemType;typedef struct SeqList&amp;#123;	ElemType * elem;	int length;	int size;&amp;#125;SeqList,L">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线性表的应用1：就地逆置">
-<meta property="og:url" content="http://localhost:4000/2021/10/16/reverse/index.html">
+<meta property="og:url" content="http://120.76.41.137/2021/10/16/reverse/index.html">
 <meta property="og:site_name" content="Smile Diary">
 <meta property="og:description" content="就地逆置就是将动态数组中的所有元素逆置，空间复杂度为O(1)。 它可以说是线性表最重要的应用了，下面用多种方法分别实现顺序表和单链表的就地逆置。 顺序表的就地逆置回顾顺序表的定义： 123456typedef int ElemType;typedef struct SeqList&amp;#123;	ElemType * elem;	int length;	int size;&amp;#125;SeqList,L">
 <meta property="og:locale" content="zh_CN">
@@ -11,7 +11,7 @@
 <meta property="article:author" content="Sato">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://satoing.gitee.io/source/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://localhost:4000/2021/10/16/reverse/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://satoing.gitee.io/source/img/2.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://120.76.41.137/2021/10/16/reverse/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
   root: '/',
   algolia: {"appId":"XTWLHTK1ZD","apiKey":"e6cc69448bbfd9e64b0607efa3947f95","indexName":"sato","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
   localSearch: undefined,
