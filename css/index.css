@@ -10,7 +10,7 @@ p.img {
 }
 @font-face {
   font-family: 'tzy';
-  src: url("/font/ZhuZiAWan.woff2");
+  src: url("https://cdn.jsdelivr.net/gh/tzy13755126023/BLOG_SOURCE/font/ZhuZiAWan.woff2");
   font-display: swap;
 }
 a,
