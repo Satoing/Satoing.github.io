@@ -10,7 +10,7 @@ p.img {
 }
 @font-face {
   font-family: 'tzy';
-  src: url("https://cloud.fullcomb.top/private/source/fonts/ZhuZiAWan.woff2");
+  src: url("/font/ZhuZiAWan.woff2");
   font-display: swap;
 }
 a,
