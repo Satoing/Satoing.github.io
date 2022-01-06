@@ -22,7 +22,6 @@ h1,
 .code-lang {
   font-size: 21px;
   font-family: "tzy";
-  src: url("/font/1.woff2");
   font-display: swap;
 }
 .toc li {
