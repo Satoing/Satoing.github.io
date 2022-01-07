@@ -3467,23 +3467,32 @@ li.categoryBar-list-item:nth-child(2) {
 li.categoryBar-list-item:nth-child(3) {
   background: url('https://cloud.fullcomb.top/private/source/image/6.jpg');
 }
+li.categoryBar-list-item:nth-child(4) {
+  background: url('https://cloud.fullcomb.top/private/source/image/2.jpg');
+}
+li.categoryBar-list-item:nth-child(5) {
+  background: url('https://cloud.fullcomb.top/private/source/image/7.jpg');
+}
+li.categoryBar-list-item:nth-child(6) {
+  background: url('https://cloud.fullcomb.top/private/source/image/8.jpg');
+}
 li.categoryBar-list-item:nth-child(1)>span::after {
-  content: 'Good things to share' !important;
+  content: '来感受这种独特的体裁' !important;
 }
 li.categoryBar-list-item:nth-child(2)>span::after {
-  content: 'Back end talk' !important;
+  content: '大二上学习的课程' !important;
 }
 li.categoryBar-list-item:nth-child(3)>span::after {
-  content: 'personal diary' !important;
+  content: '寒假也不要松懈' !important;
 }
 li.categoryBar-list-item:nth-child(4)>span::after {
-  content: 'Front end serialization' !important;
+  content: '我觉得应该是常识……' !important;
 }
 li.categoryBar-list-item:nth-child(5)>span::after {
-  content: 'Butterfly theme' !important;
+  content: '刷题刷题' !important;
 }
 li.categoryBar-list-item:nth-child(6)>span::after {
-  content: 'Other items' !important;
+  content: '玩游戏,做游戏!' !important;
 }
 li.categoryBar-list-item {
   width: 32.3% !important;
