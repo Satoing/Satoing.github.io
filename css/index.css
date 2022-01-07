@@ -3477,22 +3477,7 @@ li.categoryBar-list-item:nth-child(6) {
   background: url('https://cloud.fullcomb.top/private/source/image/8.jpg');
 }
 li.categoryBar-list-item:nth-child(1)>span::after {
-  content: '来感受这种独特的体裁' !important;
-}
-li.categoryBar-list-item:nth-child(2)>span::after {
-  content: '大二上学习的课程' !important;
-}
-li.categoryBar-list-item:nth-child(3)>span::after {
-  content: '寒假也不要松懈' !important;
-}
-li.categoryBar-list-item:nth-child(4)>span::after {
-  content: '我觉得应该是常识' !important;
-}
-li.categoryBar-list-item:nth-child(5)>span::after {
-  content: '刷题刷题' !important;
-}
-li.categoryBar-list-item:nth-child(6)>span::after {
-  content: '玩游戏,做游戏!' !important;
+  content: '' !important;
 }
 li.categoryBar-list-item {
   width: 32.3% !important;
