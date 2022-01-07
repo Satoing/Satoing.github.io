@@ -3486,7 +3486,7 @@ li.categoryBar-list-item:nth-child(3)>span::after {
   content: '寒假也不要松懈' !important;
 }
 li.categoryBar-list-item:nth-child(4)>span::after {
-  content: '我觉得应该是常识……' !important;
+  content: '我觉得应该是常识' !important;
 }
 li.categoryBar-list-item:nth-child(5)>span::after {
   content: '刷题刷题' !important;
