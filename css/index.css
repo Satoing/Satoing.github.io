@@ -3459,13 +3459,13 @@ span.categoryBar-list-count::after {
   right: -100%;
 }
 li.categoryBar-list-item:nth-child(1) {
-  background: url('/img/4.jpg');
+  background: url('https://cloud.fullcomb.top/private/source/image/4.jpg');
 }
 li.categoryBar-list-item:nth-child(2) {
-  background: url('/img/5.jpg');
+  background: url('https://cloud.fullcomb.top/private/source/image/5.jpg');
 }
 li.categoryBar-list-item:nth-child(3) {
-  background: url('/img/6.jpg');
+  background: url('https://cloud.fullcomb.top/private/source/image/6.jpg');
 }
 li.categoryBar-list-item:nth-child(1)>span::after {
   content: 'Good things to share' !important;
