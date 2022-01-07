@@ -3459,44 +3459,40 @@ span.categoryBar-list-count::after {
   right: -100%;
 }
 li.categoryBar-list-item:nth-child(1) {
-  background: url('https://unpkg.zhimg.com/akilar-candyassets/image/cover1.webp');
+  background: url('https://cloud.fullcomb.top/private/source/image/4.jpg');
 }
 li.categoryBar-list-item:nth-child(2) {
-  background: #abcdef;
+  background: url('https://cloud.fullcomb.top/private/source/image/5.jpg');
 }
 li.categoryBar-list-item:nth-child(3) {
-  background: rgba(45,67,89,0.7);
+  background: url('https://cloud.fullcomb.top/private/source/image/6.jpg');
 }
 li.categoryBar-list-item:nth-child(4) {
-  background: -webkit-linear-gradient(rgba(0, 0, 0, 0.4) 25%, rgba(200,16 , 16, 0) 100%);
-  background: -moz-linear-gradient(rgba(0, 0, 0, 0.4) 25%, rgba(200,16 , 16, 0) 100%);
-  background: -o-linear-gradient(rgba(0, 0, 0, 0.4) 25%, rgba(200,16 , 16, 0) 100%);
-  background: -ms-linear-gradient(rgba(0, 0, 0, 0.4) 25%, rgba(200,16 , 16, 0) 100%);
-  background: linear-gradient(rgba(0, 0, 0, 0.4) 25%, rgba(200,16 , 16, 0) 100%);
+  background: url('https://cloud.fullcomb.top/private/source/image/2.jpg');
 }
 li.categoryBar-list-item:nth-child(5) {
-  background: url('https://unpkg.zhimg.com/akilar-candyassets/image/cover5.webp');
+  background: url('https://cloud.fullcomb.top/private/source/image/7.jpg');
 }
 li.categoryBar-list-item:nth-child(6) {
-  background: url('https://unpkg.zhimg.com/akilar-candyassets/image/cover6.webp');
+  background: url('https://cloud.fullcomb.top/private/source/image/8.jpg');
 }
 li.categoryBar-list-item:nth-child(1)>span::after {
-  content: '长篇小说连载' !important;
+  content: '来感受这种独特的体裁' !important;
 }
 li.categoryBar-list-item:nth-child(2)>span::after {
-  content: '杂谈教程' !important;
+  content: '大二上学习的课程' !important;
 }
 li.categoryBar-list-item:nth-child(3)>span::after {
-  content: '玩转Win10' !important;
+  content: '寒假也不要松懈' !important;
 }
 li.categoryBar-list-item:nth-child(4)>span::after {
-  content: 'Ubuntu指南' !important;
+  content: '我觉得应该是常识' !important;
 }
 li.categoryBar-list-item:nth-child(5)>span::after {
-  content: '个人日记' !important;
+  content: '刷题刷题' !important;
 }
 li.categoryBar-list-item:nth-child(6)>span::after {
-  content: '诗词歌赋' !important;
+  content: '玩游戏,做游戏!' !important;
 }
 li.categoryBar-list-item {
   width: 32.3% !important;
@@ -3509,7 +3505,7 @@ li.categoryBar-list-item {
   }
 }
 .categoryBar-list {
-  max-height: 190px;
+  max-height: 380px;
   overflow: auto;
 }
 .categoryBar-list::-webkit-scrollbar {
@@ -3517,7 +3513,7 @@ li.categoryBar-list-item {
 }
 @media screen and (max-width: 650px) {
   .categoryBar-list {
-    max-height: 160px;
+    max-height: 320px;
   }
 }
 #post-comment .comment-head {
