@@ -1,0 +1,368 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>1.1命名空间与IO | Smile Diary</title><meta name="keywords" content="c++"><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="引言学习一门语言，一般都是从Hello,world!开始的。我们先来看一下C++的Hello,world!。 123456#include &lt;iostream&gt;using namespace std;int main()&amp;#123;    cout&lt;&lt;&quot;Hello,world!&quot;&lt;&lt;endl;    return 0;&amp;#125; 这时初学者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.1命名空间与IO">
+<meta property="og:url" content="http://120.76.41.137/2022/01/10/cpp1.1/index.html">
+<meta property="og:site_name" content="Smile Diary">
+<meta property="og:description" content="引言学习一门语言，一般都是从Hello,world!开始的。我们先来看一下C++的Hello,world!。 123456#include &lt;iostream&gt;using namespace std;int main()&amp;#123;    cout&lt;&lt;&quot;Hello,world!&quot;&lt;&lt;endl;    return 0;&amp;#125; 这时初学者">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/cpp/cover1.jpg">
+<meta property="article:published_time" content="2022-01-10T05:09:52.983Z">
+<meta property="article:modified_time" content="2022-01-10T07:52:37.732Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/cpp/cover1.jpg"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/favicon.ico"><link rel="canonical" href="http://120.76.41.137/2022/01/10/cpp1.1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"XTWLHTK1ZD","apiKey":"e6cc69448bbfd9e64b0607efa3947f95","indexName":"sato","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '1.1命名空间与IO',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-10 15:52:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-camera"></i><span> 生活札记</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/minecraft/"><i class="fa-fw fas fa-cubes"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/food/"><i class="fa-fw fas fa-hamburger"></i><span> 小食</span></a></li><li><a class="site-page child" href="/book/"><i class="fa-fw fas fa-book-open"></i><span> 文学</span></a></li><li><a class="site-page child" href="/film/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/cpp/cover1.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Smile Diary</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-camera"></i><span> 生活札记</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/minecraft/"><i class="fa-fw fas fa-cubes"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/food/"><i class="fa-fw fas fa-hamburger"></i><span> 小食</span></a></li><li><a class="site-page child" href="/book/"><i class="fa-fw fas fa-book-open"></i><span> 文学</span></a></li><li><a class="site-page child" href="/film/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">1.1命名空间与IO</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-10T05:09:52.983Z" title="发表于 2022-01-10 13:09:52">2022-01-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-10T07:52:37.732Z" title="更新于 2022-01-10 15:52:37">2022-01-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/">大二上</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/C/">C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="1.1命名空间与IO"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>学习一门语言，一般都是从<code>Hello,world!</code>开始的。我们先来看一下C++的<code>Hello,world!</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    cout&lt;&lt;<span class="hljs-string">&quot;Hello,world!&quot;</span>&lt;&lt;endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这时初学者一般会有两个疑惑：</p>
+<ol>
+<li><emp>namespace</emp>是什么鬼？</li>
+<li><emp>cout和endl</emp>又是什么？</li>
+<li>为什么<emp>头文件</emp>没有<code>.h</code>？</li>
+</ol>
+<div class="tip "><p>这三个问题将在本节解决。</p>
+</div>
+<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><h2 id="情景"><a href="#情景" class="headerlink" title="情景"></a>情景</h2><p>在使用C语言进行协同项目开发时，可能会有这样的情况：A和B在编写各自的模块时，都定义了相同名字的函数。他们各自的代码能够编译通过，但是最后合并的时候，编译器却会报错。这个问题就是重定义。</p>
+<p>如下图，A和B都定义了一个名叫foo的函数。我们分别编译A和B的代码，是没有问题的。但是，最后链接的时候，编译器报错”<code>ambiguating new declaration</code>“(重定义)。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/cpp/1/1.JPG" alt></p>
+<div class="note info flat"><p><span class="p center small">如果对C的编译和链接有疑惑，可以去简单看看这篇文章：</span></p>
+<div class="tag link"><a class="link-card" title="编译与链接" target="_blank" rel="noopener" href="https://blog.fullcomb.top/2021/10/18/compilation"><div class="left"><img src="https://cloud.fullcomb.top/private/source/image/compilation/cover.png"></div><div class="right"><p class="text">编译与链接</p><p class="url">https://blog.fullcomb.top/2021/10/18/compilation</p></div></a></div></div>
+<p>这个问题，即相同名字的函数(当然不局限于函数)发生冲突，在C语言中是没有解决的。<psw>至少我不会/脸黑</psw>。但是就这个问题，C++给出的明确的解决方案就是使用”<emp>命名空间</emp>“。</p>
+<h2 id="命名空间的作用"><a href="#命名空间的作用" class="headerlink" title="命名空间的作用"></a>命名空间的作用</h2><ul>
+<li><p>简单点来说，我们把名字关进命名空间这个”小黑屋”。编译器在外面是不知道里面有什么的，当我们把小黑屋打开，编译器才能找到里面的名字。同时，这个屋内的变量名字即使同另外一个的一样，但是他们本质是不一样的。使用时我们按照一定的方式打开”小黑屋”(取出命名空间中的成员)即可。</p>
+</li>
+<li><p>严谨点来说，<mark>命名空间通过将标识(zhi)符的名称<wavy>本地化</wavy>，防止相同名字的标识符之间产生冲突</mark>。</p>
+</li>
+</ul>
+<div class="note info flat"><p>本地化的意思就是编译器编译时会在名字前面加一些前缀(一个命名空间对应一个前缀)，以防止同名导致冲突。当我们使用某个命名空间的时候，编译器就会默认加上相应的前缀，从而找到对应的函数/变量。</p>
+</div>
+<h2 id="命名空间的定义"><a href="#命名空间的定义" class="headerlink" title="命名空间的定义"></a>命名空间的定义</h2><p>使用<code>namespace</code>关键字：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">namespace</span> Mynamespace&#123;<br>    <span class="hljs-comment">//存放变量</span><br>    <span class="hljs-keyword">int</span> a;<br>    <span class="hljs-comment">//存放函数</span><br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">foo</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="命名空间的使用"><a href="#命名空间的使用" class="headerlink" title="命名空间的使用"></a>命名空间的使用</h2><p>使用命名空间有三种方法：</p>
+<ol>
+<li><p><mark>暴力导入</mark>。一次性全部释放出命名空间中的所有成员：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> Mynamespace; <br></code></pre></td></tr></table></figure>
+<p>这样确实省力，但是全部释放后这个命名空间就相当于不存在了，没有起到命名空间的作用。所以，<emp>这种方法一定要慎用！！！</emp></p>
+</li>
+<li><p><mark>一个个导入</mark>。事先想好自己要用到这个命名空间中的哪些成员，把他们单独释放出来：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">//释放出命名空间中的a变量</span><br><span class="hljs-keyword">using</span> Mynamespace::a;<br></code></pre></td></tr></table></figure>
+<p>这要求我们提前想好要使用命名空间的哪些成员(当然也可以用到时加，但是程序会显得很乱)。这种方法<wavy>适用于使用比较频繁的成员</wavy>。</p>
+</li>
+<li><p><mark>使用命名空间名称和作用域限制符</mark>。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">std::cout&lt;&lt;<span class="hljs-string">&quot;Hello,World!&quot;</span>&lt;&lt;std::endl;<br></code></pre></td></tr></table></figure>
+<p>这样就不需要使用<code>using</code>了，同时也是最安全的一种做法。缺点是比较繁琐，<wavy>适用于使用不是那么频繁的成员</wavy>。</p>
+</li>
+</ol>
+<div class="note info flat"><p>前两种方法相当于事先将命名空间里面的成员拿出来；第三种相当于要用的时候去对应命名空间取，用完再放回去。</p>
+</div>
+<h1 id="输入和输出"><a href="#输入和输出" class="headerlink" title="输入和输出"></a>输入和输出</h1><h2 id="为什么叫cin和cout"><a href="#为什么叫cin和cout" class="headerlink" title="为什么叫cin和cout"></a>为什么叫cin和cout</h2><p>想必这个问题会困扰初学者许久。也许你会认为因为是C++，所以在前面加了个C。但是，实际上并不是这样。</p>
+<ul>
+<li><p><code>cin</code>是<code>clavier input</code>的缩写，即键盘输入。表示程序接收来自键盘的输入。</p>
+</li>
+<li><p><code>cout</code>是<code>console output</code>的缩写，即控制台输出。表示将值输出到控制台（命令行）。</p>
+</li>
+<li><p><code>endl</code>是<code>end line</code>的缩写，即换行，它的作用同转义字符<code>\n</code>一样。</p>
+<blockquote>
+<psw>没用的知识增加了……</psw>
+</blockquote>
+</li>
+</ul>
+<h2 id="cout"><a href="#cout" class="headerlink" title="cout"></a>cout</h2><p><code>cout</code>支持<emp>连续输出</emp>和<emp>自动类型推断</emp>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">int</span> a=<span class="hljs-number">1</span>;<br>cout&lt;&lt;<span class="hljs-string">&quot;Hello,World!&quot;</span>&lt;&lt;endl&lt;&lt;<span class="hljs-string">&quot;换行后继续输出&quot;</span>&lt;&lt;<span class="hljs-string">&#x27;\n&#x27;</span>&lt;&lt;<span class="hljs-string">&quot;再次换行后继续输出&quot;</span>&lt;&lt;a;<br></code></pre></td></tr></table></figure>
+<p>这里的<code>endl</code>和<code>\n</code>等价。</p>
+<div class="note warning modern"><p>但是，cout不能控制输出的格式。比如，对于一个int型，不能指定以八进制或十六进制输出，这时我们应该使用标准化输出函数<code>printf</code>。</p>
+</div>
+<div class="tip info"><p>cout之所以支持自动类型推断，是因为对<code>&lt;&lt;</code>进行了运算符重载。</p>
+</div>
+<h2 id="cin"><a href="#cin" class="headerlink" title="cin"></a>cin</h2><p><code>cin</code>支持连续输入。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">int</span> a;<br><span class="hljs-keyword">char</span> b;<br><span class="hljs-comment">//连续输入a和b</span><br>cin&gt;&gt;a&gt;&gt;b;<br></code></pre></td></tr></table></figure>
+<p>但是，<code>cin</code>不能指定以什么样的方式输入（空格，不空格，换行……），这时我们应该使用<code>scanf</code>。</p>
+<div class="note warning modern"><p>据我的测试，cin使用空格和换行分隔都是可以的，但是不能使用逗号分隔！所以需要用逗号作为分隔符或指定输入方式的就要用<code>scanf</code></p>
+</div>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p><code>scanf</code> 与 <code>printf</code> 其实是 C 语言提供的函数。大多数情况下，它们的速度比 <code>cin</code> 和 <code>cout</code> 更快，并且能够<mark>方便地控制输入输出格式</mark>。与之相比，<code>cin</code>和<code>cout</code>的使用更加灵活。它不需要我们去说明输出的格式，可以自己推导，并且能够<mark>连续输入和输出</mark>。</p>
+<p>读者不妨用下面的代码进行一个简单的测试：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;time.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-keyword">clock_t</span> start=<span class="hljs-built_in">clock</span>();<br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">100000</span>;i++)<br>        <span class="hljs-comment">//测试cout的速度</span><br>        cout&lt;&lt;i;<br>    	<span class="hljs-comment">//测试printf的速度</span><br>    	<span class="hljs-comment">//printf(&quot;%d&quot;,i);</span><br>    <span class="hljs-keyword">clock_t</span> stop=<span class="hljs-built_in">clock</span>();<br>    cout&lt;&lt;<span class="hljs-string">&#x27;\n&#x27;</span>&lt;&lt;stop-start;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>实际使用中，对于应该使用<code>scanf</code> , <code>printf</code> 还是<code>cin</code>和<code>cout</code>，需要我们根据自己的需求进行选择。</p>
+<hr>
+<div class="note warning modern"><p>上面的结果对电脑性能依赖较大。而且有时候因为编译器的优化，<code>cin</code>和<code>cout</code>甚至会快过<code>scanf</code>和<code>printf</code>！所以我们还不能一概而论。</p>
+</div>
+<p>除此此外，OI可能会涉及到一些<emp>卡常</emp>的技巧。为了使程序运行得更快，很多大佬都推荐使用<code>cin</code>和<code>cout</code>。<psw>我在OI Wiki问过，大佬们给我的是这个答复。</psw></p>
+<div class="tag link"><a class="link-card" title="OI Wiki" target="_blank" rel="noopener" href="https://oi-wiki.org/lang/basic/"><div class="left"><img src="https://oi-wiki.org/favicon.ico"></div><div class="right"><p class="text">OI Wiki</p><p class="url">https://oi-wiki.org/lang/basic/</p></div></a></div>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><ol>
+<li><p><strong>什么是<code>std</code>？</strong></p>
+<p><code>std</code>是 C++ 标准库所使用的 <strong>命名空间</strong>。<code>cin</code>和<code>cout</code>都放在命名空间<code>std</code>里面。</p>
+</li>
+<li><p><strong>为什么头文件没有<code>.h</code>？</strong></p>
+<p>C++引入命名空间以后，为了区分以前全局空间的头文件，所以用同名不带<code>.h</code>的方式对它们加以区别。而最前面加c表示来源于C语言。如：</p>
+<details class="folding-tag" green><summary> 查看例子 </summary>
+              <div class="content">
+              <ul><li><code>iostream.h</code>-&gt;<code>iostream</code></li><li><code>string.h</code>-&gt;<code>cstring</code></li><li><code>math.h</code>-&gt;<code>cmath</code></li></ul>
+              </div>
+            </details>
+</li>
+</ol>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/c/">c++</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/01/07/math1/"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/math/cover1.png" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">1.1 函数</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">什么都有</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><img src="https://cloud.fullcomb.top/private/source/image/3.png" width=230px></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-number">2.</span> <span class="toc-text">命名空间</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%83%85%E6%99%AF"><span class="toc-number">2.1.</span> <span class="toc-text">情景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">命名空间的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.3.</span> <span class="toc-text">命名空间的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">2.4.</span> <span class="toc-text">命名空间的使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA"><span class="toc-number">3.</span> <span class="toc-text">输入和输出</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%ABcin%E5%92%8Ccout"><span class="toc-number">3.1.</span> <span class="toc-text">为什么叫cin和cout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cout"><span class="toc-number">3.2.</span> <span class="toc-text">cout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cin"><span class="toc-number">3.3.</span> <span class="toc-text">cin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-number">3.4.</span> <span class="toc-text">说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">4.</span> <span class="toc-text">最后</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/01/10/cpp1.1/" title="1.1命名空间与IO"><img src="https://cloud.fullcomb.top/private/source/image/cpp/cover1.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="1.1命名空间与IO"/></a><div class="content"><a class="title" href="/2022/01/10/cpp1.1/" title="1.1命名空间与IO">1.1命名空间与IO</a><time datetime="2022-01-10T05:09:52.983Z" title="发表于 2022-01-10 13:09:52">2022-01-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/07/math1/" title="1.1 函数"><img src="https://cloud.fullcomb.top/private/source/image/math/cover1.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="1.1 函数"/></a><div class="content"><a class="title" href="/2022/01/07/math1/" title="1.1 函数">1.1 函数</a><time datetime="2022-01-07T07:58:12.162Z" title="发表于 2022-01-07 15:58:12">2022-01-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/07/%E5%8D%A0%E4%BD%8D/" title="【Minecraft入门攻略】day1"><img src="https://cloud.fullcomb.top/private/source/image/6.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="【Minecraft入门攻略】day1"/></a><div class="content"><a class="title" href="/2022/01/07/%E5%8D%A0%E4%BD%8D/" title="【Minecraft入门攻略】day1">【Minecraft入门攻略】day1</a><time datetime="2022-01-07T07:51:26.132Z" title="发表于 2022-01-07 15:51:26">2022-01-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号-1</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css"></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Algolia</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script data-pjax defer src="https://cdn.jsdelivr.net/gh/tzy13755126023/tzy13755126023.github.io/js/chocolate.js"></script><script async src="/js/cursor.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/artitalk"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-github-calendar-api.vercel.app/api?Satoing";
+            var git_color =['#ebedf0', '#fdbfd1', '#fc9ab6', '#fc84a6', '#fb7299', '#fa5483', '#fa4478', '#f8084d', '#b30537', '#9e0430', '#710322'];
+            var git_user ="Satoing";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html>
