@@ -13,6 +13,7 @@ p.img {
   src: url("https://akilar.top/fontsdest/ZhuZiAWan.ttf") format('truetype');
   font-display: fallback;
 }
+.gt-comments p,
 a,
 i,
 h1,
@@ -26,6 +27,9 @@ h1,
 }
 .toc li {
   font-size: 13px;
+}
+.gt-comments p {
+  font-size: 16px;
 }
 .post-meta-label,
 .post-meta-date,
