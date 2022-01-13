@@ -11,7 +11,7 @@ p.img {
 @font-face {
   font-family: 'tzy';
   src: url("https://akilar.top/fontsdest/ZhuZiAWan.ttf") format('truetype');
-  font-display: fallback;
+  font-display: swap;
 }
 .gt-comments p,
 a,
