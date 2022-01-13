@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.fullcomb.top/post/6afc6ab5</loc>
+    <loc>http://blog.fullcomb.top/post/6afc6ab5.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/5c28d1d9</loc>
+    <loc>http://blog.fullcomb.top/post/5c28d1d9.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/968a1ec4</loc>
+    <loc>http://blog.fullcomb.top/post/968a1ec4.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/90305579</loc>
+    <loc>http://blog.fullcomb.top/post/90305579.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -38,7 +38,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/34926073</loc>
+    <loc>http://blog.fullcomb.top/post/34926073.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -47,7 +47,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/683da30b</loc>
+    <loc>http://blog.fullcomb.top/post/683da30b.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -56,7 +56,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/4a17b156</loc>
+    <loc>http://blog.fullcomb.top/post/4a17b156.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/ebfb97d0</loc>
+    <loc>http://blog.fullcomb.top/post/ebfb97d0.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -74,7 +74,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/6881dc2b</loc>
+    <loc>http://blog.fullcomb.top/post/6881dc2b.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/b1db5868</loc>
+    <loc>http://blog.fullcomb.top/post/b1db5868.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/fb67e8be</loc>
+    <loc>http://blog.fullcomb.top/post/fb67e8be.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/10d6f836</loc>
+    <loc>http://blog.fullcomb.top/post/10d6f836.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -110,7 +110,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/858a796f</loc>
+    <loc>http://blog.fullcomb.top/post/858a796f.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -119,7 +119,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/fb935c76</loc>
+    <loc>http://blog.fullcomb.top/post/fb935c76.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -128,7 +128,7 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/post/5dd6d766</loc>
+    <loc>http://blog.fullcomb.top/post/5dd6d766.html</loc>
     
     <lastmod>2022-01-13</lastmod>
     
@@ -244,6 +244,13 @@
   </url>
   
   <url>
+    <loc>http://blog.fullcomb.top/tags/git/</loc>
+    <lastmod>2022-01-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.fullcomb.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/</loc>
     <lastmod>2022-01-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -252,13 +259,6 @@
   
   <url>
     <loc>http://blog.fullcomb.top/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</loc>
-    <lastmod>2022-01-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.fullcomb.top/tags/git/</loc>
     <lastmod>2022-01-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
