@@ -1,10 +1,1 @@
-http://blog.fullcomb.top/2022/01/12/cpp1.3/
-http://blog.fullcomb.top/2022/01/11/u1d1/
-http://blog.fullcomb.top/2022/01/10/cpp1.2/
-http://blog.fullcomb.top/2022/01/10/cpp1.1/
-http://blog.fullcomb.top/2022/01/07/math1/
-http://blog.fullcomb.top/2022/01/07/minecraft1/
-http://blog.fullcomb.top/2021/12/24/LOOPERS/
-http://blog.fullcomb.top/2021/10/18/compilation/
-http://blog.fullcomb.top/2021/10/16/reverse/
-http://blog.fullcomb.top/2021/10/15/github1/
+http://blog.fullcomb.top/post/b1db5868
