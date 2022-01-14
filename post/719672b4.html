@@ -1,0 +1,459 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>计算机图形学复习笔记 | Smile Diary</title><meta name="keywords" content="计算机图形学"><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PS：本篇由我在临近期末时做的笔记改编而来。其实就只是改了一些错误，增加了期末考试自己没有复习到的知识点(悲)，最后边嗑瓜子边打了一遍。毕竟复习笔记重点还算分明，故记之，做查阅用。  计算机图形学中的基本概念简述研究内容 答案                               计算机图形学的主要研究内容有建模 、渲染 、动画 。Modeling :创建3D几何对象的模型，即三维物体模型的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机图形学复习笔记">
+<meta property="og:url" content="http://blog.fullcomb.top/post/719672b4.html">
+<meta property="og:site_name" content="Smile Diary">
+<meta property="og:description" content="PS：本篇由我在临近期末时做的笔记改编而来。其实就只是改了一些错误，增加了期末考试自己没有复习到的知识点(悲)，最后边嗑瓜子边打了一遍。毕竟复习笔记重点还算分明，故记之，做查阅用。  计算机图形学中的基本概念简述研究内容 答案                               计算机图形学的主要研究内容有建模 、渲染 、动画 。Modeling :创建3D几何对象的模型，即三维物体模型的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/cg/cover.jpg">
+<meta property="article:published_time" content="2022-01-14T02:05:25.091Z">
+<meta property="article:modified_time" content="2022-01-14T09:01:04.627Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="计算机图形学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/cg/cover.jpg"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/favicon.ico"><link rel="canonical" href="http://blog.fullcomb.top/post/719672b4"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"XTWLHTK1ZD","apiKey":"e6cc69448bbfd9e64b0607efa3947f95","indexName":"sato","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机图形学复习笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-14 17:01:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-camera"></i><span> 生活札记</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/minecraft/"><i class="fa-fw fas fa-cubes"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/food/"><i class="fa-fw fas fa-hamburger"></i><span> 小食</span></a></li><li><a class="site-page child" href="/book/"><i class="fa-fw fas fa-book-open"></i><span> 文学</span></a></li><li><a class="site-page child" href="/film/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-heart"></i><span> 动态</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/cg/cover.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Smile Diary</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-camera"></i><span> 生活札记</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/minecraft/"><i class="fa-fw fas fa-cubes"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/food/"><i class="fa-fw fas fa-hamburger"></i><span> 小食</span></a></li><li><a class="site-page child" href="/book/"><i class="fa-fw fas fa-book-open"></i><span> 文学</span></a></li><li><a class="site-page child" href="/film/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-heart"></i><span> 动态</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机图形学复习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-14T02:05:25.091Z" title="发表于 2022-01-14 10:05:25">2022-01-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-14T09:01:04.627Z" title="更新于 2022-01-14 17:01:04">2022-01-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/">游戏与3D</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/OpenGL/">OpenGL</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div class="tip "><p>PS：本篇由我在临近期末时做的笔记改编而来。<psw>其实就只是改了一些错误，增加了期末考试自己没有复习到的知识点(悲)，最后边嗑瓜子边打了一遍</psw>。毕竟复习笔记重点还算分明，故记之，做查阅用。</p>
+</div>
+<h2 id="计算机图形学中的基本概念"><a href="#计算机图形学中的基本概念" class="headerlink" title="计算机图形学中的基本概念"></a>计算机图形学中的基本概念</h2><h3 id="简述研究内容"><a href="#简述研究内容" class="headerlink" title="简述研究内容"></a>简述研究内容</h3><details class="folding-tag" red><summary> 答案 </summary>
+              <div class="content">
+              <p>计算机图形学的主要研究内容有<mark class="hl-label blue">建模</mark> 、<mark class="hl-label pink">渲染</mark> 、<mark class="hl-label green">动画</mark> 。</p><ol><li><mark class="hl-label blue">Modeling</mark> :创建3D几何对象的模型，即三维物体模型的计算机表示。</li><li><mark class="hl-label pink">Rendering</mark> :从3D模型生成2D图像。</li><li><mark class="hl-label green">Animation</mark> :描述对象的运动。</li></ol>
+              </div>
+            </details>
+<h3 id="图形与图像的区别"><a href="#图形与图像的区别" class="headerlink" title="图形与图像的区别"></a>图形与图像的区别</h3><div class="tabs" id="-1"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#-1-1">图像</button></li><li class="tab"><button type="button" data-href="#-1-2">图形</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="-1-1"><p><mark class="hl-label default">图像(image)</mark> 是人为用外部设备捕捉到的具有视觉效果的画面，是位图。计算机存储图像中<emp>每个像素点的位置、颜色、灰度等信息</emp>，所占内存较大。</p>
+<p>常见的图像格式有jpg、JEPG、png、BMP等。</p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-1-2"><p><mark class="hl-label default">图形(graph)</mark> 强调的是<emp>场景的几何表示</emp>，通过<emp>方程等数学形式</emp>对物体进行描述，是矢量图。它所占内存较小。</p>
+<p>常见的图形格式有SVG等。</p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<hr>
+<h2 id="图形系统"><a href="#图形系统" class="headerlink" title="图形系统"></a>图形系统</h2><h3 id="图形系统的组织与功能"><a href="#图形系统的组织与功能" class="headerlink" title="图形系统的组织与功能"></a>图形系统的组织与功能</h3><p><img src="https://cloud.fullcomb.top/private/source/image/cg/1.jpg" alt></p>
+<blockquote>
+<p>左边的是软件，右边的是硬件。</p>
+</blockquote>
+<h3 id="图形软件包"><a href="#图形软件包" class="headerlink" title="图形软件包"></a>图形软件包</h3><div class="note red modern"><p>图形软件包分为<mark class="hl-label red">专用图形软件包</mark> 和<mark class="hl-label red">通用编程软件包</mark> 。</p>
+<ol>
+<li>专用图形软件包是为非程序员设计,其接口通常是一组菜单，如CAD(<psw>不是C4D……考试写错了</psw>)。</li>
+<li>通用编程软件包提供一个可用于高级程序设计语言的图形函数库作为<emp>计算机图形应用编程接口</emp>，如GL、OpenGL等。</li>
+</ol>
+</div>
+<h3 id="显示器-刷新式CRT"><a href="#显示器-刷新式CRT" class="headerlink" title="显示器:刷新式CRT"></a>显示器:刷新式CRT</h3><details class="folding-tag" blue><summary> 结构 </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/cg/2.jpg" alt></p>
+              </div>
+            </details>
+<ol>
+<li><p><emp>发光原理</emp>：电子轰击荧光屏上的荧光物质，使其发生能级跃迁，从而发出荧光。</p>
+</li>
+<li><p><emp>荧光屏的特性</emp>包括荧光质的颜色和余晖。</p>
+</li>
+<li><p><emp>余晖</emp>是指荧光质<span class="p blue">从最大亮度衰减到最大亮度的10%的这段时间</span>，通常为10~60ms。</p>
+</li>
+<li><emp>光点</emp>是显示器能够显示的最小发光点。<span class="p blue">它的物理直径定义为光点亮度下降到最大亮度60%处的直径。</span>
+<blockquote>
+<p>当两个光点的距离大于物理直径时，两个光点是可区分的。</p>
+</blockquote>
+</li>
+<li><emp>屏幕分辨率</emp>是指CRT上<span class="p blue">无重叠显示的最大光点数</span>。
+
+<div class="note warning modern"><p>区别屏幕分辨率和显示分别率！前者是指显示屏，后者是指图像，下面会讲。我们一般指的分辨率是显示分辨率，屏幕分辨率相对不是那么重要。</p>
+</div>
+</li>
+<li><emp>显示器的扫描方式</emp>分为逐行扫描和隔行扫描。下面观察逐行扫描和隔行扫描的方式。
+
+<div class="tabs" id="-1"><ul class="nav-tabs"><li class="tab"><button type="button" data-href="#-1-1">逐行扫描</button></li><li class="tab"><button type="button" data-href="#-1-2">隔行扫描</button></li><li class="tab"><button type="button" data-href="#-1-3">结论</button></li></ul><div class="tab-contents"><div class="tab-item-content" id="-1-1"><p><img src="https://cloud.fullcomb.top/private/source/image/cg/3.png" alt></p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-1-2"><p><img src="https://cloud.fullcomb.top/private/source/image/cg/4.jpg" alt></p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="-1-3"><ul>
+<li>逐行扫描一帧包含多次从左至右的扫描、水平回扫以及一次垂直回扫。</li>
+<li>隔行扫描一帧分为两场，分别扫描奇数行和偶数行，两场之间用垂直回扫连接。</li>
+</ul><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+</li>
+</ol>
+<hr>
+<h2 id="图形的信息"><a href="#图形的信息" class="headerlink" title="图形的信息"></a>图形的信息</h2><h3 id="图形信息的存储"><a href="#图形信息的存储" class="headerlink" title="图形信息的存储"></a>图形信息的存储</h3><div class="tip warning"><p>一幅图片可以看作是像素的集合。像素是当前<emp>显示分辨率</emp>所能提供的最小点。图形的信息就储存在像素中。</p>
+</div>
+<ol>
+<li><p><mark class="hl-label pink">显示分辨率</mark> 就是水平和垂直两个方向上像素数量的乘积，如720p<script type="math/tex">\times</script>​​​​480p。</p>
+</li>
+<li><p>像素的信息，即<mark class="hl-label blue">强度值</mark> 被储存在帧缓冲区中。</p>
+</li>
+<li><p><mark class="hl-label green">色深</mark> 即像素信息的长度,以bit为单位。最少为1b,显示为黑白。若能显示16色,即$2^4$​,则色深为4b。</p>
+<blockquote>
+<p>强度和色深差不多是一个意思。只是强度指的是图像的信息，而色深则指信息的位数。</p>
+</blockquote>
+</li>
+<li><p>常考的计算：<mark class="hl-label red">帧缓冲区容量=显示分辨率$\times$​色深</mark> 。</p>
+</li>
+</ol>
+<h3 id="颜色和灰度"><a href="#颜色和灰度" class="headerlink" title="颜色和灰度"></a>颜色和灰度</h3><div class="note pink modern"><p>对于颜色，我们要分清两点：<emp>使用的颜色数</emp>和<emp>所存储的颜色数量</emp>。使用的颜色是指在该时刻用户使用的颜色，它小于等于存储的颜色数；存储的颜色数就是所能使用的颜色的最大数量。</p>
+</div>
+<ol>
+<li><p>颜色的<emp>直接存储</emp>：直接在帧缓冲区中存储颜色信息。</p>
+<div class="note pink flat"><p>如：要储存$2^{24}$种颜色，那么帧缓冲区的一个像素的色深为24b。</p>
+</div>
+</li>
+<li><p>颜色的<emp>查找表存储</emp>：帧缓冲区存储颜色查找表的索引值。索引值的位数代表了<mark class="hl-label pink">同一时刻能</mark> 够使用的最大颜色数；颜色查找表的位数代表了<mark class="hl-label pink">总共</mark> 可以使用的最大颜色数。</p>
+<div class="note pink flat"><p>如：每像素20位的帧缓存和每像素24位的颜色查找表的RGB光栅系统，总共可以显示$2^{24}$种颜色，在任意时刻可以同时显示$2^{20}$种颜色。</p>
+</div>
+</li>
+<li><p>灰度：当RGB三个分量相等时，颜色为某种程度的灰色。一个灰色对应一个<mark class="hl-label pink">灰度等级</mark> 。</p>
+</li>
+</ol>
+<hr>
+<h2 id="观察流水线"><a href="#观察流水线" class="headerlink" title="观察流水线"></a>观察流水线</h2><p><img src="https://cloud.fullcomb.top/private/source/image/cg/5.jpg" alt></p>
+<hr>
+<h2 id="点的绘制"><a href="#点的绘制" class="headerlink" title="点的绘制"></a>点的绘制</h2><p>原理：根据点的坐标$(x,y)$​​​​，对帧缓冲区相应存储单元的内容进行操作以画点。</p>
+<div class="note red modern"><p><span class="p center small">寻址</span></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/cg/6.png" alt></p>
+<p>寻址公式为<script type="math/tex">addr(x,y)=addr(0,0)+[y_0\times(x_{max}+1+x_0)\times\color_depth]</script></p>
+</div>
+<hr>
+<h2 id="直线的绘制"><a href="#直线的绘制" class="headerlink" title="直线的绘制"></a>直线的绘制</h2><div class="tip "><p>直线绘制的基本原理是获得直线上的各像素点，然后再对各点进行绘制。所以直线绘制的重点是<span class="p yellow">高效得获得直线上的像素点的坐标</span>。<psw>绘制的其实是线段……</psw></p>
+</div>
+<h3 id="DDA算法"><a href="#DDA算法" class="headerlink" title="DDA算法"></a>DDA算法</h3><blockquote>
+<p>思想：在一个坐标轴上以单位间隔取样，另一个坐标轴以m或$\frac{1}{m}$变化，从而获得线段上的各像素点。</p>
+</blockquote>
+<p><img src="https://cloud.fullcomb.top/private/source/image/cg/7.png" alt></p>
+<blockquote>
+<p>缺点：取整和浮点运算比较耗时，且较长线段会产生误差累积。</p>
+</blockquote>
+<h3 id="Bresenham画线s算法"><a href="#Bresenham画线s算法" class="headerlink" title="Bresenham画线s算法"></a>Bresenham画线s算法</h3><div class="tip "><p>我们重点关注使用Bresenham算法的计算流程。具体公式是怎么推出的见教材。</p>
+</div>
+<p><img src="https://cloud.fullcomb.top/private/source/image/cg/8.jpg" alt></p>
+<p>同理可知，当$m&gt;1$​时，计算流程为：</p>
+<details class="folding-tag" cyan><summary> 先想想再打开 </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/cg/9.png" alt></p>
+              </div>
+            </details>
+<p>而当斜率小于0时可以先用对称性把斜率转化为大于0。所以只研究斜率大于0的情况不失一般性。</p>
+<h3 id="中点画线算法"><a href="#中点画线算法" class="headerlink" title="中点画线算法"></a>中点画线算法</h3><hr>
+<h2 id="圆的生成"><a href="#圆的生成" class="headerlink" title="圆的生成"></a>圆的生成</h2><h3 id="中点画圆算法"><a href="#中点画圆算法" class="headerlink" title="中点画圆算法"></a>中点画圆算法</h3><h3 id="Bresenham画圆算法"><a href="#Bresenham画圆算法" class="headerlink" title="Bresenham画圆算法"></a>Bresenham画圆算法</h3><hr>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">计算机图形学</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/704c85b6.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/cpp/cover2.jpg" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">1.4宏与内联函数</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">书我所想</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><img src="https://cloud.fullcomb.top/private/source/image/3.png" width=230px></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">计算机图形学中的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0%E7%A0%94%E7%A9%B6%E5%86%85%E5%AE%B9"><span class="toc-number">1.1.</span> <span class="toc-text">简述研究内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%BD%A2%E4%B8%8E%E5%9B%BE%E5%83%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">图形与图像的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">图形系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%BD%A2%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E7%BB%87%E4%B8%8E%E5%8A%9F%E8%83%BD"><span class="toc-number">2.1.</span> <span class="toc-text">图形系统的组织与功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%BD%A2%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">2.2.</span> <span class="toc-text">图形软件包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E5%99%A8-%E5%88%B7%E6%96%B0%E5%BC%8FCRT"><span class="toc-number">2.3.</span> <span class="toc-text">显示器:刷新式CRT</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%BD%A2%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="toc-number">3.</span> <span class="toc-text">图形的信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%BD%A2%E4%BF%A1%E6%81%AF%E7%9A%84%E5%AD%98%E5%82%A8"><span class="toc-number">3.1.</span> <span class="toc-text">图形信息的存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%9C%E8%89%B2%E5%92%8C%E7%81%B0%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">颜色和灰度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="toc-number">4.</span> <span class="toc-text">观察流水线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E7%9A%84%E7%BB%98%E5%88%B6"><span class="toc-number">5.</span> <span class="toc-text">点的绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E7%BA%BF%E7%9A%84%E7%BB%98%E5%88%B6"><span class="toc-number">6.</span> <span class="toc-text">直线的绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DDA%E7%AE%97%E6%B3%95"><span class="toc-number">6.1.</span> <span class="toc-text">DDA算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bresenham%E7%94%BB%E7%BA%BFs%E7%AE%97%E6%B3%95"><span class="toc-number">6.2.</span> <span class="toc-text">Bresenham画线s算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E7%82%B9%E7%94%BB%E7%BA%BF%E7%AE%97%E6%B3%95"><span class="toc-number">6.3.</span> <span class="toc-text">中点画线算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%86%E7%9A%84%E7%94%9F%E6%88%90"><span class="toc-number">7.</span> <span class="toc-text">圆的生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E7%82%B9%E7%94%BB%E5%9C%86%E7%AE%97%E6%B3%95"><span class="toc-number">7.1.</span> <span class="toc-text">中点画圆算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bresenham%E7%94%BB%E5%9C%86%E7%AE%97%E6%B3%95"><span class="toc-number">7.2.</span> <span class="toc-text">Bresenham画圆算法</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/719672b4.html" title="计算机图形学复习笔记"><img src="https://cloud.fullcomb.top/private/source/image/cg/cover.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="计算机图形学复习笔记"/></a><div class="content"><a class="title" href="/post/719672b4.html" title="计算机图形学复习笔记">计算机图形学复习笔记</a><time datetime="2022-01-14T02:05:25.091Z" title="发表于 2022-01-14 10:05:25">2022-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/704c85b6.html" title="1.4宏与内联函数"><img src="https://cloud.fullcomb.top/private/source/image/cpp/cover2.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="1.4宏与内联函数"/></a><div class="content"><a class="title" href="/post/704c85b6.html" title="1.4宏与内联函数">1.4宏与内联函数</a><time datetime="2022-01-13T08:30:19.828Z" title="发表于 2022-01-13 16:30:19">2022-01-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b1db5868.html" title="1.3引用、指针与nullptr"><img src="https://cloud.fullcomb.top/private/source/image/cpp/cover2.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="1.3引用、指针与nullptr"/></a><div class="content"><a class="title" href="/post/b1db5868.html" title="1.3引用、指针与nullptr">1.3引用、指针与nullptr</a><time datetime="2022-01-11T16:38:14.282Z" title="发表于 2022-01-12 00:38:14">2022-01-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号-1</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css"></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Algolia</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: '2f501b576d043aad66b095ddf0377f96',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/artitalk"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-github-calendar-api.vercel.app/api?Satoing";
+            var git_color =['#ebedf0', '#fdbfd1', '#fc9ab6', '#fc84a6', '#fb7299', '#fa5483', '#fa4478', '#f8084d', '#b30537', '#9e0430', '#710322'];
+            var git_user ="Satoing";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html>
