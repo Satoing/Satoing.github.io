@@ -9,8 +9,8 @@ p.img {
   cursor: url("https://satoing.gitee.io/source/pointer/3.cur"), pointer;
 }
 @font-face {
-  font-family: 'tmr';
-  src: url("/font/HYTangMeiRen55W.woff2");
+  font-family: 'tzy';
+  src: url("/font/ZhuZiAWan.ttf") format('truetype');
   font-display: swap;
 }
 .gt-comments p,
@@ -22,7 +22,7 @@ h1,
 .announcement_content,
 .code-lang {
   font-size: 21px;
-  font-family: "tmr";
+  font-family: "tzy";
   font-display: swap;
 }
 .toc li {
@@ -1505,7 +1505,7 @@ body {
   background: var(--global-bg);
   color: var(--font-color);
   font-size: var(--global-font-size);
-  font-family: tmr;
+  font-family: tzy;
   line-height: 2;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
