@@ -10,7 +10,7 @@ p.img {
 }
 @font-face {
   font-family: 'tzy';
-  src: url("https://akilar.top/fontsdest/ZhuZiAWan.ttf") format('truetype');
+  src: url("/font/ZhuZiAWan.ttf") format('truetype');
   font-display: swap;
 }
 .gt-comments p,
