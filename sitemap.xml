@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.fullcomb.top/post/9cbacfa0.html</loc>
+    
+    <lastmod>2022-01-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.fullcomb.top/post/f9101cf7.html</loc>
+    
+    <lastmod>2022-01-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.fullcomb.top/post/719672b4.html</loc>
     
     <lastmod>2022-01-16</lastmod>
@@ -252,14 +270,14 @@
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/tags/key/</loc>
+    <loc>http://blog.fullcomb.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/</loc>
     <lastmod>2022-01-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/</loc>
+    <loc>http://blog.fullcomb.top/tags/key/</loc>
     <lastmod>2022-01-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -321,17 +339,24 @@
     <priority>0.2</priority>
   </url>
   
-
-  
   <url>
-    <loc>http://blog.fullcomb.top/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/</loc>
+    <loc>http://blog.fullcomb.top/tags/%E6%96%87%E5%AD%A6/</loc>
     <lastmod>2022-01-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://blog.fullcomb.top/categories/galgame/</loc>
+    <loc>http://blog.fullcomb.top/tags/%E6%8C%AA%E5%A8%81%E7%9A%84%E6%A3%AE%E6%9E%97/</loc>
+    <lastmod>2022-01-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>http://blog.fullcomb.top/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/</loc>
     <lastmod>2022-01-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -346,6 +371,13 @@
   
   <url>
     <loc>http://blog.fullcomb.top/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/C/</loc>
+    <lastmod>2022-01-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.fullcomb.top/categories/galgame/</loc>
     <lastmod>2022-01-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
