@@ -1,0 +1,399 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>2.3构造函数和析构函数 | Smile Diary</title><meta name="keywords" content="C++程序设计"><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="引言上一节中我们举了这样一个例子： 123456789101112131415161718#include &lt;iostream&gt;class MyClass&amp;#123;public:    int _a;    char _b;    int add()&amp;#123;        return (_a+_b);    &amp;#125;&amp;#125;;int main()&amp;#123;    My">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.3构造函数和析构函数">
+<meta property="og:url" content="https://blog.fullcomb.top/post/83b4811f.html">
+<meta property="og:site_name" content="Smile Diary">
+<meta property="og:description" content="引言上一节中我们举了这样一个例子： 123456789101112131415161718#include &lt;iostream&gt;class MyClass&amp;#123;public:    int _a;    char _b;    int add()&amp;#123;        return (_a+_b);    &amp;#125;&amp;#125;;int main()&amp;#123;    My">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/cpp/cover4.jpg">
+<meta property="article:published_time" content="2022-01-18T06:33:03.762Z">
+<meta property="article:modified_time" content="2022-01-18T08:48:53.914Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="C++程序设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/cpp/cover4.jpg"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/favicon.ico"><link rel="canonical" href="https://blog.fullcomb.top/post/83b4811f"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"XTWLHTK1ZD","apiKey":"e6cc69448bbfd9e64b0607efa3947f95","indexName":"sato","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '2.3构造函数和析构函数',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-01-18 16:48:53'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-camera"></i><span> 生活札记</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/minecraft/"><i class="fa-fw fas fa-cubes"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/food/"><i class="fa-fw fas fa-hamburger"></i><span> 小食</span></a></li><li><a class="site-page child" href="/tags/%E6%96%87%E5%AD%A6/"><i class="fa-fw fas fa-book-open"></i><span> 文学</span></a></li><li><a class="site-page child" href="/film/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-heart"></i><span> 动态</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/cpp/cover4.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Smile Diary</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-camera"></i><span> 生活札记</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/minecraft/"><i class="fa-fw fas fa-cubes"></i><span> 游戏</span></a></li><li><a class="site-page child" href="/food/"><i class="fa-fw fas fa-hamburger"></i><span> 小食</span></a></li><li><a class="site-page child" href="/tags/%E6%96%87%E5%AD%A6/"><i class="fa-fw fas fa-book-open"></i><span> 文学</span></a></li><li><a class="site-page child" href="/film/"><i class="fa-fw fas fa-film"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-heart"></i><span> 动态</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">2.3构造函数和析构函数</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-18T06:33:03.762Z" title="发表于 2022-01-18 14:33:03">2022-01-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-18T08:48:53.914Z" title="更新于 2022-01-18 16:48:53">2022-01-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/">大二上</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/C/">C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>上一节中我们举了这样一个例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> _a;<br>    <span class="hljs-keyword">char</span> _b;<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">add</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> (_a+_b);<br>    &#125;<br>&#125;;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    MyClass m,n;<br>    m._a=<span class="hljs-number">1</span>;<br>    m._b=<span class="hljs-number">2</span>;<br>    n._a=<span class="hljs-number">3</span>;<br>    n._b=<span class="hljs-number">4</span>;<br>    std::cout&lt;&lt;m.<span class="hljs-built_in">add</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们是<mark class="hl-label pink">一个一个地将对象的成员进行初始化的</mark> 。<emp>这样不仅</emp><mark class="hl-label red">麻烦</mark> <emp>，而且使代码显得太长</emp>。</p>
+<p>或许我们可以<mark class="hl-label blue">在类中定义一个初始化的函数</mark> ：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ClassName</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">char</span> b)</span></span>&#123;<br>        _a=a;<br>        _b=b;<br>    &#125;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-keyword">int</span> _a;<br>    <span class="hljs-keyword">char</span> _b;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>然后我们再调用<code>init</code>函数就能将对象进行初始化。但这样不免还是有些<mark class="hl-label red">不智能</mark> 。</p>
+<p>我们更希望在<emp>实例化对象的同时赋予一些值，就能进行类的初始化</emp>，就像<code>int a=1</code>这样，而不需要再手动调用初始化函数进行赋值。</p>
+<div class="tip "><p>C++中，我们就要用到构造函数。</p>
+</div>
+<hr>
+<h1 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h1><h2 id="构造函数的定义"><a href="#构造函数的定义" class="headerlink" title="构造函数的定义"></a>构造函数的定义</h2><div class="note green modern"><p>构造函数是一个特殊的<mark class="hl-label green">成员函数</mark> ，名字和类名相同。实例化类时，在生成相应的对象时<mark class="hl-label green">编译器会自动调用该函数</mark> ，保证每个对象都有一个合适的初始值。它在对象的生命周期内<mark class="hl-label green">只调用一次</mark> 。</p>
+</div>
+<div class="note green simple"><p>我们要<mark class="hl-label red">注意</mark> 定义中的这几点：</p>
+<ol>
+<li>构造函数的函数名与类名相同。</li>
+<li>无返回值，所以不写返回值。</li>
+<li>编译器会在实例化时自动调用。</li>
+</ol>
+</div>
+<p>下面我们使用构造函数来简化上面例子中对象的初始化。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> _a;<br>    <span class="hljs-keyword">char</span> _b;<br>    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">add</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> (_a+_b);<br>    &#125;<br>    <span class="hljs-built_in">MyClass</span>(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">char</span> b)&#123;<br>        _a=a;<br>        _b=b;<br>    &#125;<br>&#125;;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-function">MyClass <span class="hljs-title">m</span><span class="hljs-params">(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>)</span>,<span class="hljs-title">n</span><span class="hljs-params">(<span class="hljs-number">3</span>,<span class="hljs-number">4</span>)</span></span>;<br>    std::cout&lt;&lt;m.<span class="hljs-built_in">add</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="note warning modern"><p>值得注意的是，构造函数必须是<mark class="hl-label pink">public成员</mark> ，不然编译器会报错！</p>
+</div>
+<blockquote>
+<p>当然，构造函数不仅可以进行成员变量的初始化。任何你想在实例化类时进行的操作都可以放在构造函数里面。</p>
+</blockquote>
+<h2 id="使用初始化列表"><a href="#使用初始化列表" class="headerlink" title="使用初始化列表"></a>使用初始化列表</h2><p>对类中的成员进行初始化，上面的构造函数还是有些不简洁。<emp>使用初始化列表将初始化类中的成员和其他操作分开，可以提高程序的简洁性和可读性</emp>。</p>
+<p>还是上面的例子，下面是使用初始化列表的构造函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">MyClass</span>(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">char</span> b):_a(a),_b(b)&#123;<span class="hljs-comment">/*其他操作*/</span>&#125;<br></code></pre></td></tr></table></figure>
+<p>这样构造函数看起来就很简洁。</p>
+<div class="tip warning"><p>使用初始化列表要注意初始化的顺序<mark class="hl-label pink">只和成员变量在类中声明的顺序有关</mark> ，和列表中变量的顺序无关，如下面的程序：</p>
+</div>
+<div class="note orange simple"><p><img src="https://cloud.fullcomb.top/private/source/image/cpp/2/9.jpg" alt></p>
+<p>上面的程序按理来说应该输出1，但是实际结果与预想的不同。</p>
+<details class="folding-tag" orange><summary> 先想想为什么 </summary>
+              <div class="content">
+              <p>由于<code>_a</code>在类中先声明，所以先被初始化的应该是<code>_a</code>。这时候将还没有初始化<code>_b</code>的值赋给<code>_a</code>，所以最后输出的就是初始化前<code>_b</code>的值，是一个随机的值。</p>
+              </div>
+            </details>
+</div>
+<h2 id="重载和缺省参数"><a href="#重载和缺省参数" class="headerlink" title="重载和缺省参数"></a>重载和缺省参数</h2><div class="tip "><p>构造函数是支持<mark>重载和缺省参数</mark>的，这使得它的用法更加灵活。</p>
+</div>
+<h3 id="构造函数的重载"><a href="#构造函数的重载" class="headerlink" title="构造函数的重载"></a>构造函数的重载</h3><p>我们可以定义多个构造函数，它们<emp>必须有不同的形参列表</emp>！</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> _a;<br>    <span class="hljs-keyword">char</span> _b;<br>    <span class="hljs-built_in">MyClass</span>(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">char</span> b):_a(a),_b(b)&#123;&#125;<br>    <span class="hljs-built_in">MyClass</span>(<span class="hljs-keyword">int</span> a):_a(a),_b(<span class="hljs-number">2</span>)&#123;&#125;<br>    <span class="hljs-built_in">MyClass</span>(<span class="hljs-keyword">char</span> b):_a(<span class="hljs-number">1</span>),_b(b)&#123;&#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>这样编译器会<emp>根据实参表来判断应该调用哪个构造函数</emp>。</p>
+<h3 id="构造函数缺省参数"><a href="#构造函数缺省参数" class="headerlink" title="构造函数缺省参数"></a>构造函数缺省参数</h3><p>我们也可以给某些形参一个<mark class="hl-label blue">默认值</mark> ：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/cpp/2/10.jpg" alt></p>
+<div class="tip success"><p>构造函数的重载和缺省参数与一般的函数一样，很容易理解，所以不再赘述。当两者都能达到目的时，一般情况下还是推荐使用重载，因为省略参数还对参数列表的顺序有要求。</p>
+</div>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li><p>如果我们没有定义构造函数，编译器会自动加上一个空的构造函数。<psw>然而没什么用。</psw></p>
+</li>
+<li><p>如果实例化类时，<mark class="hl-label pink">调用的构造函数的形参列表为空，那么就不能打括号！</mark> 如下：</p>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> _a;<span class="hljs-keyword">char</span> _b;<br>    <span class="hljs-built_in">MyClass</span>():_a(<span class="hljs-number">1</span>),_b(<span class="hljs-number">2</span>)&#123;&#125;<br>&#125;;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    MyClass m;<span class="hljs-comment">//MyClass m();</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>读者可以先想一想上面代码存在的问题。</p>
+<details class="folding-tag" blue><summary> 答案 </summary>
+              <div class="content">
+              <p><code>MyClass m()</code>似乎是一个合乎情理的写法，然而我们仔细观察一下，就会发现：<mark class="hl-label blue">这不就是函数声明吗！</mark> 是的，编译器会将该语句理解为一个作用域在main函数内的函数的声明，而不会将m识别为一个类类型的变量。当我们使用m时，编译器报错：<mark class="hl-label green">m具有非类类型。</mark> </p>
+              </div>
+            </details>
+<div class="tip success"><p>我们正确的做法应该不加括号！</p>
+</div>
+<hr>
+<h1 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h1><div class="tip "><p>同构造函数类似，析构函数在销毁对象时会被编译器自动调用。</p>
+</div>
+<h2 id="析构函数的定义"><a href="#析构函数的定义" class="headerlink" title="析构函数的定义"></a>析构函数的定义</h2><div class="note blue modern"><p>析构函数(destructor) 与构造函数相反，<mark class="hl-label pink">当对象被销毁时</mark> ，如对象所在的函数已调用完毕，系统就会自动执行析构函数。析构函数往往用来做<mark class="hl-label green">“清理善后”</mark> 的工作。</p>
+</div>
+<div class="tip warning"><p>但是注意析构函数不是用来销毁对象的，而是在对象的生命周期结束，对象被销毁的时候用来清理残余资源的。</p>
+</div>
+<div class="note orange simple"><p><strong>析构函数的特征如下</strong>：</p>
+<ol>
+<li>析构函数的函数名时类名前面加上<code>~</code>。</li>
+<li>无返回值。</li>
+<li>析构函数不能有参数！</li>
+<li>编译器在对象销毁时自动调用。</li>
+</ol>
+</div>
+<h2 id="析构函数的实例"><a href="#析构函数的实例" class="headerlink" title="析构函数的实例"></a>析构函数的实例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span>&#123;</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">int</span> _a;<span class="hljs-keyword">char</span> _b;<br>    <span class="hljs-built_in">MyClass</span>():_a(<span class="hljs-number">1</span>),_b(<span class="hljs-number">2</span>)&#123;&#125;<br>    ~<span class="hljs-built_in">MyClass</span>()&#123;std::cout&lt;&lt;<span class="hljs-string">&quot;调用了析构函数&quot;</span>;&#125;<br>&#125;;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    MyClass m;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<emp>程序结束时</emp>(即main函数结束，所有资源被释放)，输出<mark class="hl-label blue">调用了析构函数</mark> 。<br><br>
+
+这个例子<emp>可以体现对象销毁时自动调用析构函数</emp>，但还不能体现出清理资源这一点。
+
+<br>
+
+我们再看看下面的例子（以教材的实现string类为例）：
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstdlib&gt;</span></span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">String</span>&#123;</span><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-keyword">char</span>* _p;<br>    <span class="hljs-keyword">int</span> _size;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">String</span>(<span class="hljs-keyword">int</span> n);<br>    ~<span class="hljs-built_in">String</span>();<br>&#125;;<br>String::<span class="hljs-built_in">String</span>(<span class="hljs-keyword">int</span> n=<span class="hljs-number">5</span>):_size(n)&#123;<br>    std::cout&lt;&lt;<span class="hljs-string">&quot;调用了构造函数&quot;</span>&lt;&lt;<span class="hljs-string">&#x27;\n&#x27;</span>;<br>    _p = (<span class="hljs-keyword">char</span>*)<span class="hljs-built_in">malloc</span>(n*<span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-keyword">char</span>));<br>&#125;<br>String::~<span class="hljs-built_in">String</span>()&#123;<br>    std::cout&lt;&lt;<span class="hljs-string">&quot;调用了析构函数&quot;</span>&lt;&lt;<span class="hljs-string">&#x27;\n&#x27;</span>;<br>    <span class="hljs-built_in">free</span> (_p);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    String s;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs">调用了构造函数<br>调用了析构函数<br></code></pre></td></tr></table></figure>
+<p>这个例子就比较完善了。我们在实例化string类时，<emp>调用构造函数，为它分配了空间</emp>；string对象销毁时，<emp>自动调用析构函数清理分配的空间</emp>。</p>
+<h2 id="析构函数的意义"><a href="#析构函数的意义" class="headerlink" title="析构函数的意义"></a>析构函数的意义</h2><div class="tip "><p>析构函数的意义就是释放多余的空间。</p>
+</div>
+<p>我们给对象的成员动态分配了空间。<emp>即使这个对象被销毁，如果我们在之前没有手动释放这片空间的话，之前在堆上的分配空间仍然是存在的</emp>。但是指向它的指针已经被销毁，所以<emp>这片内存相当于悬空，成为内存垃圾</emp>。如果程序一直这样运行下去，内存垃圾越来越多，程序就会运行地越来越慢，最后可能会导致电脑死机。所以我们需要析构函数来帮我们自动化地解决这个问题。</p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>2.3构造函数和析构函数</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.fullcomb.top/post/83b4811f.html">https://blog.fullcomb.top/post/83b4811f.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Sato</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2022-01-18</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2022-01-18</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/">C++程序设计</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/9cbacfa0.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/cpp/cover3.jpg" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2.2类的存储模型和This指针</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">书我所想</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><img src="https://cloud.fullcomb.top/private/source/image/3.png" width=230px></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">构造函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.</span> <span class="toc-text">构造函数的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8"><span class="toc-number">2.2.</span> <span class="toc-text">使用初始化列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E5%92%8C%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0"><span class="toc-number">2.3.</span> <span class="toc-text">重载和缺省参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9A%84%E9%87%8D%E8%BD%BD"><span class="toc-number">2.3.1.</span> <span class="toc-text">构造函数的重载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0"><span class="toc-number">2.3.2.</span> <span class="toc-text">构造函数缺省参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.4.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">析构函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.</span> <span class="toc-text">析构函数的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E4%BE%8B"><span class="toc-number">3.2.</span> <span class="toc-text">析构函数的实例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-number">3.3.</span> <span class="toc-text">析构函数的意义</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/83b4811f.html" title="2.3构造函数和析构函数"><img src="https://cloud.fullcomb.top/private/source/image/cpp/cover4.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="2.3构造函数和析构函数"/></a><div class="content"><a class="title" href="/post/83b4811f.html" title="2.3构造函数和析构函数">2.3构造函数和析构函数</a><time datetime="2022-01-18T06:33:03.762Z" title="发表于 2022-01-18 14:33:03">2022-01-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/9cbacfa0.html" title="2.2类的存储模型和This指针"><img src="https://cloud.fullcomb.top/private/source/image/cpp/cover3.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="2.2类的存储模型和This指针"/></a><div class="content"><a class="title" href="/post/9cbacfa0.html" title="2.2类的存储模型和This指针">2.2类的存储模型和This指针</a><time datetime="2022-01-17T07:49:00.438Z" title="发表于 2022-01-17 15:49:00">2022-01-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/183dd111.html" title="2.1类与结构体与对象"><img src="https://cloud.fullcomb.top/private/source/image/cpp/cover3.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="2.1类与结构体与对象"/></a><div class="content"><a class="title" href="/post/183dd111.html" title="2.1类与结构体与对象">2.1类与结构体与对象</a><time datetime="2022-01-16T05:14:04.492Z" title="发表于 2022-01-16 13:14:04">2022-01-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号-1</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css"></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Algolia</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: '5b5acf38cdb9ca5a2152e3485b38d7b3',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://unpkg.zhimg.com/artitalk@3.2.2"></script><script defer src="https://unpkg.zhimg.com/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-github-calendar-api.vercel.app/api?Satoing";
+            var git_color =['#ebedf0', '#fdbfd1', '#fc9ab6', '#fc84a6', '#fb7299', '#fa5483', '#fa4478', '#f8084d', '#b30537', '#9e0430', '#710322'];
+            var git_user ="Satoing";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script defer src="https://unpkg.zhimg.com/jquery@latest/dist/jquery.min.js"></script><script defer src="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/issues.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html>
