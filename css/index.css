@@ -25,6 +25,12 @@ h1,
   font-family: "tzy";
   font-display: swap;
 }
+.aplayer-title,
+.aplayer-author,
+.aplayer-lrc-contents,
+.aplayer-time {
+  font-family: "tzy";
+}
 .toc li {
   font-size: 13px;
 }
