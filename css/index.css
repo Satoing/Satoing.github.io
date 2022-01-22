@@ -27,8 +27,7 @@ h1,
 }
 .aplayer-title,
 .aplayer-author,
-.aplayer-lrc-contents,
-.aplayer-time {
+.aplayer-lrc-contents {
   font-family: "tzy";
 }
 .toc li {
