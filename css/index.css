@@ -10,7 +10,7 @@ p.img {
 }
 @font-face {
   font-family: 'tzy';
-  src: url("https://cloud.fullcomb.top/private/source/fonts/ZhuZiAWan.ttf") format('truetype');
+  src: url("https://npm.elemecdn.com/satoing@1.0.0/ZhuZiAWan.ttf") format('truetype');
   font-display: swap;
 }
 .gt-comments p,
