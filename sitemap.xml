@@ -423,13 +423,6 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D/</loc>
-    <lastmod>2022-01-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.fullcomb.top/tags/Minecraft/</loc>
     <lastmod>2022-01-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -438,6 +431,13 @@
   
   <url>
     <loc>https://blog.fullcomb.top/tags/%E6%95%B0%E7%AB%9E/</loc>
+    <lastmod>2022-01-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.fullcomb.top/tags/%E8%8B%B1%E8%AF%AD%E5%8D%95%E8%AF%8D/</loc>
     <lastmod>2022-01-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
