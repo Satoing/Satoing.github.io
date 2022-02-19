@@ -454,6 +454,20 @@
   </url>
   
   <url>
+    <loc>https://blog.fullcomb.top/tags/%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98/</loc>
+    <lastmod>2022-02-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.fullcomb.top/tags/Plex/</loc>
+    <lastmod>2022-02-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.fullcomb.top/tags/LeetCode/</loc>
     <lastmod>2022-02-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -483,20 +497,6 @@
   
   <url>
     <loc>https://blog.fullcomb.top/tags/%E6%95%B0%E7%AB%9E/</loc>
-    <lastmod>2022-02-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.fullcomb.top/tags/%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98/</loc>
-    <lastmod>2022-02-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.fullcomb.top/tags/Plex/</loc>
     <lastmod>2022-02-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
