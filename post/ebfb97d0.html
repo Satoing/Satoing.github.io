@@ -212,7 +212,7 @@
 <p>这里把每两个数识别为一组，因为%c%c%c%c%c%c是没有断开的，如果在中间断开，就会出问题。</p>
 <p><img src="https://cloud.fullcomb.top/private/source/image/encoding/5.jpg" alt="5.JPG"></p>
 <h1 id="烫烫烫"><a href="#烫烫烫" class="headerlink" title="烫烫烫"></a>烫烫烫</h1><p>有一对对联对得好，</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gcode">手持两把锟斤拷, <span class="hljs-comment">(GBK与UTF-8)</span><br>口中疾呼烫烫烫。<span class="hljs-comment">(VC++)</span><br>脚踏千朵屯屯屯, <span class="hljs-comment">(VC++)</span><br>笑看万物锘锘锘。<span class="hljs-comment">(HTML)</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">手持两把锟斤拷, (GBK与UTF-8)</span><br><span class="line">口中疾呼烫烫烫。(VC++)</span><br><span class="line">脚踏千朵屯屯屯, (VC++)</span><br><span class="line">笑看万物锘锘锘。(HTML)</span><br></pre></td></tr></table></figure>
 <p>锟斤拷就是GBK与UTF-8转换时的问题。然而现在电脑已经被调教得太好了所以我弄半天都弄不出来。详见<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/锟斤拷?fr=aladdin">锟斤拷_百度百科 </a></p>
 <p>而其中的烫烫烫大概就是和我一样的初学者一定遇到过的问题。</p>
 <p>在Visual Studio中的Debug模式下，如果声明一个变量，但是没有初始化，微软会给未初始化的内存复制为0xCC。给为初始化的内存赋0xCC是有原因的，0xCC其实是INT3中断指令，所以如果在Debug模式下试图去执行这块未初始化的内存的话就会中断程序。但VS中调试器默认的字符集是MBCS，而在MBCS中0xCCCC正好就是中文中的“烫”，所以显示出来就都是烫……</p>

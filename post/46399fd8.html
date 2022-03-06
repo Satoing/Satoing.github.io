@@ -178,7 +178,7 @@
 <p><img src="https://cloud.fullcomb.top/private/source/image/share/1/5.png" alt></p>
 </li>
 <li><p>添加伪静态。在网站-&gt;伪静态 处写入：（这是Nginx的伪静态规则，Apache的不一样）</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">rewrite</span><span class="hljs-regexp"> ^/(?!.well-known)(.*)$</span> /index.php?/<span class="hljs-variable">$1</span> <span class="hljs-literal">last</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rewrite ^/(?!.well-known)(.*)$ /index.php?/$1 last;</span><br></pre></td></tr></table></figure>
 <p><img src="https://cloud.fullcomb.top/private/source/image/share/1/7.png" alt></p>
 </li>
 <li><p>域名解析。将二级域名解析到你的服务器ip：</p>
@@ -259,9 +259,9 @@
 </ol>
 <div class="note info flat"><p>搭建moon服务器节点的推荐教程：</p>
 </div>
-<style>.bbplayer{width: 100%; max-width: 850px; margin: auto}</style><div class="bbplayer"><iframe class="bbplayer" id="mmedia-JHqLPuJqUhkRgTfx" src="https://player.bilibili.com/player.html?bvid=BV1RA411x7CL&page=1&high_quality=1&danmaku=true" allowfullscreen="allowfullscreen" scrolling="no" border="0" frameborder="0" framespacing="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts allow-popups"></iframe></div><script> document.getElementById("mmedia-JHqLPuJqUhkRgTfx").style.height=document.getElementById("mmedia-JHqLPuJqUhkRgTfx").scrollWidth*0.76+"px";
+<style>.bbplayer{width: 100%; max-width: 850px; margin: auto}</style><div class="bbplayer"><iframe class="bbplayer" id="mmedia-IxXjIOXITowvkzYQ" src="https://player.bilibili.com/player.html?bvid=BV1RA411x7CL&page=1&high_quality=1&danmaku=true" allowfullscreen="allowfullscreen" scrolling="no" border="0" frameborder="0" framespacing="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts allow-popups"></iframe></div><script> document.getElementById("mmedia-IxXjIOXITowvkzYQ").style.height=document.getElementById("mmedia-IxXjIOXITowvkzYQ").scrollWidth*0.76+"px";
     window.onresize = function(){
-      document.getElementById("mmedia-JHqLPuJqUhkRgTfx").style.height=document.getElementById("mmedia-JHqLPuJqUhkRgTfx").scrollWidth*0.76+"px";
+      document.getElementById("mmedia-IxXjIOXITowvkzYQ").style.height=document.getElementById("mmedia-IxXjIOXITowvkzYQ").scrollWidth*0.76+"px";
     }; </script>
 <div class="note success modern"><p>至此，我们在外网下也可以访问到本机的Plex服务器——这样就可以随时随地使用自己的音乐库了(内网穿透的主要需求)。 另外，Zerotier用来和朋友点对点Minecraft联机还挺不错的，延迟很低，配合服务器管理模组食用，体验绝佳。</p>
 </div>
