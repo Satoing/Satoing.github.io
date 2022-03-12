@@ -1,0 +1,522 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>【探讨】递归与回溯 | Smile Diary</title><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="探讨：何为递归我们知道，在函数里面调用这个函数自身的方法就是递归。递归可以通过下面的例子形象理解： 排队的时候，假如你想知道你排在多少位，你就去问你前面的人，前面的人又去问他前面的人，一直传下去，直到问到第一个人，再一直传回来——这样你就知道自己的位置了。  这个模型可以用下面的数学公式描述： position(n)&#x3D;\begin{cases} position(n-1)+1 &amp; n&gt;1 \\ 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【探讨】递归与回溯">
+<meta property="og:url" content="https://blog.fullcomb.top/post/fe626eb9.html">
+<meta property="og:site_name" content="Smile Diary">
+<meta property="og:description" content="探讨：何为递归我们知道，在函数里面调用这个函数自身的方法就是递归。递归可以通过下面的例子形象理解： 排队的时候，假如你想知道你排在多少位，你就去问你前面的人，前面的人又去问他前面的人，一直传下去，直到问到第一个人，再一直传回来——这样你就知道自己的位置了。  这个模型可以用下面的数学公式描述： position(n)&#x3D;\begin{cases} position(n-1)+1 &amp; n&gt;1 \\ 1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/leetcode/6/cover.png">
+<meta property="article:published_time" content="2022-03-12T07:05:48.614Z">
+<meta property="article:modified_time" content="2022-03-12T14:01:28.032Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="算法学习">
+<meta property="article:tag" content="weekly算法训练">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/leetcode/6/cover.png"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/favicon.ico"><link rel="canonical" href="https://blog.fullcomb.top/post/fe626eb9"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【探讨】递归与回溯',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-12 22:01:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-heart"></i><span> 动态</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/leetcode/6/cover.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Smile Diary</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-heart"></i><span> 动态</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【探讨】递归与回溯</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-12T07:05:48.614Z" title="发表于 2022-03-12 15:05:48">2022-03-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-12T14:01:28.032Z" title="更新于 2022-03-12 22:01:28">2022-03-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8B/">大二下</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="探讨：何为递归"><a href="#探讨：何为递归" class="headerlink" title="探讨：何为递归"></a>探讨：何为递归</h1><p>我们知道，<emp>在函数里面调用这个函数自身</emp>的方法就是递归。递归可以通过下面的例子形象理解：</p>
+<div class="note info modern"><p>排队的时候，假如你想知道你排在多少位，你就去问你前面的人，前面的人又去问他前面的人，一直传下去，直到问到第一个人，再一直传回来——这样你就知道自己的位置了。</p>
+</div>
+<p>这个模型可以用下面的数学公式描述：</p>
+<script type="math/tex; mode=display">position(n)=\begin{cases}
+position(n-1)+1 & n>1 \\
+1 & n=1 
+\end{cases}</script><p>对递归有了一个整体的认识后，我们再来看看其过程。递归包括两个过程：<mark class="hl-label pink">递</mark> 和<mark class="hl-label blue">归</mark> 。<mark class="hl-label pink">递自顶向下，将问题分解</mark> ；<mark class="hl-label blue">归自底向上，将子问题合并</mark> 。</p>
+<p>根据函数调用的机制：递的过程中函数不断地调用自身，每次调用的时候都会<emp>开辟一个栈帧来保存这次调用的信息</emp>；归的时候<emp>恢复当前栈帧</emp>，函数执行结束之后销毁这个栈帧然后再恢复上一个栈帧。</p>
+<p>递归的一个典型例子就是<mark class="hl-label green">计算斐波拉契数列的第n项值</mark> ：</p>
+<details class="folding-tag" blue open><summary> 问题： </summary>
+              <div class="content">
+              <p>已知斐波拉契数列的第一项和第二项分别为0和1，递推公式为$F(n)=F(n-1)+F(n-2)$，求第n项的值。</p>
+              </div>
+            </details>
+<p>代码似乎也很优美，简直就是照搬问题的公式，可读性强。(P：忘了斐波拉契的英文就直接用<code>Fabric</code>代替了，Fabric yyds！)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Fabric</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>||n==<span class="number">1</span>) <span class="keyword">return</span> n;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Fabric</span>(n<span class="number">-1</span>)+<span class="built_in">Fabric</span>(n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，其实际结果确是令人<del>高兴</del>失望的：我足足摸了35秒才给我得出n=47的结果！我极度愤怒的情况下用算盘都算得比它快！bushi(</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/1.png" alt></p>
+<p>从递推公式$F(n)=F(n-1)+F(n-2)$来看，我们只需要从F(2)线性计算到F(47)，消耗的时间复杂度应该是$O(n)$。但从实际的执行效率来看，已经明显不是线性时间复杂度了！</p>
+<p>实际上，我们可以用递归树来描述递归的细节：（以n=7为例）啊，少算了个F(2)……</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/2.png" alt></p>
+<p>正是由于这样一棵树的结构，该递归的时间复杂度已经达到了指数数量级（由于不是完全二叉树，所以时间复杂度小于$O(2^n)$）——这是由于大量重复计算导致的。这样的重复计算被称为<mark class="hl-label pink">重叠子问题</mark> 。我们可以通过一些方法对递归进行<mark class="hl-label green">剪枝</mark> 来减少重复计算，从而降低时间复杂度，这将在下一篇进行讨论。</p>
+<hr>
+<details class="folding-tag" green open><summary> 总结一下： </summary>
+              <div class="content">
+              <ol><li>递归是一种很精妙的编程方法，它的可读性高，代码也很简洁。</li><li>递归会消耗栈空间。在能进行迭代的情况下，递归开辟的栈空间对问题来说是多余的。<emp>我们尽可能使用迭代的方法以降低空间复杂度</emp>。</li><li>递归可能会导致大量的重复计算，对递归进行剪枝可以减少重复计算的次数。</li></ol>
+              </div>
+            </details>
+<hr>
+<h2 id="合并两个有序链表"><a href="#合并两个有序链表" class="headerlink" title="合并两个有序链表"></a>合并两个有序链表</h2><details class="folding-tag" blue><summary> 题目 </summary>
+              <div class="content">
+              <p>将两个升序链表合并为一个新的升序链表并返回,新链表是通过拼接给定的两个链表的所有节点组成的: </p><p>示例 1：输入：l1 = [1,2,4], l2 = [1,3,4]   输出：[1,1,2,3,4,4]</p><p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/3.png" alt></p>
+              </div>
+            </details>
+<h3 id="递归解法"><a href="#递归解法" class="headerlink" title="递归解法"></a>递归解法</h3><p>我们先来考虑这个问题的递归解法。</p>
+<details class="folding-tag" blue open><summary> 递归三要素 </summary>
+              <div class="content">
+              <ol><li>递归结束的条件。</li><li>对中间情况的一致操作。</li><li>调用函数自身。</li></ol><p>我们思考递归解法的时候首先要从<emp>对中间情况的一致操作入手</emp>，然后思考<emp>边界情况是什么</emp>，这就是递归结束的条件。</p>
+              </div>
+            </details>
+<ol>
+<li><p>分析递归的可行性：对于这个问题，我们同样从中间情况开始分析：要合并<mark class="hl-label default">[1,2,4]和[1,3,4]</mark> ，即合并<mark class="hl-label default">1+[1,2,4]和[3,4]</mark> ，即合并<mark class="hl-label default">1+1+[2,4]和[3,4]</mark> ，即合并<mark class="hl-label default">1+1+2+[4]和[3,4]</mark> ，即合并<mark class="hl-label default">1+1+2+3+[4]和[4]</mark> ，即合并<mark class="hl-label default">1+1+2+3+4和[4]</mark> 。可以发现，对子链的合并和初始问题是一样的，所以可以使用递归。</p>
+</li>
+<li><p>分析递归需要进行的操作：然后我们分析递归时进行的操作是什么。由于两个链表已经排好序了，所以我们只需要比较首元结点的大小，将较小的那个结点挂到要返回的链表上。</p>
+</li>
+<li><p>最后来确定返回条件：当两个链表中的一个已经为空的时候，我们就无需合并了，直接将那个非空的挂到待返回的链表上即可。</p>
+</li>
+</ol>
+<hr>
+<p>这三步的分析下来基本可以解决想要使用递归却无从下手的情况了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">mergeTwoLists</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!l1||!l2) <span class="keyword">return</span> l1?l1:l2;</span><br><span class="line">        <span class="keyword">if</span>(l1-&gt;val&lt;=l2-&gt;val)&#123;</span><br><span class="line">            l1-&gt;next=<span class="built_in">mergeTwoLists</span>(l1-&gt;next,l2);</span><br><span class="line">            <span class="keyword">return</span> l1</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            l2-&gt;next=<span class="built_in">mergeTwoLists</span>(l1,l2-&gt;next);</span><br><span class="line">            <span class="keyword">return</span> l2;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<details class="folding-tag" blue><summary> judge </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/4.png" alt></p>
+              </div>
+            </details>
+<p>哎，递归的硬伤还是空间啊！</p>
+<h3 id="迭代解法"><a href="#迭代解法" class="headerlink" title="迭代解法"></a>迭代解法</h3><p>迭代解法要求我们对问题的过程分析得更加具体。我们可以通过分析递归的过程，来思考迭代的解法：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/6.gif" alt></p>
+<div class="note warning flat"><p>为什么要添加一个头指针？</p>
+<p>因为单链表插入到某个位置需要知道这位置的上一个结点，为了保证最初操作和后面操作的一致性，我们定义一个头指针<code>head</code>，最终返回<code>head-&gt;next</code>即可。</p>
+</div>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">mergeTwoLists</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!l1||!l2) <span class="keyword">return</span> (!l1)?l2:l1;</span><br><span class="line">        ListNode* head=<span class="keyword">new</span> ListNode;</span><br><span class="line">        ListNode* pre=head;</span><br><span class="line">        <span class="keyword">while</span>(l1&amp;&amp;l2)&#123;</span><br><span class="line">            <span class="keyword">if</span>(l1-&gt;val&lt;=l2-&gt;val)&#123;</span><br><span class="line">                pre-&gt;next=l1;</span><br><span class="line">                l1=l1-&gt;next;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                pre-&gt;next=l2;</span><br><span class="line">                l2=l2-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            pre=pre-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        pre-&gt;next=l1?l1:l2;</span><br><span class="line">        <span class="keyword">return</span> head-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<details class="folding-tag" blue><summary> judge </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/5.png" alt></p>
+              </div>
+            </details>
+<p>迭代解法的空间消耗确实要小一些。</p>
+<h2 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h2><details class="folding-tag" orange><summary> 题目 </summary>
+              <div class="content">
+              <p>给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。</p><p>示例 1：输入：head = [1,2,3,4,5]   输出：[5,4,3,2,1]</p><p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/7.png" alt></p>
+              </div>
+            </details>
+<p>这个问题在我之前学习数据结构的链表中的一篇已经写过了：反转链表的方法有<emp>迭代法、递归法、头插法和就地逆置法</emp>。这篇重点挑递归法来讲一讲，没讲到的方法请跳转：</p>
+<div class="tag link"><a class="link-card" title="线性表的应用1：就地逆置" href="https://blog.fullcomb.top/post/968a1ec4.html"><div class="left"><img src="/post/fe626eb9/link.png"></div><div class="right"><p class="text">线性表的应用1：就地逆置</p><p class="url">https://blog.fullcomb.top/post/968a1ec4.html</p></div></a></div>
+<h3 id="递归法"><a href="#递归法" class="headerlink" title="递归法"></a>递归法</h3><p>我们仍然遵循上面的三步：</p>
+<ol>
+<li>分析递归的可行性：反转<mark class="hl-label default">[1,2,3,4,5]</mark> ，即反转<mark class="hl-label default">1+[2,3,4,5]</mark> ……故反转这个链表可以分解为不断反转这个链表的子链，所以可以使用递归。</li>
+<li>分析递归每步需要进行的操作：对于一个结点，我们让该结点的下一个结点指向这结点，然后让这个结点本身的next指针初始化指向空。（因为第一个结点反转后就是尾节点，需要指向空）</li>
+<li>分析递归结束的条件：当递归的当前结点是链表的最后一个结点时，递归结束。</li>
+</ol>
+<hr>
+<p>但是这道题的递归比上一道要难一些，因为这道题的返回值也令人纠结。我们<emp>返回的链表的头结点应该是原链表的尾节点，但我们一开始并不知道它的值</emp>。</p>
+<p>我的做法是先一直往下<mark class="hl-label blue">“递”</mark> ，<emp>“递”到链表尾节点</emp>后使用一个<mark class="hl-label orange">外部变量保存这个值</mark> ，然后<emp>在“归”的过程中对这个链表进行反转操作</emp>。返回值即返回之前保存的那个外部变量。</p>
+<div class="note info flat"><p>实际上反转链表的操作也必须在“归”的过程中完成。因为如果在“递”的过程中反转链表的话，会提前破坏这个链表。</p>
+</div>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ListNode* p=<span class="literal">nullptr</span>;</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!head||!head-&gt;next)&#123;</span><br><span class="line">            p=head;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">reverseList</span>(head-&gt;next);</span><br><span class="line">        head-&gt;next-&gt;next=head;</span><br><span class="line">        head-&gt;next=<span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<details class="folding-tag" orange><summary> judge </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/8.png" alt></p>
+              </div>
+            </details>
+<p>仍然是空间的硬伤！</p>
+<h3 id="就地逆置法"><a href="#就地逆置法" class="headerlink" title="就地逆置法"></a>就地逆置法</h3><p>这里仅做简单的对比：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head==<span class="literal">nullptr</span>||head-&gt;next==<span class="literal">nullptr</span>) </span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        ListNode* root=<span class="keyword">new</span> ListNode,*temp;</span><br><span class="line">        <span class="keyword">while</span>(temp!=<span class="literal">nullptr</span>)&#123;</span><br><span class="line">            temp=head-&gt;next;</span><br><span class="line">            head-&gt;next=root-&gt;next;</span><br><span class="line">            root-&gt;next=head;</span><br><span class="line">            head=temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<details class="folding-tag" orange><summary> judge </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/9.png" alt></p>
+              </div>
+            </details>
+<h1 id="探讨：何时递归"><a href="#探讨：何时递归" class="headerlink" title="探讨：何时递归"></a>探讨：何时递归</h1><p>从前面的例子中，我们可以看到递归因为会开辟多余的栈帧，所以其空间消耗大于迭代的方法，而二者时间相当——这时我们应尽可能地不用递归。<emp>那么，什么时候应该用递归呢？</emp></p>
+<p>再次观察之前那棵<mark class="hl-label green">递归树</mark> ，黄色标记出计算的顺序（从上至下是递，从下至上是归）</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/10.png" alt></p>
+<p>可以发现这个顺序竟然<mark class="hl-label orange">和使用DFS对树进行遍历如出一辙</mark> ！没错，递归可以看成使用深度优先搜索的方法对所有可行解进行遍历。自然，当涉及到<emp>暴力、枚举、遍历、搜索等</emp>的题目就可以使用递归。</p>
+<div class="note info flat"><p>值得一提的是，涉及到遍历的题目，非递归的方法通常要借助于栈或队列，<emp>这时递归的栈帧就不是多余的了</emp>。而且由于递归的栈是程序自动开辟的，所以<emp>可能</emp>会有编译器的优化，从而使其性能比非递归的高一些(玄学)。递归的更明显优势是程序简洁和可读性强，这时提倡写递归程序。</p>
+</div>
+<mark class="hl-label red">那什么是回溯呢？</mark> 
+<div class="note red flat"><p>我们知道了递归包括“递”和“归”两个阶段。在“递”的时候对元素进行了操作，<mark class="hl-label pink">回溯就是在“归”的时候把之前的操作复原</mark> 。</p>
+<p>这时我们的递归目的不是在原始基础上进行什么改变(毕竟回溯的时候复原了嘛~)，而是对所有可行解进行<mark class="hl-label red">遍历</mark> ，从中<mark class="hl-label red">搜索</mark> 出满足条件的组合——所以这个<emp>递归函数的返回值一般都是空</emp>！</p>
+</div>
+<hr>
+<p>解决回溯问题的最好思路就是<emp>先画出递归树</emp>！</p>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><details class="folding-tag" blue><summary> 题目 </summary>
+              <div class="content">
+              <p>给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。</p><p>你可以按 任何顺序 返回答案。</p><p>示例 1：输入：n = 4, k = 2  输出：[[2,4], [3,4], [2,3], [1,2], [1,3], [1,4]]</p>
+              </div>
+            </details>
+<p>先画出递归树：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/11.JPEG" alt></p>
+<details class="folding-tag" red open><summary> 开始之前我们仍然进行递归三问： </summary>
+              <div class="content">
+              <ol><li>为什么递归？答：因为要对可行的情况进行遍历。</li><li>递归的操作是什么？答：从集合中任意选一个数，然后取所选的数的后面部分作为下次的集合。</li><li>递归的终止条件是什么？答：递归层数为k(初始层数为0)。且结束时收集满足条件的元素。</li></ol>
+              </div>
+            </details>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">traceback</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp;vec,vector&lt;<span class="keyword">int</span>&gt;&amp;nums,<span class="keyword">int</span> n,<span class="keyword">int</span> k,<span class="keyword">int</span> depth,<span class="keyword">int</span> begin)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(depth==k) &#123;</span><br><span class="line">            vec.<span class="built_in">emplace_back</span>(nums);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=begin;i&lt;=n;i++)&#123;</span><br><span class="line">            nums.<span class="built_in">emplace_back</span>(i);</span><br><span class="line">            <span class="built_in">traceback</span>(vec,nums,n,k,depth+<span class="number">1</span>,i+<span class="number">1</span>);</span><br><span class="line">            nums.<span class="built_in">pop_back</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">combine</span>(<span class="keyword">int</span> n, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; vec;</span><br><span class="line">        vector&lt;<span class="keyword">int</span>&gt; nums;</span><br><span class="line">        <span class="built_in">traceback</span>(vec,nums,n,k,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> vec;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<mark class="hl-label red">代码分析：</mark> 
+<div class="note red simple"><ol>
+<li>为什么不在<code>conbine</code>函数进行回溯操作？因为回溯函数的返回值一般为<code>void</code>。</li>
+<li>创建的回溯函数参数比较多，所以需要我们事先<emp>缕清思路</emp>：<code>vector&lt;vector&lt;int&gt;&gt;&amp;vec</code>是存储满足条件的组合的数组，且一定是引用；<code>vector&lt;int&gt;&amp;nums</code>是暂时存储当前元素的数组，引用是为了提高性能；<code>n</code>、<code>k</code>是题给参数；<code>depth</code>是递归层数，用于判断返回条件；<code>begin</code>用于确定可选区间的开始点。</li>
+<li>如何从区间中选一个数？使用<code>for</code>循环依次取即可。</li>
+<li><code>nums.pop_back()</code>即所谓的回溯操作。</li>
+</ol>
+</div>
+<details class="folding-tag" red><summary> judge </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/12.png" alt></p>
+              </div>
+            </details>
+<div class="note red flat"><p>思考：可以不进行回溯操作吗？</p>
+</div>
+<p>回溯是为了还原<code>nums</code>数组。如果我们事先确定好<code>nums</code>数组的大小为k，由于每个结果的长度都为k，所以最终一定会覆盖掉之前的情况，没必要回溯。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">traceback</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp;vec,vector&lt;<span class="keyword">int</span>&gt;&amp;nums,<span class="keyword">int</span> n,<span class="keyword">int</span> k,<span class="keyword">int</span> deepth,<span class="keyword">int</span> begin)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(deepth==k) &#123;</span><br><span class="line">            vec.<span class="built_in">emplace_back</span>(nums);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=begin;i&lt;=n;i++)&#123;</span><br><span class="line">            nums[deepth]=i;</span><br><span class="line">            <span class="built_in">traceback</span>(vec,nums,n,k,deepth+<span class="number">1</span>,i+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">combine</span>(<span class="keyword">int</span> n, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; vec;</span><br><span class="line">        <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">nums</span><span class="params">(<span class="number">2</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="built_in">traceback</span>(vec,nums,n,k,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> vec;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<details class="folding-tag" blue><summary> judge </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/13.png" alt></p>
+              </div>
+            </details>
+<h2 id="全排列"><a href="#全排列" class="headerlink" title="全排列"></a>全排列</h2><details class="folding-tag" green><summary> 题目 </summary>
+              <div class="content">
+              <p>给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。</p><p>示例 1：输入：nums = [1,2,3]  输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]</p>
+              </div>
+            </details>
+<p>画出递归树：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/14.png" alt></p>
+<details class="folding-tag" red open><summary> 递归三问： </summary>
+              <div class="content">
+              <ol><li>为什么递归？遍历。</li><li>递归的操作？从区间集合中选一个数，并将剩下的作为下次的集合。</li><li>递归结束条件？深度为3（实际上，深度为2即可，初始深度为0）。</li></ol>
+              </div>
+            </details>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; vec,vector&lt;<span class="keyword">int</span>&gt;&amp; nums,<span class="keyword">int</span> depth,<span class="keyword">const</span> <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(depth==len<span class="number">-1</span>) &#123;</span><br><span class="line">            vec.<span class="built_in">emplace_back</span>(nums);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=depth;i&lt;nums.<span class="built_in">size</span>();i++) &#123;</span><br><span class="line">            <span class="built_in">swap</span>(nums[depth],nums[i]);</span><br><span class="line">            <span class="built_in">dfs</span>(vec,nums,depth+<span class="number">1</span>,len);</span><br><span class="line">            <span class="built_in">swap</span>(nums[depth],nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">permute</span>(vector&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; vec;</span><br><span class="line">        <span class="built_in">dfs</span>(vec,nums,<span class="number">0</span>,nums.<span class="built_in">size</span>());</span><br><span class="line">        <span class="keyword">return</span> vec;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>模式和上一题都是一样的，不过这道题没有新建暂存数组，而是通过交换题给数组中元素顺序。</p>
+<details class="folding-tag" green><summary> judge </summary>
+              <div class="content">
+              <p><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/15.png" alt></p>
+              </div>
+            </details>
+<hr>
+<div class="tip "><p>反正这种题套路性太强了，基本上都是一个模式。理解了为什么这么做写出的自然而然就像模板了。</p>
+</div>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>【探讨】递归与回溯</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.fullcomb.top/post/fe626eb9.html">https://blog.fullcomb.top/post/fe626eb9.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Sato</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2022-03-12</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2022-03-12</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LeetCode/">LeetCode</a><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/">算法学习</a><a class="post-meta__tags" href="/tags/weekly%E7%AE%97%E6%B3%95%E8%AE%AD%E7%BB%83/">weekly算法训练</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/3a82e2e8.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/leetcode/5/cover.png" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">BFS与多源最短路径</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">脱三日坊主</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><img src="https://cloud.fullcomb.top/private/source/image/3.png" width=230px></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A2%E8%AE%A8%EF%BC%9A%E4%BD%95%E4%B8%BA%E9%80%92%E5%BD%92"><span class="toc-number">1.</span> <span class="toc-text">探讨：何为递归</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8"><span class="toc-number">1.1.</span> <span class="toc-text">合并两个有序链表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E8%A7%A3%E6%B3%95"><span class="toc-number">1.1.1.</span> <span class="toc-text">递归解法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E8%A7%A3%E6%B3%95"><span class="toc-number">1.1.2.</span> <span class="toc-text">迭代解法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8"><span class="toc-number">1.2.</span> <span class="toc-text">反转链表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">递归法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%B1%E5%9C%B0%E9%80%86%E7%BD%AE%E6%B3%95"><span class="toc-number">1.2.2.</span> <span class="toc-text">就地逆置法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A2%E8%AE%A8%EF%BC%9A%E4%BD%95%E6%97%B6%E9%80%92%E5%BD%92"><span class="toc-number">2.</span> <span class="toc-text">探讨：何时递归</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E5%90%88"><span class="toc-number">2.1.</span> <span class="toc-text">组合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E6%8E%92%E5%88%97"><span class="toc-number">2.2.</span> <span class="toc-text">全排列</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/fe626eb9.html" title="【探讨】递归与回溯"><img src="https://cloud.fullcomb.top/private/source/image/leetcode/6/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="【探讨】递归与回溯"/></a><div class="content"><a class="title" href="/post/fe626eb9.html" title="【探讨】递归与回溯">【探讨】递归与回溯</a><time datetime="2022-03-12T07:05:48.614Z" title="发表于 2022-03-12 15:05:48">2022-03-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/3a82e2e8.html" title="BFS与多源最短路径"><img src="https://cloud.fullcomb.top/private/source/image/leetcode/5/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="BFS与多源最短路径"/></a><div class="content"><a class="title" href="/post/3a82e2e8.html" title="BFS与多源最短路径">BFS与多源最短路径</a><time datetime="2022-03-05T06:30:24.814Z" title="发表于 2022-03-05 14:30:24">2022-03-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/138da4b4.html" title="Python语法基础"><img src="https://cloud.fullcomb.top/private/source/image/python/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="Python语法基础"/></a><div class="content"><a class="title" href="/post/138da4b4.html" title="Python语法基础">Python语法基础</a><time datetime="2022-02-28T10:20:30.026Z" title="发表于 2022-02-28 18:20:30">2022-02-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号-1</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css"></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: 'b83f41e50ec300c398bb3828c142fadc',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://unpkg.zhimg.com/artitalk@3.2.2"></script><script defer src="https://unpkg.zhimg.com/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-github-calendar-api.vercel.app/api?Satoing";
+            var git_color =['#ebedf0', '#fdbfd1', '#fc9ab6', '#fc84a6', '#fb7299', '#fa5483', '#fa4478', '#f8084d', '#b30537', '#9e0430', '#710322'];
+            var git_user ="Satoing";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script defer src="https://unpkg.zhimg.com/jquery@latest/dist/jquery.min.js"></script><script defer src="https://unpkg.zhimg.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/issues.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html>
