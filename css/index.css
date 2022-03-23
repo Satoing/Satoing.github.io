@@ -1,12 +1,12 @@
 body {
-  cursor: url("https://satoing.gitee.io/source/pointer/1.cur"), default;
+  cursor: url("https://satoing.gitee.io/pointer/1.cur"), default;
 }
 /**链接指针样式**/
 a:hover {
-  cursor: url("https://satoing.gitee.io/source/pointer/2.cur"), pointer;
+  cursor: url("https://satoing.gitee.io/pointer/2.cur"), pointer;
 }
-p.img {
-  cursor: url("https://satoing.gitee.io/source/pointer/3.cur"), pointer;
+p img {
+  cursor: url("https://satoing.gitee.io/pointer/3.cur"), pointer;
 }
 @font-face {
   font-family: 'tzy';
