@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.fullcomb.top/post/5d70cd14.html</loc>
+    
+    <lastmod>2022-03-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.fullcomb.top/post/cafcfd0d.html</loc>
     
     <lastmod>2022-03-26</lastmod>
@@ -497,6 +506,13 @@
   </url>
   
   <url>
+    <loc>https://blog.fullcomb.top/tags/OpenGL%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2022-03-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.fullcomb.top/tags/key/</loc>
     <lastmod>2022-03-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -532,6 +548,13 @@
   </url>
   
   <url>
+    <loc>https://blog.fullcomb.top/tags/%E9%97%B2%E8%B0%88/</loc>
+    <lastmod>2022-03-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.fullcomb.top/tags/%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98/</loc>
     <lastmod>2022-03-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -540,13 +563,6 @@
   
   <url>
     <loc>https://blog.fullcomb.top/tags/Plex/</loc>
-    <lastmod>2022-03-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.fullcomb.top/tags/%E9%97%B2%E8%B0%88/</loc>
     <lastmod>2022-03-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -604,14 +620,14 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/categories/galgame/</loc>
+    <loc>https://blog.fullcomb.top/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/</loc>
     <lastmod>2022-03-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/</loc>
+    <loc>https://blog.fullcomb.top/categories/galgame/</loc>
     <lastmod>2022-03-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -625,14 +641,14 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/categories/%E6%95%B0%E5%AD%A6%E7%AB%9E%E8%B5%9B/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E5%87%BD%E6%95%B0%E3%80%81%E6%9E%81%E9%99%90%E4%B8%8E%E8%BF%9E%E7%BB%AD/</loc>
+    <loc>https://blog.fullcomb.top/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/OpenGL/</loc>
     <lastmod>2022-03-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/OpenGL/</loc>
+    <loc>https://blog.fullcomb.top/categories/%E6%95%B0%E5%AD%A6%E7%AB%9E%E8%B5%9B/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E5%87%BD%E6%95%B0%E3%80%81%E6%9E%81%E9%99%90%E4%B8%8E%E8%BF%9E%E7%BB%AD/</loc>
     <lastmod>2022-03-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

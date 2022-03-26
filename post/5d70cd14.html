@@ -1,0 +1,400 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>OpenGL二维编程 | Smile Diary</title><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="认识OpenGL在使用OpenGL编程之前，我们先来简单认识一下OpenGL，然后使用VS&amp;nbsp;Code 来进行OpenGL工作区环境的配置。  两种观点API观点OpenGL是图形硬件的软件接口 ，是一套图形API。借助OpenGL，我们可以编写出对图形硬件具有访问能力的程序。OpenGL的实现如下图所示：  从图中可以看出，OpenGL的下层实现是和硬件紧密相关 的；上层软件层使用C语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenGL二维编程">
+<meta property="og:url" content="https://blog.fullcomb.top/post/5d70cd14.html">
+<meta property="og:site_name" content="Smile Diary">
+<meta property="og:description" content="认识OpenGL在使用OpenGL编程之前，我们先来简单认识一下OpenGL，然后使用VS&amp;nbsp;Code 来进行OpenGL工作区环境的配置。  两种观点API观点OpenGL是图形硬件的软件接口 ，是一套图形API。借助OpenGL，我们可以编写出对图形硬件具有访问能力的程序。OpenGL的实现如下图所示：  从图中可以看出，OpenGL的下层实现是和硬件紧密相关 的；上层软件层使用C语言">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/opengl/1/cover.png">
+<meta property="article:published_time" content="2022-03-26T05:20:10.681Z">
+<meta property="article:modified_time" content="2022-03-26T09:51:17.590Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="OpenGL编程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/opengl/1/cover.png"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/favicon.ico"><link rel="canonical" href="https://blog.fullcomb.top/post/5d70cd14"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OpenGL二维编程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-03-26 17:51:17'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-heart"></i><span> 动态</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/opengl/1/cover.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Smile Diary</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-heart"></i><span> 动态</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OpenGL二维编程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-26T05:20:10.681Z" title="发表于 2022-03-26 13:20:10">2022-03-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-03-26T09:51:17.590Z" title="更新于 2022-03-26 17:51:17">2022-03-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/">游戏与3D</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/OpenGL/">OpenGL</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="认识OpenGL"><a href="#认识OpenGL" class="headerlink" title="认识OpenGL"></a>认识OpenGL</h1><div class="tip info"><p>在使用OpenGL编程之前，我们先来简单认识一下OpenGL，然后使用<mark class="hl-label blue">VS&nbsp;Code</mark> 来进行OpenGL工作区环境的配置。</p>
+</div>
+<h2 id="两种观点"><a href="#两种观点" class="headerlink" title="两种观点"></a>两种观点</h2><h3 id="API观点"><a href="#API观点" class="headerlink" title="API观点"></a>API观点</h3><p>OpenGL是<mark class="hl-label blue">图形硬件的软件接口</mark> ，是一套图形API。借助OpenGL，我们可以编写出<emp>对图形硬件具有访问能力</emp>的程序。OpenGL的实现如下图所示：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/opengl/1/2.png" alt></p>
+<p>从图中可以看出，OpenGL的<mark class="hl-label blue">下层实现是和硬件紧密相关</mark> 的；上层软件层<mark class="hl-label pink">使用C语言</mark> 进行编写，最后为用户提供了一系列的函数接口。用户可以使用这些接口编写自己的图形应用程序。</p>
+<div class="note info modern"><p>正是由于OpenGL非常接近硬件底层，所以和一般的纯软件实现的图形程序不同，它可以充分发挥硬件的加速功能，使得OpenGL编写的图形程序非常高效。</p>
+</div>
+<p>此外，OpenGL的可移植性非常强，一套代码拿到另一个操作系统中，<emp>只需要重新编译链接</emp>，即可在新的操作系统下运行。</p>
+<h3 id="状态机观点"><a href="#状态机观点" class="headerlink" title="状态机观点"></a>状态机观点</h3><p>我们可以把OpenGL看成一个<emp>具有输入，输出的状态机</emp>。</p>
+<ul>
+<li><p>输入是指我们可以通过OpenGL提供的API来指定或修改参数，这些参数共同描述了一个状态。</p>
+</li>
+<li><p>输出一般是由一系列图元组成的图形。</p>
+</li>
+</ul>
+<p>输入到输出的转化，就是OpenGL这个状态机发挥的作用。</p>
+<hr>
+<h2 id="使用的库"><a href="#使用的库" class="headerlink" title="使用的库"></a>使用的库</h2><p>OpenGL的函数包含在两个库中：<mark class="hl-label pink">GL库(核心库)</mark> 、<mark class="hl-label blue">GLU库(实用库)</mark> 。后者可以看成<emp>为了方便某些功能的实现而对前者进行的封装</emp>——换言之，如果足够优秀的话，只需要GL库就可以完成OpenGL的所有功能。</p>
+<p>但是，由于OpenGL为了保证代码的可移植性，所以<emp>摒弃了所有平台相关的功能</emp>，如窗口显示功能等。所以只用上面两个库，我们还无法做到在窗口中显示绘制的图形等操作。这时，我们还需要一个库——<mark class="hl-label orange">GLUT库(OpenGL实用工具集)</mark> 来辅助我们实现这些功能。</p>
+<h2 id="OpenGL的命名规则"><a href="#OpenGL的命名规则" class="headerlink" title="OpenGL的命名规则"></a>OpenGL的命名规则</h2><p>由于OpenGL出现的时期比较早，<emp>当时的编辑器并没有自动补全之类的功能</emp>。所以为了方便程序员记忆OpenGL的函数等，对OpenGL的命名规则进行了一系列约定。</p>
+<h3 id="函数命名"><a href="#函数命名" class="headerlink" title="函数命名"></a>函数命名</h3><p>函数的命名采用的规则：</p>
+<div class="note info flat"><p>库(小写)+功能(开头大写)+参数(个数+类型+是否为向量)</p>
+</div>
+<p>如<code>glVertex3f</code>表示gl库中使用float描述三维顶点位置的函数，里面的参数就是三个浮点数；而<code>glVertex3fv</code>函数内的参数应该是一个float型数组（向量）。</p>
+<h3 id="数据类型命名"><a href="#数据类型命名" class="headerlink" title="数据类型命名"></a>数据类型命名</h3><p>为了保证可移植性，OpenGL也给C语言中的数据类型进行了<code>typedef</code>，规则如下：</p>
+<div class="note info flat"><p>GL+名称</p>
+</div>
+<p>OpenGL数据类型汇总如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/opengl/1/3.png" alt></p>
+<p>常用的有<code>GLenum</code>、<code>GLint</code>、<code>GLfloat</code>、<code>GLclampf</code>。需要注意<code>GLclampf</code>的大小限制在[0,1]！</p>
+<h3 id="常量命名"><a href="#常量命名" class="headerlink" title="常量命名"></a>常量命名</h3><p>OpenGL中的常量采用全大写，并且<emp>用下划线分隔每一个单词</emp>。</p>
+<p>如：表示颜色缓存的常量<code>GL_COLOR_BUFFER_BIT</code>。</p>
+<h2 id="工作区配置"><a href="#工作区配置" class="headerlink" title="工作区配置"></a>工作区配置</h2><p>Windows下配置OpenGL环境，<emp>主流的都是使用Visual&nbsp;Studio</emp>。但说实话，我不是很喜欢用IDE，所以就直接用VS Code了——当时配VS Code的开发环境也麻烦了一番。下面介绍如何操作。</p>
+<p>首先展示一下我的工作区：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/opengl/1/1.png" alt></p>
+<p>目录层级如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">├──.vscode</span><br><span class="line">│  └──settings.json</span><br><span class="line">├──bin</span><br><span class="line">│  └──main.exe</span><br><span class="line">├──build</span><br><span class="line">├──include</span><br><span class="line">│  ├──GL.H</span><br><span class="line">│  ├──GLU.H</span><br><span class="line">│  └──glut.h</span><br><span class="line">├──lib</span><br><span class="line">│  ├──libGLU32.a</span><br><span class="line">│  ├──libglut32.a</span><br><span class="line">│  └──libOPENGL32.a</span><br><span class="line">├──src</span><br><span class="line">│  └──01.animation</span><br><span class="line">│     └──main.cpp</span><br><span class="line">└──makefile</span><br></pre></td></tr></table></figure>
+<p>这样的代码组织方式和<emp>UNIX上的一个工程的组织结构</emp>是差不多的：</p>
+<ol>
+<li>将外部的头文件放在include目录下；</li>
+<li>库文件放在lib目录下，并且根据静态库的标准命名方式重命名为<code>lib*.a</code>的格式；</li>
+<li>源代码放在src目录下；</li>
+<li>输出的可执行文件放在bin目录下；</li>
+<li>build用于放置编译过程中生成的<code>.o</code>文件；</li>
+<li>最后使用一个makefile指定g++的编译规则。（上面我还创建了一个run命令和dir变量）</li>
+</ol>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SRC		:= src/<span class="variable">$(dir)</span></span><br><span class="line"><span class="section">main:src/<span class="variable">$(dir)</span>/main.cpp</span></span><br><span class="line">	g++ -o bin/main src/<span class="variable">$(dir)</span>/main.cpp -lglut32 -lGLU32 -lOPENGL32 -lm -lwin32k -Iinclude </span><br><span class="line"><span class="section">run: main</span></span><br><span class="line">	bin/main.exe</span><br><span class="line">	@echo Executing &#x27;run&#x27; complete!</span><br></pre></td></tr></table></figure>
+<p>为了保证编译器能够找到头文件、链接需要的静态库，就需要<emp>配置g++的编译参数</emp>：<code>-l</code>指定库名，<code>-I</code>指定头文件的搜索目录。</p>
+<p>关于makefile命令的创建、变量的使用等，可以参考Dongdong大佬写的makefile教程：</p>
+<div class="tag link"><a class="link-card" title="跟我一起写makefile" target="_blank" rel="noopener" href="https://seisman.github.io/how-to-write-makefile/index.html"><div class="left"><img src="https://avatars.githubusercontent.com/u/3974108?v=4"></div><div class="right"><p class="text">跟我一起写makefile</p><p class="url">https://seisman.github.io/how-to-write-makefile/index.html</p></div></a></div>
+<h1 id="绘制二维图形"><a href="#绘制二维图形" class="headerlink" title="绘制二维图形"></a>绘制二维图形</h1><p>//todo</p>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>OpenGL二维编程</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.fullcomb.top/post/5d70cd14.html">https://blog.fullcomb.top/post/5d70cd14.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Sato</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2022-03-26</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2022-03-26</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/OpenGL%E7%BC%96%E7%A8%8B/">OpenGL编程</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/cafcfd0d.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/leetcode/8/cover.jpg" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">动态规划基础</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">祝愿我们都能够保持初心，做兴趣使然的英雄</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><img src="https://cloud.fullcomb.top/private/source/image/3.png" width=230px></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86OpenGL"><span class="toc-number">1.</span> <span class="toc-text">认识OpenGL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E8%A7%82%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">两种观点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#API%E8%A7%82%E7%82%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">API观点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E8%A7%82%E7%82%B9"><span class="toc-number">1.1.2.</span> <span class="toc-text">状态机观点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BA%93"><span class="toc-number">1.2.</span> <span class="toc-text">使用的库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenGL%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="toc-number">1.3.</span> <span class="toc-text">OpenGL的命名规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D"><span class="toc-number">1.3.1.</span> <span class="toc-text">函数命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%91%BD%E5%90%8D"><span class="toc-number">1.3.2.</span> <span class="toc-text">数据类型命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E5%91%BD%E5%90%8D"><span class="toc-number">1.3.3.</span> <span class="toc-text">常量命名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">工作区配置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E4%BA%8C%E7%BB%B4%E5%9B%BE%E5%BD%A2"><span class="toc-number">2.</span> <span class="toc-text">绘制二维图形</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/5d70cd14.html" title="OpenGL二维编程"><img src="https://cloud.fullcomb.top/private/source/image/opengl/1/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="OpenGL二维编程"/></a><div class="content"><a class="title" href="/post/5d70cd14.html" title="OpenGL二维编程">OpenGL二维编程</a><time datetime="2022-03-26T05:20:10.681Z" title="发表于 2022-03-26 13:20:10">2022-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/cafcfd0d.html" title="动态规划基础"><img src="https://cloud.fullcomb.top/private/source/image/leetcode/8/cover.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="动态规划基础"/></a><div class="content"><a class="title" href="/post/cafcfd0d.html" title="动态规划基础">动态规划基础</a><time datetime="2022-03-25T06:25:05.390Z" title="发表于 2022-03-25 14:25:05">2022-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c3aad064.html" title="动态规划初步"><img src="https://cloud.fullcomb.top/private/source/image/leetcode/7/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="动态规划初步"/></a><div class="content"><a class="title" href="/post/c3aad064.html" title="动态规划初步">动态规划初步</a><time datetime="2022-03-20T13:46:45.649Z" title="发表于 2022-03-20 21:46:45">2022-03-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号-1</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css"></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.vemoji)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      document.getElementById('twikoo-count').innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: '3509ae4074fed05ece39fa4f58d64c1b',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Twikoo' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://npm.elemecdn.com/artitalk@3.2.2"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-github-calendar-api.vercel.app/api?Satoing";
+            var git_color =['#ebedf0', '#fdbfd1', '#fc9ab6', '#fc84a6', '#fb7299', '#fa5483', '#fa4478', '#f8084d', '#b30537', '#9e0430', '#710322'];
+            var git_user ="Satoing";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html>
