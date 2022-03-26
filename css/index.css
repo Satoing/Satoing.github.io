@@ -5,7 +5,7 @@ body {
 a:hover {
   cursor: url("https://satoing.gitee.io/pointer/2.cur"), pointer;
 }
-p img {
+img {
   cursor: url("https://satoing.gitee.io/pointer/3.cur"), pointer;
 }
 @font-face {
