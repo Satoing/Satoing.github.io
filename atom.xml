@@ -26,9 +26,7 @@
     
       
       
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; class=&quot;aplayer-secondary-script-marker&quot;&gt;&lt;/script&gt;&lt;div class=&quot;tip &quot;&gt;&lt;p&gt;此篇是数学篇，主要补充之前涉及得少但比较重要的与数学相关的技巧和算法，如位运算、计算GDC(最大公约数)、LCM(最小公倍数)、分解质因数等。&lt;/p&gt;
-&lt;/div&gt;
-&lt;h1 id=&quot;位运算&quot;&gt;&lt;a href=&quot;#位运算&quot; class=&quot;headerlink&quot; title=&quot;位运算&quot;&gt;&lt;/a&gt;位运算&lt;/h1&gt;&lt;p&gt;此部分主要参考教程：&lt;div class=&quot;tag link&quot;&gt;&lt;a c</summary>
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
       
     
     
@@ -54,7 +52,7 @@
     
       
       
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; class=&quot;aplayer-secondary-script-marker&quot;&gt;&lt;/script&gt;&lt;h1 id=&quot;认识OpenGL&quot;&gt;&lt;a href=&quot;#认识OpenGL&quot; class=&quot;headerlink&quot; title=&quot;认识OpenGL&quot;&gt;&lt;/a&gt;认识OpenGL&lt;/h1&gt;&lt;div class=&quot;tip info&quot;&gt;&lt;p&gt;在使用OpenGL编程之前，我们先来简单认识一下OpenGL，然后介绍如何使用&lt;mark class=&quot;hl-label blue&quot;&gt;VS&amp;nbsp;Code&lt;/mark&gt; 进行OpenGL工作区</summary>
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
       
     
     
@@ -78,7 +76,7 @@
     
       
       
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; class=&quot;aplayer-secondary-script-marker&quot;&gt;&lt;/script&gt;&lt;h1 id=&quot;前情提要&quot;&gt;&lt;a href=&quot;#前情提要&quot; class=&quot;headerlink&quot; title=&quot;前情提要&quot;&gt;&lt;/a&gt;前情提要&lt;/h1&gt;&lt;p&gt;在上一讲&lt;a href=&quot;/post/c3aad064.html&quot;&gt;动态规划初步&lt;/a&gt;里面，我们从暴力递归的局限性引出了动态规划，并且知道了&lt;span class=&quot;p red&quot;&gt;动态规划其实是对穷举的优化&lt;/span&gt;。和递归不同，它一般是&lt;mark&gt;自底向上&lt;/ma</summary>
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
       
     
     
@@ -104,9 +102,7 @@
     
       
       
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; class=&quot;aplayer-secondary-script-marker&quot;&gt;&lt;/script&gt;&lt;h1 id=&quot;从斐波拉契数列说起&quot;&gt;&lt;a href=&quot;#从斐波拉契数列说起&quot; class=&quot;headerlink&quot; title=&quot;从斐波拉契数列说起&quot;&gt;&lt;/a&gt;从斐波拉契数列说起&lt;/h1&gt;&lt;details class=&quot;folding-tag&quot; blue open&gt;&lt;summary&gt; 再贴一下斐波拉契数列的问题 &lt;/summary&gt;
-              &lt;div class=&quot;content&quot;&gt;
-         </summary>
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
       
     
     
@@ -132,8 +128,7 @@
     
       
       
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; class=&quot;aplayer-secondary-script-marker&quot;&gt;&lt;/script&gt;&lt;h1 id=&quot;探讨：何为递归&quot;&gt;&lt;a href=&quot;#探讨：何为递归&quot; class=&quot;headerlink&quot; title=&quot;探讨：何为递归&quot;&gt;&lt;/a&gt;探讨：何为递归&lt;/h1&gt;&lt;p&gt;我们知道，&lt;emp&gt;在函数里面调用这个函数自身&lt;/emp&gt;的方法就是递归。递归可以通过下面的例子形象理解：&lt;/p&gt;
-&lt;div class=&quot;note info modern&quot;&gt;&lt;p&gt;排队的时候，假如你想知道你排在多少位，你就去问你前面的人，前面的人</summary>
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
       
     
     
