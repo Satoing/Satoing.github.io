@@ -3550,13 +3550,13 @@ li.categoryBar-list-item:nth-child(3)>span::after {
   content: 'Mine大二下，敬请期待！' !important;
 }
 li.categoryBar-list-item:nth-child(4)>span::after {
-  content: '我觉得应该是常识' !important;
+  content: '应该知道的二三事' !important;
 }
 li.categoryBar-list-item:nth-child(5)>span::after {
-  content: '刷题刷题' !important;
+  content: '这块暂时鸽了' !important;
 }
 li.categoryBar-list-item:nth-child(6)>span::after {
-  content: '玩游戏,做游戏!' !important;
+  content: '图形学相关内容' !important;
 }
 li.categoryBar-list-item {
   width: 32.3% !important;
