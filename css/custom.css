@@ -33,7 +33,7 @@
 /* 定义标题栏的定位方式为绝对定位 */
 
 .item-headline {
-    font-family: 'SAOUI';
+    font-family: 'tzy';
     color: rgba(60, 60, 61, 0.7);
     font-weight: bold;
     position: absolute;
@@ -55,9 +55,10 @@
 }
 
 .item-headline span {
+    font-size: 23px;
     position: relative;
     top: 0px;
-    z-index: 2;
+    z-index: 3;
 }
 
 .item-headline a {
@@ -69,22 +70,22 @@
 
 /* 梯形伪类 */
 
-.item-headline:after {
+
+/* .item-headline:after {
     content: '';
     position: absolute;
     top: -3px;
     right: 0;
     bottom: 0;
     left: -3px;
-    z-index: 1;
+    z-index: -5;
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.9);
     border-bottom: 0 solid #fff;
-    /* 关键形变 */
     transform: perspective(20px) rotateX(3deg);
     border-top-right-radius: 5px !important;
     border-top-left-radius: 5px !important;
-}
+} */
 
 
 /* 下划线伪类 */
