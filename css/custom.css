@@ -1,11 +1,5 @@
 /* SAOUI字体精简包，仅73KB */
 
-@font-face {
-    font-family: 'SAOUI';
-    src: url('https://unpkg.zhimg.com/akilar-candyassets/fonts/SAOUI.ttf');
-    font-display: swap;
-}
-
 
 /* 应用于除了作者卡片以为的所有侧栏卡片 */
 
