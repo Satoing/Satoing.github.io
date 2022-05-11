@@ -1,0 +1,63 @@
+<h1 id="flv-js"><a href="#flv-js" class="headerlink" title="flv.js  "></a>flv.js  <a href="https://www.npmjs.com/package/flv.js"><img src="https://img.shields.io/npm/v/flv.js.svg?style=flat" alt="npm"></a></h1><p>An HTML5 Flash Video (FLV) Player written in pure JavaScript without Flash. LONG LIVE FLV!</p>
+<p>This project relies on <a href="https://w3c.github.io/media-source/">Media Source Extensions</a> to work.</p>
+<p><strong>For FLV live stream playback, please consider <a href="https://github.com/xqq/mpegts.js">mpegts.js</a> which is under active development.</strong></p>
+<p><strong>This project will become rarely maintained.</strong></p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>flv.js works by transmuxing FLV file stream into ISO BMFF (Fragmented MP4) segments, followed by feeding mp4 segments into an HTML5 <code>&lt;video&gt;</code> element through <a href="https://w3c.github.io/media-source/">Media Source Extensions</a> API.</p>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p><a href="http://bilibili.github.io/flv.js/demo/">http://bilibili.github.io/flv.js/demo/</a></p>
+<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul>
+<li>FLV container with H.264 + AAC / MP3 codec playback</li>
+<li>Multipart segmented video playback</li>
+<li>HTTP FLV low latency live stream playback</li>
+<li>FLV over WebSocket live stream playback</li>
+<li>Compatible with Chrome, FireFox, Safari 10, IE11 and Edge</li>
+<li>Extremely low overhead, and hardware accelerated by your browser!</li>
+</ul>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><pre><code class="lang-bash">npm install --save flv.js
+</code></pre>
+<h2 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h2><pre><code class="lang-bash">npm ci                 # install dependencies / dev-dependences
+npm run build:debug    # debug version flv.js will be emitted to /dist
+npm run build          # minimized release version flv.min.js will be emitted to /dist
+</code></pre>
+<p><a href="https://github.com/cnpm/cnpm">cnpm</a> mirror is recommended if you are in Mainland China.</p>
+<h2 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h2><p>If you use standalone video server for FLV stream, <code>Access-Control-Allow-Origin</code> header must be configured correctly on video server for cross-origin resource fetching.</p>
+<p>See <a href="docs/cors.md">cors.md</a> for more details.</p>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><pre><code class="lang-html">&lt;script src=&quot;flv.min.js&quot;&gt;&lt;/script&gt;
+&lt;video id=&quot;videoElement&quot;&gt;&lt;/video&gt;
+&lt;script&gt;
+    if (flvjs.isSupported()) {
+        var videoElement = document.getElementById(&#39;videoElement&#39;);
+        var flvPlayer = flvjs.createPlayer({
+            type: &#39;flv&#39;,
+            url: &#39;http://example.com/flv/video.flv&#39;
+        });
+        flvPlayer.attachMediaElement(videoElement);
+        flvPlayer.load();
+        flvPlayer.play();
+    }
+&lt;/script&gt;
+</code></pre>
+<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><ul>
+<li>MP3 audio codec is currently not working on IE11 / Edge</li>
+<li>HTTP FLV live stream is not currently working on all browsers, see <a href="docs/livestream.md">livestream.md</a></li>
+</ul>
+<h2 id="Multipart-playback"><a href="#Multipart-playback" class="headerlink" title="Multipart playback"></a>Multipart playback</h2><p>You only have to provide a playlist for <code>MediaDataSource</code>. See <a href="docs/multipart.md">multipart.md</a></p>
+<h2 id="Livestream-playback"><a href="#Livestream-playback" class="headerlink" title="Livestream playback"></a>Livestream playback</h2><p>See <a href="docs/livestream.md">livestream.md</a></p>
+<h2 id="API-and-Configuration"><a href="#API-and-Configuration" class="headerlink" title="API and Configuration"></a>API and Configuration</h2><p>See <a href="docs/api.md">api.md</a></p>
+<h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><pre><code class="lang-bash">npm ci         # install dependencies / dev-dependences
+npm run dev    # watch file changes and build debug version on the fly
+</code></pre>
+<h2 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h2><p>See <a href="docs/design.md">design.md</a></p>
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><pre><code>Copyright (C) 2016 Bilibili. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
