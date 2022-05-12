@@ -359,6 +359,17 @@
              */
             loadLanguage = function(obj) {
                 vars = standardization(varsTemp, obj);
+                console.log(vars["video"]);
+                var xmlhttp = new XMLHttpRequest();
+                var temp_url = "https://tenapi.cn/bilivideo/?url=https://www.bilibili.com/video/" + vars["video"];
+                var type = "GET"; //方法
+                xmlhttp.open(type, temp_url, false); //方法，接口，同步
+                xmlhttp.send(); //发送请求
+
+                var result = JSON.parse(xmlhttp.response); //获取到的json数据
+                vars['video'] = result["url"];
+                console.log(vars['video']);
+
                 if (vars['language']) {
                     var path = getPath('language') + vars['language'] + '.js';
                     loadJs(path, function() {
@@ -421,6 +432,7 @@
                 /*
                  * 如果video指向一个已存在的video标签对象，则直接调用该对象
                  */
+
                 if (valType(vars['video']) == 'string' && ((vars['video'].substr(0, 1) == '.' && vars['video'].indexOf('/') == -1) || vars['video'].substr(0, 1) == '#')) {
                     video = $(vars['video']);
                 }
@@ -521,6 +533,7 @@
                 /*
                  * 播放视频
                  */
+
                 changeVideo(vars['video']);
                 /*
                  * 返回 播放器
