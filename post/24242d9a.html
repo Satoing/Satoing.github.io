@@ -1,0 +1,531 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>8086汇编入门【1】 | Smile Diary</title><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="计组回顾地址线和数据线先通过几道题回顾一下CPU的地址总线宽度和数据总线宽度的意义：  1GB,1MB,1KB分别是（$2^{30}$bit,$2^{20}$bit,$2^{10}&#x3D;1024$bit）。 一个CPU的寻址能力为8K，那么它的地址总线宽度为（13）。 8080，8088，80286，80386的地址总线宽度16根，20根，24根，32根，那么它们的寻址能力分别为（$2^{16},2^">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8086汇编入门【1】">
+<meta property="og:url" content="https://blog.fullcomb.top/post/24242d9a.html">
+<meta property="og:site_name" content="Smile Diary">
+<meta property="og:description" content="计组回顾地址线和数据线先通过几道题回顾一下CPU的地址总线宽度和数据总线宽度的意义：  1GB,1MB,1KB分别是（$2^{30}$bit,$2^{20}$bit,$2^{10}&#x3D;1024$bit）。 一个CPU的寻址能力为8K，那么它的地址总线宽度为（13）。 8080，8088，80286，80386的地址总线宽度16根，20根，24根，32根，那么它们的寻址能力分别为（$2^{16},2^">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/asm/image-20220514114805665.png">
+<meta property="article:published_time" content="2022-05-14T04:08:06.799Z">
+<meta property="article:modified_time" content="2022-05-14T04:19:10.280Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="汇编语言">
+<meta property="article:tag" content="8086">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/asm/image-20220514114805665.png"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/favicon.ico"><link rel="canonical" href="https://blog.fullcomb.top/post/24242d9a"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '8086汇编入门【1】',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-05-14 12:19:10'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><script src="/js/SAO-Notify.js" async></script><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script><script type="text/javascript" src ="/js/welcome.js" ></script><script src="/js/sweetalert.js"></script><link rel="stylesheet" href="/css/sweetalert.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Smile Diary" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 动态</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/log/"><i class="fa-fw fas fa-gear"></i><span> log</span></a></li><li><a class="site-page child" href="/artitalk/"><i class="fa-fw fas fa-smile"></i><span> 闲言</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/asm/image-20220514114805665.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Smile Diary</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 动态</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/log/"><i class="fa-fw fas fa-gear"></i><span> log</span></a></li><li><a class="site-page child" href="/artitalk/"><i class="fa-fw fas fa-smile"></i><span> 闲言</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">8086汇编入门【1】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-14T04:08:06.799Z" title="发表于 2022-05-14 12:08:06">2022-05-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-14T04:19:10.280Z" title="更新于 2022-05-14 12:19:10">2022-05-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8B/">大二下</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="计组回顾"><a href="#计组回顾" class="headerlink" title="计组回顾"></a>计组回顾</h1><h2 id="地址线和数据线"><a href="#地址线和数据线" class="headerlink" title="地址线和数据线"></a>地址线和数据线</h2><p>先通过几道题回顾一下CPU的地址总线宽度和数据总线宽度的意义：</p>
+<ol>
+<li>1GB,1MB,1KB分别是（$2^{30}$bit,$2^{20}$bit,$2^{10}=1024$bit）。</li>
+<li>一个CPU的寻址能力为8K，那么它的地址总线宽度为（13）。</li>
+<li>8080，8088，80286，80386的地址总线宽度16根，20根，24根，32根，那么它们的寻址能力分别为（$2^{16},2^{20},2^{24},2^{32}$）。</li>
+<li>8080，8088，8086，80286，80386的地址总线宽度8根，8根，16根，16根，32根，则它们一次可以传输的数据为（1B,1B,2B,2B,4B）。</li>
+<li>从内存中读取1024字节的数据，8086至少读取（512）次，80386字少读取（256）次。</li>
+</ol>
+<blockquote>
+<p>从上面的题可以看出，地址总线宽度对应CPU的寻址能力，数据总线宽度对应CPU一次能最多够传输的数据（一根数据线传输1bit）。</p>
+</blockquote>
+<h2 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h2><p>但是，地址线仅仅体现的是CPU的寻址能力，实际的存储单元数还是要看内存的大小：</p>
+<ol>
+<li>1KB的存储器有（1024）个存储单元，编号为（0到1023）。</li>
+<li>1KB的存储器可以存储（$2^{13}$）个bit，（$2^{10}$）个byte。</li>
+<li>在存储器中，数据和指令以（二进制）的形式存放。</li>
+</ol>
+<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>CPU由运算器、控制器、寄存器构成。</p>
+<ol>
+<li>运算器进行信息的处理</li>
+<li>控制器控制各种器件的工作</li>
+<li>寄存器进行信息的存储</li>
+<li>CPU内部的总线连接各种器件，进行数据的传送。</li>
+</ol>
+<blockquote>
+<p>写汇编代码时，我们需要主要关注CPU中的寄存器。程序员通过改变各种寄存器中的内容来实现对CPU的控制。</p>
+</blockquote>
+<p>不同CPU，寄存器的个数和结构不同。8086CPU的14个寄存器如下：</p>
+<p>AX,BX,CX,DX,SI,DI,SP,BP,IP,CS,SS,DS,ES,PSW。</p>
+<h3 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h3><p>F4（AX,BX,CX,DX）是最常用的四个寄存器。它们用于存放一般性的数据，所以称为通用寄存器。且有且仅有它们四个可以分为高八位(H)和低八位(L)。</p>
+<p>16为寄存器最大能存的数据为$2^{16}-1=65535$。</p>
+<p>来看几个和寄存器有关的指令：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513160918903.png" alt="image-20220513160918903"></p>
+<p>指令右边的一般为源操作数，左边的一般为目标操作数或兼源操作数。</p>
+<p>用于寄存器只有16位，所以计算的时候要注意溢出的问题：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513161504341.png" alt="image-20220513161504341"></p>
+<p>但是，如果我们的操作仅对寄存器的八位进行操作，当低八位溢出的时候，处理方式如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513161756145.png" alt="image-20220513161756145"></p>
+<p>即AL和AH分开使用时是独立的，AL的溢出不会对AH产生影响。</p>
+<blockquote>
+<p>要注意指令的两个操作数位数是要相同的，这就是指令对象的一致性。</p>
+</blockquote>
+<h2 id="物理地址"><a href="#物理地址" class="headerlink" title="物理地址"></a>物理地址</h2><p>CPU访问内存单元时，需要通过地址总线给出内存单元的物理地址。</p>
+<p>所有内存单元构成的存储空间是一个唯一的线性空间，每一个内存单元在这个空间中都有唯一的地址，称这个地址位内存单元的物理地址。</p>
+<p>不同CPU有不同的形成物理地址的方式，以8086为例。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513162705360.png" alt="image-20220513162705360"></p>
+<p>但是，8086的地址线有20根，寻址能力为$2^{20}$，这就与一次性最多操作16位（CPU内部最多产生16位的地址）产生了矛盾。Intel的做法是将一个地址拆分为段地址和偏移地址：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513163208826.png" alt="image-20220513163208826"></p>
+<p>这样使用两个寄存器通过地址加法器就可以获得20位的地址了。加法器中的计算规则为：物理地址=段地址&lt;&lt;4+偏移地址。</p>
+<blockquote>
+<p>总结一下就是，CPU访问内存的时候，用一个基础的地址（段地址）和一个相对于基础地址的偏移地址相加，给出内存单元的物理地址。</p>
+<p>可以将段地址&lt;&lt;4看作基础地址。</p>
+</blockquote>
+<h1 id="段与段寄存器"><a href="#段与段寄存器" class="headerlink" title="段与段寄存器"></a>段与段寄存器</h1><p>一般的理解是这样的：我们将（段地址&lt;&lt;4）作为内存的基础地址，根据偏移地址基础地址的基础上找到真实地址。这样就把内存根据段地址分为多个段，每个段最大为$2^{16}=64KB$（16指的是偏移地址的位数，64KB即为其最大值）。</p>
+<p>但是，这个理解是片面的。段只是人为的划分，一个段的长度也不是固定的，而是最大为64KB。段的划分是视情况而定的，不唯一，如：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513165405244.png" alt="image-20220513165405244"></p>
+<p>一个物理地址可以有多种段地址和偏移地址的组合。</p>
+<h2 id="代码段CS和IP"><a href="#代码段CS和IP" class="headerlink" title="代码段CS和IP"></a>代码段CS和IP</h2><p>段地址由段寄存器来装，段地址寄存器有4个：CS、DS、SS、ES。CPU就是通过段寄存器的种类来区分指令和数据的。CS即代码段寄存器，它指定的内存中的二进制串就是指令。</p>
+<p>而偏移地址的存储则是比较复杂的。需要记住：当段寄存器为CS的时候，偏移地址寄存器一定为IP。<mark>CS:IP指向的内容就是当前指令执行的位置。</mark></p>
+<p>比如，一段程序的执行过程如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513171155911.png" alt="image-20220513171155911"></p>
+<ol>
+<li>先根据CS和IP定位到当前需要执行的指令的地址，到内存中取出指令，送入指令缓冲器中处理。</li>
+<li>IP加上刚才处理的指令的长度（CISC的不同指令长度不同），然后根据现在的CS和IP取出下一条需要执行的指令。</li>
+<li>……</li>
+</ol>
+<p>但是，处于安全性的考虑，mov是不能改变CS和IP的值的，这时需要jmp指令：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513171937634.png" alt="image-20220513171937634"></p>
+<p>如果jmp后面只有一个数，那么只改变IP。当然，立即数也可以改成另一个寄存器。</p>
+<h2 id="数据段DS"><a href="#数据段DS" class="headerlink" title="数据段DS"></a>数据段DS</h2><blockquote>
+<p>首先要知道8086CPU中一个字就是两个字节，高八位存放高位字节，低八位存放低位字节，所以一个字需要用两个存储单元来存放。对于小端机，低位字节放在低地址单元中，高地址放在高地址单元中。</p>
+</blockquote>
+<p>DS用于存放要访问数据的段地址。</p>
+<p>比如，对于程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ds,1000H</span><br><span class="line">mov al,[0]</span><br></pre></td></tr></table></figure>
+<p>首先将数据段的段地址设置为1000H，下一条指令<code>mov al,[0]</code>是<code>mov al,ds:[0]</code>的省略，表示将数据段偏移地址为0的数据赋值给al。</p>
+<p>如果[]前给出了具体的寄存器，就以那个寄存器为准；如果缺省则默认为ds。</p>
+<p>知道了这个后，最后再来总结一下mov的操作数：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513185525457.png" alt="image-20220513185525457"></p>
+<h2 id="栈与SS-SP"><a href="#栈与SS-SP" class="headerlink" title="栈与SS:SP"></a>栈与SS:SP</h2><h3 id="栈的操作"><a href="#栈的操作" class="headerlink" title="栈的操作"></a>栈的操作</h3><p>8086CPU提供了出栈和入栈的指令，这两个指令都是以一个字作为操作数的，比如只能为ax而不能用ah或al。</p>
+<p><code>push ax</code>表示将寄存器ax中的数据放入栈中，<code>pop ax</code>表示将栈顶数据取出并送入ax中。需要注意入栈和出栈一次操作的都是两个字节。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513190350122.png" alt="image-20220513190350122"></p>
+<p>内存中的栈是从高地址王低地址增长的，需要注意高位字节需要放到高位地址，低位字节放到低位地址。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220513190455143.png" alt="image-20220513190455143"></p>
+<p>出栈后，实现了数据的逆序（高位字节和低位字节）</p>
+<h3 id="SS与SP"><a href="#SS与SP" class="headerlink" title="SS与SP"></a>SS与SP</h3><p>push和pop指令都需要知道当前栈顶的地址。和CS:IP一样，栈通过SS:SP来标志当前的栈顶元素——即任意时刻，SS:SP指向栈顶元素。</p>
+<p>下面分析入栈和出栈SS和SP进行的操作：</p>
+<ol>
+<li><code>push ax</code>：首先改变sp，使sp=sp-2，以当前栈顶作为新的栈顶；然后将ax中的数据送入当前SS:SP指向的地址（栈顶）。</li>
+<li><code>pop ax</code>：和push的顺序相反，先将栈顶的数据送入ax，再使sp+=2作为新的栈顶。</li>
+</ol>
+<h1 id="编写汇编源程序"><a href="#编写汇编源程序" class="headerlink" title="编写汇编源程序"></a>编写汇编源程序</h1><p>先要明白几个概念：</p>
+<ol>
+<li>汇编语言</li>
+<li>汇编语言源程序</li>
+<li>汇编程序：将汇编语言翻译为机器语言的目标程序的工具软件，即编译器</li>
+<li>汇编：动词，将汇编语言翻译为机器语言的过程</li>
+</ol>
+<hr>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li>使用编辑器编写汇编语言源程序。</li>
+<li>使用masm编译源程序，产生目标文件<code>.obj</code>文件。</li>
+<li>链接，生成可执行文件。其中可执行文件包含”程序”和”数据”以及相关的描述信息。</li>
+<li>执行可执行文件。因为16位的程序不能在现在的电脑上运行，所以需要用到dosbox。</li>
+<li>调试。</li>
+</ol>
+<h2 id="源程序示例"><a href="#源程序示例" class="headerlink" title="源程序示例"></a>源程序示例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line"></span><br><span class="line">codesg segment</span><br><span class="line">	mov ax,0123H</span><br><span class="line">	mov bx,0456H</span><br><span class="line">	add ax,bx</span><br><span class="line">	</span><br><span class="line">	mov ax,4c00H</span><br><span class="line">	int 21H</span><br><span class="line">codesg ends</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>可以把这个程序分为几个部分：</p>
+<ol>
+<li>指令：4~9行的内容，其中8~9行是每个代码段结尾都需要加的，用于标志结尾。int不是整型而是中断的意思。</li>
+<li>伪指令：上面的程序中有三种伪指令<code>assume</code>、<code>xxx segment……xxx ends</code>、<code>end</code>。<ol>
+<li><code>xxx segment……xxx</code>表示中间的部分为一个段，<code>xxx</code>为标号，用于标识一个段。标号是人为命名的。</li>
+<li><code>assume</code>用于将我们定义的段与段寄存器挂钩。<code>assume</code>就是“令”的意思。</li>
+<li><code>end</code>标志整个程序的结束，一般是<code>end start</code>。</li>
+</ol>
+</li>
+</ol>
+<h2 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h2><p>现在在dosbox里面来实操运行一下上面的源程序。</p>
+<ol>
+<li><p>打开dosbox，将masm编译器所在目录挂载为虚拟磁盘c:盘（A盘、B盘也是可以的）</p>
+</li>
+<li><p>编译demo.asm：<code>masm demo.asm</code>，用于不需要lst和crf文件，所以字节回车即可。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220514114409963.png" alt="image-20220514114409963"></p>
+</li>
+<li><p>链接，生成可执行文件。用于现在只有<code>demo.obj</code>做一个文件，所以直接<code>link demo.obj</code>即可。如果要实现一些高级功能，如输入输出，就还需要链接其他的库。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220514114658226.png" alt="image-20220514114658226"></p>
+</li>
+<li><p>直接执行的话什么也看不到，所以通过调试来看程序的运行：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220514114805665.png" alt="image-20220514114805665"></p>
+<p>每一行输入一个调试命令，t表示执行程序的下一条指令。可以看到，寄存器内容的变化和程序指定的是一样的。</p>
+</li>
+</ol>
+<p><strong>总结一下整个流程：</strong></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220514113406482.png" alt="image-20220514113406482"></p>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><div class="tag link"><a class="link-card" title="8086汇编精讲" target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1CJ411D7yD"><div class="left"><img src="https://cloud.fullcomb.top/private/source/image/asm/bili.png"></div><div class="right"><p class="text">8086汇编精讲</p><p class="url">https://www.bilibili.com/video/BV1CJ411D7yD</p></div></a></div>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>8086汇编入门【1】</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.fullcomb.top/post/24242d9a.html">https://blog.fullcomb.top/post/24242d9a.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Sato</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2022-05-14</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2022-05-14</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">汇编语言</a><a class="post-meta__tags" href="/tags/8086/">8086</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/f2021545.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/share/3/cover.png" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">js动态解析引入高清B站视频</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">祝愿我们都能够保持初心，做兴趣使然的英雄</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><a target="_blank" style="display:block;margin:0;padding:0;"href="https://music.fullcomb.top/"><p font-size="14px">来这里听听音乐应该会很有趣♬<p><img  src="https://cloud.fullcomb.top/private/source/image/3.png" / style="display:block;width:230px"></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%BB%84%E5%9B%9E%E9%A1%BE"><span class="toc-number">1.</span> <span class="toc-text">计组回顾</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E7%BA%BF%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BA%BF"><span class="toc-number">1.1.</span> <span class="toc-text">地址线和数据线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8"><span class="toc-number">1.2.</span> <span class="toc-text">存储器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.3.</span> <span class="toc-text">寄存器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">通用寄存器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80"><span class="toc-number">1.4.</span> <span class="toc-text">物理地址</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AE%B5%E4%B8%8E%E6%AE%B5%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">段与段寄存器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%AE%B5CS%E5%92%8CIP"><span class="toc-number">2.1.</span> <span class="toc-text">代码段CS和IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%AE%B5DS"><span class="toc-number">2.2.</span> <span class="toc-text">数据段DS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88%E4%B8%8ESS-SP"><span class="toc-number">2.3.</span> <span class="toc-text">栈与SS:SP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.3.1.</span> <span class="toc-text">栈的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SS%E4%B8%8ESP"><span class="toc-number">2.3.2.</span> <span class="toc-text">SS与SP</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%B1%87%E7%BC%96%E6%BA%90%E7%A8%8B%E5%BA%8F"><span class="toc-number">3.</span> <span class="toc-text">编写汇编源程序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.1.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A8%8B%E5%BA%8F%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.2.</span> <span class="toc-text">源程序示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%93%8D"><span class="toc-number">3.3.</span> <span class="toc-text">实操</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#reference"><span class="toc-number">4.</span> <span class="toc-text">reference</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/24242d9a.html" title="8086汇编入门【1】"><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220514114805665.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="8086汇编入门【1】"/></a><div class="content"><a class="title" href="/post/24242d9a.html" title="8086汇编入门【1】">8086汇编入门【1】</a><time datetime="2022-05-14T04:08:06.799Z" title="发表于 2022-05-14 12:08:06">2022-05-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/f2021545.html" title="js动态解析引入高清B站视频"><img src="https://cloud.fullcomb.top/private/source/image/share/3/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="js动态解析引入高清B站视频"/></a><div class="content"><a class="title" href="/post/f2021545.html" title="js动态解析引入高清B站视频">js动态解析引入高清B站视频</a><time datetime="2022-05-11T02:38:44.087Z" title="发表于 2022-05-11 10:38:44">2022-05-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/8f85c2a8.html" title="【未整理】Django学习笔记"><img src="https://cloud.fullcomb.top/private/source/image/python/django_note/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="【未整理】Django学习笔记"/></a><div class="content"><a class="title" href="/post/8f85c2a8.html" title="【未整理】Django学习笔记">【未整理】Django学习笔记</a><time datetime="2022-04-28T11:03:47.283Z" title="发表于 2022-04-28 19:03:47">2022-04-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/images@master/others/heartbeat.min.css"></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.vemoji)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      document.getElementById('twikoo-count').innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: 'a7328c56f4a83ebb2265fce1a10c2fe3',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Twikoo' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://npm.elemecdn.com/artitalk@3.2.2"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-github-calendar-api.vercel.app/api?Satoing";
+            var git_color =['#ebedf0', '#fdbfd1', '#fc9ab6', '#fc84a6', '#fb7299', '#fa5483', '#fa4478', '#f8084d', '#b30537', '#9e0430', '#710322'];
+            var git_user ="Satoing";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><!-- hexo injector body_end end --></body></html>
