@@ -1,0 +1,1070 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>数据库复习 | Smile Diary</title><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据库系统概论 数据与信息的区别与联系？   数据(Data)必须保存在计算机中，能够被计算机识别、存储和处理。 信息(Information)是对数据的具体描述和语义化解释。 数据是信息的载体，信息是数据的具体描述。   数据库的定义、特征及辨析？  定义：数据库(DB)是长期储存在计算机内、有组织、可共享的大量数据的集合。 特征：有组织、可共享、冗余度较低、易拓展。 辨析以下概念：  DB：数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库复习">
+<meta property="og:url" content="https://blog.fullcomb.top/post/eb3d82ea.html">
+<meta property="og:site_name" content="Smile Diary">
+<meta property="og:description" content="数据库系统概论 数据与信息的区别与联系？   数据(Data)必须保存在计算机中，能够被计算机识别、存储和处理。 信息(Information)是对数据的具体描述和语义化解释。 数据是信息的载体，信息是数据的具体描述。   数据库的定义、特征及辨析？  定义：数据库(DB)是长期储存在计算机内、有组织、可共享的大量数据的集合。 特征：有组织、可共享、冗余度较低、易拓展。 辨析以下概念：  DB：数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/db/review/cover.png">
+<meta property="article:published_time" content="2022-05-26T12:47:30.581Z">
+<meta property="article:modified_time" content="2022-05-26T13:01:17.597Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/db/review/cover.png"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blog.fullcomb.top/post/eb3d82ea"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://npm.elemecdn.com/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://npm.elemecdn.com/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://npm.elemecdn.com/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库复习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-05-26 21:01:17'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"><script src="/js/SAO-Notify.js" async></script><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script><script type="text/javascript" src ="/js/welcome.js" ></script><script src="/js/sweetalert.js"></script><link rel="stylesheet" href="/css/sweetalert.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Smile Diary" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">41</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 动态</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/log/"><i class="fa-fw fas fa-gear"></i><span> log</span></a></li><li><a class="site-page child" href="/artitalk/"><i class="fa-fw fas fa-smile"></i><span> 闲言</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/db/review/cover.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Smile Diary</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> 动态</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/log/"><i class="fa-fw fas fa-gear"></i><span> log</span></a></li><li><a class="site-page child" href="/artitalk/"><i class="fa-fw fas fa-smile"></i><span> 闲言</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据库复习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-26T12:47:30.581Z" title="发表于 2022-05-26 20:47:30">2022-05-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-26T13:01:17.597Z" title="更新于 2022-05-26 21:01:17">2022-05-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8B/">大二下</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">8.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>27分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="数据库系统概论"><a href="#数据库系统概论" class="headerlink" title="数据库系统概论"></a>数据库系统概论</h1><blockquote>
+<p>数据与信息的区别与联系？</p>
+</blockquote>
+<ol>
+<li>数据(Data)必须保存在计算机中，能够被计算机识别、存储和处理。</li>
+<li>信息(Information)是对数据的具体描述和语义化解释。</li>
+<li><strong>数据是信息的载体</strong>，<strong>信息是数据的具体描述</strong>。</li>
+</ol>
+<blockquote>
+<p>数据库的定义、特征及辨析？</p>
+</blockquote>
+<p><strong>定义：</strong>数据库(DB)是<strong>长期储存在计算机内</strong>、<strong>有组织</strong>、<strong>可共享</strong>的大量<strong>数据的集合</strong>。</p>
+<p><strong>特征：</strong>有组织、可共享、冗余度较低、易拓展。</p>
+<p>辨析以下概念：</p>
+<ol>
+<li>DB：数据库</li>
+<li>DBMS：数据库管理系统</li>
+<li>DBA：数据库管理员</li>
+</ol>
+<p>其中DBMS包含DB和DBA，属于系统软件。</p>
+<blockquote>
+<p>数据模型是什么？数据模型有哪些？</p>
+</blockquote>
+<p>数据模型是对现实世界数据特征的<strong>抽象和模拟</strong>。它的三个组成要素是：<strong>数据结构</strong>、<strong>数据操作</strong>和<strong>数据完整性</strong>。</p>
+<p>数据模型包括<strong>概念数据模型</strong>和<strong>逻辑数据模型</strong>。</p>
+<ol>
+<li>概念数据模型是用户易于理解的、对现实世界数据特征的抽象。它<strong>与具体的DBMS无关</strong>。如实体—联系模型。</li>
+<li>逻辑数据模型是用户从数据库中看到的，<strong>具体的DBMS所支持</strong>的数据模型。</li>
+</ol>
+<p>逻辑数据模型主要有<strong>层次模型</strong>、<strong>网状模型</strong>、<strong>关系模型</strong>和<strong>面向对象模型</strong>。</p>
+<ol>
+<li>层次模型用<strong>树形结构</strong>来表示各实体以及实体间的<strong>联系</strong>。每个结点表示一个记录类型，每个记录类型包含多个字段。</li>
+<li>网状模型在层次模型的基础上，允许多个结点没有双亲结点和允许一个结点有多个双亲结点，最终的关系呈网状。</li>
+<li>关系模型结合了层次模型和网状模型的优点，并有关系代数的支撑。</li>
+</ol>
+<blockquote>
+<p>数据库管理系统的功能？</p>
+</blockquote>
+<ol>
+<li>DDL：对数据库的相关结构进行定义</li>
+<li>DML：对数据库中的数据进行插入、追加、修改、删除、检索等。</li>
+<li>DCL：对数据库中的数据进行控制，如并发控制、安全性控制、完整性控制等。</li>
+</ol>
+<p>关系数据库的关系操作采用集合操作的方式，一次操作一个集合。</p>
+<blockquote>
+<p>数据库的三级模式？</p>
+</blockquote>
+<p>数据库的三级模式包括<strong>外模式</strong>、<strong>模式</strong>和<strong>内模式</strong>。它的一个主要目的是保证数据的独立性，包括逻辑独立性和物理独立性。</p>
+<ol>
+<li>外模式是数据库用户可以看见和使用的局部数据的逻辑结构和特征的描述，<strong>可以简单理解为视图</strong>。一个数据库可以有多个外模式。</li>
+<li>模式也称逻辑模式，是数据库中全体数据的逻辑结构和特征的描述，<strong>可以简单理解为表</strong>。它是三级模式的中间层，和应用程序无关，也和硬件无关，起到承上启下的作用。一个数据库只有一个模式。</li>
+<li>内模式也称存储模式，描述的是数据库中<strong>数据存储的细节</strong>和存储路径，如记录数据是顺序存储，还是按照B树或hash方法存储。一个数据库只有一个内模式。</li>
+</ol>
+<blockquote>
+<p>数据库的二级映射？</p>
+</blockquote>
+<ol>
+<li>外模式/模式映射：如果模式改变时，<strong>只需要改变外模式/模式的映射，不需要改变应用程序</strong>。保证了<strong>逻辑独立性</strong>。</li>
+<li>模式/内模式映射：当数据的存储结构改变时，只需要由DBA对模式/内模式映射做出相应改变即可使模式不变。保证了<strong>物理独立性</strong>。</li>
+</ol>
+<h1 id="关系模型和关系代数"><a href="#关系模型和关系代数" class="headerlink" title="关系模型和关系代数"></a>关系模型和关系代数</h1><blockquote>
+<p>关系模式与关系实例？关系的特点？</p>
+</blockquote>
+<p>关系模式是对关系的描述与定义，关系模式的具体值就是关系实例，它是由若干列和行组成的<strong>表格</strong>，又是直接将关系实例称为”关系”。其中列称为<strong>属性</strong>，行称为<strong>元组</strong>。关系实例中元组的数目称为基数。特点如下:</p>
+<ol>
+<li>每个关系都有一个唯一的关系名</li>
+<li>关系表中的每一列都是不可再分的基本属性，各属性不能重名</li>
+<li>一列中的所有值必须是同一数据类型，且必须有明确的范围（域）</li>
+<li>关系中不允许出现相同的元组</li>
+<li><strong>行和列的排序</strong>对一个关系实例并不重要</li>
+</ol>
+<p>关系可以表示为：<strong>关系名(属性1,属性2……属性n)</strong></p>
+<blockquote>
+<p>键/码？</p>
+</blockquote>
+<p>关系中能<strong>唯一区分</strong>不同元组的属性或属性组称为关系的一个键或关键字或码。<strong>关键字对应的属性不能为空值</strong>，即不能为不确定的值。</p>
+<p>与键相关的几个重要概念：</p>
+<ol>
+<li><strong>候选键</strong>：与上面键的定义一样，它满足<strong>唯一性</strong>和<strong>最小性</strong>。（唯一性：不同元组，其候选键的属性值不同；最小性：任一属性都不能从属性集中删除）</li>
+<li><strong>主属性&amp;非主属性</strong>：包括在候选键中的属性称为主属性，不包含在任何候选键中的属性称为非主属性。</li>
+<li><strong>全码</strong>：当<strong>所有属性都是候选键</strong>时，称为全码。</li>
+<li><strong>主键</strong>：从多个候选键中选择一个作为主键。每个关系有且仅有一个主键。</li>
+<li><strong>外键</strong>：F是关系R的某个属性，且不是R的键，但是F是另一个关系S的主键，则称F为关系R的外键。其中关系R称为参照关系，S称为被参照关系。（R和S可以为相同的表，即自约束）</li>
+</ol>
+<blockquote>
+<p>关系的完整性约束？</p>
+</blockquote>
+<p>关系模型中的完整性约束包括：<strong>实体完整性</strong>、<strong>参照完整性</strong>和<strong>用户定义的完整性</strong>。实体完整性和参照完整性是关系模型中必须满足的约束条件。</p>
+<ol>
+<li>实体完整性：主键不能为空值，且取值唯一。</li>
+<li>参照完整性：参照表R中外键的值，或者取空值，或者等于被参照表S中某个元组的主键值。</li>
+<li>用户定义的完整性：根据应用环境和实际的需要定义的约束，如规定某个属性的取值范围，或某字段是否可为空等。</li>
+</ol>
+<blockquote>
+<p>关系代数是什么？有哪些？</p>
+</blockquote>
+<p>关系模型的常用关系操作包括<strong>查询操作</strong>和<strong>更新操作</strong>。其中关系代数是关系模型的查询语言。关系代数的操作可以分为三类：</p>
+<ol>
+<li>传统的<strong>集合运算</strong>：并、差、交、笛卡尔积</li>
+<li>专门的<strong>关系运算</strong>：投影、选择、链接、除</li>
+<li>拓展的关系运算：广义投影、聚集函数和分组、递归闭包</li>
+</ol>
+<blockquote>
+<p>传统的集合运算？</p>
+</blockquote>
+<p>两个关系进行并交差的前提是<strong>关系R和关系S具有相同的关系模式，即两个关系必须是同元(相容)的</strong>。它们以关系中的元组t为基本操作单位。</p>
+<ol>
+<li>并运算：$R\bigcup S=\{ t | t\in R\lor t\in S\}$</li>
+<li>交运算：$R\bigcap S=\{ t | t\in R\land t\in S\}$</li>
+<li>差运算：$R - S=\{ t | t\in R\land t\notin S\}$</li>
+</ol>
+<p>重点要<strong>理解笛卡尔积：</strong>R和S分别为m目和n目的关系，则RXS是一个(m+n)列，k1*k2个元组的集合：$R\times S=\{ \widehat{t_rt_s} | t_r\in R\land t_s\in S\}$</p>
+<blockquote>
+<p>专门的关系运算？</p>
+</blockquote>
+<ol>
+<li>选择：从关系R中找出满足给定条件F的所有元组t，相当于关系的水平切片：$σ _F (R)=\{t|t ∈R∧F(t)==True\}$，注意F的表示，如30岁以下的男性可以表示为 (性别=’男’)$\land$年龄&lt;’30’。</li>
+<li>投影：从R中选出若干属性列A组成新的关系，相当于关系的垂直切片。记作$∏_A(R)$，A为从R中选取的属性列的名字。</li>
+<li>连接：连接运算从R和S的笛卡尔积中选择在R在A属性组的值与B属性组上的值满足比较关系的元组。</li>
+<li>除：给出关系R(X,Y)和S(Y,Z)，$P(x)=R÷S=\{t_r [X]|t_r∈R∧π_Y (S)⊆Y_x\}$ 。注意这里从元组中选出某一列用的是t[X]的方式，和从关系中进行投影不同。</li>
+<li>更名：对给定关系代数表达式E ，进行更名运算$σ_x (E) $，返回表达式E的结果，并把名字x赋给了它。</li>
+</ol>
+<p>①<strong>重点要理解连接运算</strong>：连接分为两种，<strong>自然连接</strong>和<strong>条件连接</strong>。</p>
+<ol>
+<li><p>自然连接：$R⋈S=\{t|\widehat{t_r t_s }|t_r∈R∧t_s∈S∧t_r [B]=t_s [b]\}$</p>
+<p>即比较R和S的公共属性。如果这个属性值相等，则将两个元组合并，并把重复的属性去掉。步骤为：</p>
+<ul>
+<li>计算$R\times S$</li>
+<li>选择R和S中公共属性属性相等的元组</li>
+<li>去掉重复属性</li>
+</ul>
+<p>如果两个关系没有公共属性，自然连接就是笛卡尔积。</p>
+</li>
+<li><p>条件连接<img no-lazy class="inline" src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526083533200.png" style="height:1.5em">表示R上的属性C和R2上的关系E在二者值相等时进行连接，为“等值连接”。除了=之外还可是其他条件。例子如下:</p>
+</li>
+</ol>
+<p>​    <img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526083836044.png" alt="image-20220526083836044"></p>
+<p>需要注意自然连接和等值连接的区别：自然连接去掉了重复的列。</p>
+<p>②理解除运算还需要知道几个相关的概念：</p>
+<p>R表为：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>pid</th>
+<th>did</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>206001</td>
+<td>3501</td>
+</tr>
+<tr>
+<td>206002</td>
+<td>3501</td>
+</tr>
+<tr>
+<td>206003</td>
+<td>3502</td>
+</tr>
+<tr>
+<td>206001</td>
+<td>3502</td>
+</tr>
+<tr>
+<td>206002</td>
+<td>3502</td>
+</tr>
+<tr>
+<td>206001</td>
+<td>3503</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol>
+<li>分量：某一属性去掉相同的值后剩下的值，如上表pid可以取{206001，206002，206003}。</li>
+<li>象集：对于关系R(X,Y)，$Y_X$表示R中属性组X上值为x的诸元组在Z上分量的集合。如上表，206001的象集为{3501,3502,3503}，206002的象集为{3501,3502}，206003的象集为{3502}。</li>
+<li>除运算的右边一般只有一列，和象集中的元素分量数保持一致。除的结果就是R中象集包含投影的所有分量。</li>
+</ol>
+<p>S表为：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>did</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3501</td>
+</tr>
+<tr>
+<td>3502</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>则R1 ÷ R2 = {206001，206002}。</p>
+<p>再来看个例子：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526090206661.png" alt="image-20220526090206661"></p>
+<h1 id="数据库设计过程和方法"><a href="#数据库设计过程和方法" class="headerlink" title="数据库设计过程和方法"></a>数据库设计过程和方法</h1><blockquote>
+<p>数据库设计的概念？方法？步骤？</p>
+</blockquote>
+<p>数据库设计是指对于给定的应用，构造最优的数据库模式来存储数据。包括结构设计（静态模型设计）和行为设计（动态模型设计）。</p>
+<ol>
+<li>结构设计：数据库的概念设计、逻辑设计和物理设计。</li>
+<li>行为设计：确定数据库用户的行为和动作。</li>
+</ol>
+<p>数据库设计的方法有：直观设计法、新奥尔良设计法(规范设计法)、面向对象设计法和计算机辅助设计法。<strong>需要理解新奥尔良设计法</strong>，它包括<mark>需求分析</mark>、<mark>概念设计</mark>、<mark>逻辑设计</mark>和<mark>物理设计</mark>四个阶段。</p>
+<p>数据库设计的六个阶段：</p>
+<ol>
+<li>需求分析</li>
+<li>概念设计</li>
+<li>逻辑设计</li>
+<li>物理设计</li>
+<li>实现和运行</li>
+<li>维护</li>
+</ol>
+<blockquote>
+<p>需求分析的方法？</p>
+</blockquote>
+<p>进行需求分析的方法有<strong>结构化方法</strong>、<strong>原型化方法</strong>、<strong>数据流分析方法</strong>。常常将结构化方法和数据流分析方法结合，使用SA的自顶向下、逐层分解的方式来分析系统，使用数据流图(DFD)和数据字典(DD)来描述系统。</p>
+<ol>
+<li>数据流图：描述信息在系统中流动和处理过程的图形化工具。用符号来表示数据的流动。</li>
+<li>数据字典：对数据库中元数据的描述，而不是数据本身，相当于关系的属性，而不是关系实例。</li>
+</ol>
+<blockquote>
+<p>概念设计的方法？</p>
+</blockquote>
+<p>概念设计是从现实到信息世界的第一次抽象，并不考虑具体的DBMS。常常用<strong>实体-关系模型(ER图)</strong>来表示概念模型。ER图在下章介绍。</p>
+<p>概念设计的方法有：<strong>自底向上</strong>、<strong>自顶向下</strong>、<strong>逐步扩张</strong>和<strong>逐步混合</strong>。</p>
+<blockquote>
+<p>逻辑设计干什么？方法？</p>
+</blockquote>
+<p>逻辑设计在概念设计的基础上，导出相应<strong>DBMS支持的数据库定义</strong>。它依赖于DBMS，实现<strong>E-R模式(实体、联系、键)到关系模式</strong>的转换。这个转换遵循<strong>实体转换规则</strong>和<strong>联系转换规则</strong>。</p>
+<ol>
+<li>实体转换规则：实体的属性就是关系的属性，实体的键就是关系的键</li>
+<li>联系转换规则：1:1、1:n、m:n不同关系的处理。</li>
+</ol>
+<h1 id="实体联系模型"><a href="#实体联系模型" class="headerlink" title="实体联系模型"></a>实体联系模型</h1><blockquote>
+<p>实体联系模型的三个基本概念？</p>
+</blockquote>
+<p>实体联系模型的三个基本概念为<strong>实体</strong>、<strong>属性</strong>和<strong>联系</strong>。</p>
+<ol>
+<li><p>实体：客观的事物。实体集则是具有相同属性实体的集合，如人就是一个实体集。实体集分为<strong>强实体集</strong>和<strong>弱实体集</strong>。</p>
+<p>①<strong>强实体集：</strong>不依赖于其他实体集存在,每个实体都能由主键唯一标识</p>
+<p>②<strong>弱实体集：</strong>每个实体不能由实体集的属性唯一标识。</p>
+</li>
+<li><p>属性：实体的特性，分为简单属性和复合属性、单值属性和多值属性、派生属性等。</p>
+<p>①简单属性是不能再分的属性</p>
+<p>②复合属性可以细分为更小的部分，如地址可以分为省、市等。</p>
+<p>③单值属性只能取一个值</p>
+<p>④多值属性可以取一个或多个值，如电话号码可以有多个。</p>
+<p>⑤派生属性可以有其他属性推导出来，如由身份证号可以推出生日。</p>
+</li>
+<li><p>联系：实体间的关联。通常为动词，如患者和医生的联系为”就诊”。</p>
+</li>
+</ol>
+<p><strong>多值属性常常进行变换</strong>：</p>
+<ol>
+<li><p>将一个多值属性用几个新的单值属性表示。如将电话号码细分种类。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526095613003.png" alt="image-20220526095613003"></p>
+</li>
+<li><p>将原来的多值属性用一个新的实体类型表示，这个新的实体类型为弱实体集，且和原来的实体集的关系为”拥有”。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526095826679.png" alt="image-20220526095826679"></p>
+</li>
+</ol>
+<blockquote>
+<p>ER图怎么表示实体、属性和联系？</p>
+</blockquote>
+<ol>
+<li><strong>实体</strong>用<mark>方框</mark>表示，方框内注明实体的名称。</li>
+<li><p><strong>属性</strong>用<mark>椭圆形框</mark>来表示，并且用无向边将属性对应实体连接起来。实体的主键用下划线来标注。</p>
+</li>
+<li><p><strong>联系</strong>用<mark>菱形框</mark>来表示，并且使用无向边来连接两个实体。</p>
+</li>
+</ol>
+<h1 id="关系规范化"><a href="#关系规范化" class="headerlink" title="关系规范化"></a>关系规范化</h1><blockquote>
+<p>模式设计问题？</p>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>Dname</strong></th>
+<th><strong>Dlevel</strong></th>
+<th><strong>Dsalary</strong></th>
+<th><strong>Pname</strong></th>
+<th><strong>Fsum</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>罗晓</td>
+<td>主任医师</td>
+<td><strong>3200</strong></td>
+<td><strong>张珍</strong></td>
+<td><strong>¥30.00</strong></td>
+</tr>
+<tr>
+<td>杨勋</td>
+<td>副主任医师</td>
+<td><strong>2800</strong></td>
+<td><strong>张珍</strong></td>
+<td><strong>¥50.00</strong></td>
+</tr>
+<tr>
+<td>杨勋</td>
+<td>副主任医师</td>
+<td><strong>2800</strong></td>
+<td><strong>刘景</strong></td>
+<td><strong>¥55.00</strong></td>
+</tr>
+<tr>
+<td>杨勋</td>
+<td>副主任医师</td>
+<td><strong>2800</strong></td>
+<td><strong>张柳</strong></td>
+<td><strong>¥58.00</strong></td>
+</tr>
+<tr>
+<td>邓英超</td>
+<td>主治医师</td>
+<td><strong>2400</strong></td>
+<td><strong>李秀</strong></td>
+<td><strong>¥75.00</strong></td>
+</tr>
+<tr>
+<td>罗晓</td>
+<td>主任医师</td>
+<td><strong>3200</strong></td>
+<td><strong>傅伟相</strong></td>
+<td><strong>¥35.00</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于上面的关系，存在<strong>函数依赖</strong></p>
+<p>$F=\{\{Dname,pname \}\rightarrow Fusm,\\Dname\rightarrow Dlevel,\\Dlevel\rightarrow Dsal\}$</p>
+<p>这就导致了<strong>数据冗余</strong>和可能发生<strong>操作(更新、插入、删除)异常</strong>的问题。</p>
+<p>这时就需要将一个表拆分为多个表，即进行<strong>模式分解</strong>：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526101929550.png" alt="image-20220526101929550"></p>
+<blockquote>
+<p>函数依赖是什么？怎么表示？分类？</p>
+</blockquote>
+<p>数据依赖包含<strong>函数依赖</strong>(FD)、<strong>多值依赖</strong>(MVD)和连接依赖，是语义的体现。而函数依赖则体现的是一个关系中<strong>属性之间的联系</strong>。</p>
+<p>函数依赖的定义：X和Y是关系R的两个属性，t和s是R上的<strong>任意</strong>两个元组。如果$t[X]=s[X]\rightarrow t[Y]=s[Y]$，那么称Y<strong>函数依赖于</strong>X，或X<strong>函数决定</strong>Y，记作$FD\ \  X\rightarrow Y$。X为决定因子，Y为依赖因子。</p>
+<p>①函数依赖分为<strong>平凡函数依赖</strong>和非平凡函数依赖。</p>
+<ol>
+<li>平凡函数依赖：当$Y\subseteq X$时(注意X和Y可以是属性集)，$FD\ \  X\rightarrow Y$恒成立。</li>
+<li>非平凡函数依赖：一般指的函数依赖就是非平凡函数依赖。</li>
+</ol>
+<p>②根据决定因子范围，非平凡函数依赖可以分为<strong>完全函数依赖</strong>和<strong>部分函数依赖</strong>。完全函数依赖用来表明函数依赖的<strong>决定因子的最小属性集</strong>。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526104145066.png" alt="image-20220526104145066"></p>
+<p>Y完全函数依赖于X的条件为：</p>
+<ol>
+<li>Y函数依赖于X</li>
+<li>Y不函数依赖于X的任何真子集</li>
+</ol>
+<p>③根据函数依赖的传递性，分为<strong>传递函数依赖</strong>和<strong>直接函数依赖</strong>。</p>
+<ol>
+<li>传递函数依赖：X、Y、Z是关系R的不同属性集，如果$X\rightarrow Y,Y\nrightarrow X,Y\rightarrow Z$，则称Z对X传递函数依赖。</li>
+<li>直接函数依赖：如果$X\rightarrow Y,Y\rightarrow X$，那么Z直接函数依赖于X。</li>
+</ol>
+<blockquote>
+<p><code>Amstrong</code>公理怎解决的问题？怎么用？</p>
+</blockquote>
+<p><code>Amstrong</code>公理解决的问题是<strong>用一些已知的函数依赖去判断另外一些函数依赖是否成立，即逻辑蕴含问题</strong>。</p>
+<ol>
+<li><p>关系模式的多个函数依赖形成函数依赖集F。现在有一个新的函数依赖($X\rightarrow Y)$不在函数依赖集里，但能从集合里根据一定的<strong>规则</strong>推导出来，就说那个集合<mark>逻辑蕴涵</mark>这个新的函数依赖,用$F╞ X→Y$表示。</p>
+</li>
+<li><p>如果一个函数依赖能由现有的函数依赖集中的其他函数推出，则该函数依赖是<strong>多余</strong>的。</p>
+</li>
+<li><p><strong>闭包</strong>(完备集)是指能由函数依赖集F推导出的所有函数依赖的集合。</p>
+</li>
+</ol>
+<p><code>Amstrong</code>包含三个<strong>基本规则</strong>：</p>
+<ol>
+<li><strong>自反性：</strong>如果$Y\subseteq X\subseteq U$，则$X\rightarrow Y$恒成立(平凡函数依赖)。</li>
+<li><strong>增广性</strong>：如果$X\rightarrow Y$成立，$Z\subseteq$ U，那么$XZ\rightarrow YZ$恒成立。</li>
+<li><strong>传递性</strong>：如果$X\rightarrow Y$且$Y\rightarrow Z$，那么$X\rightarrow Z$成立。</li>
+</ol>
+<p>由此可得到的扩展规则：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526111123252.png" alt="image-20220526111123252"></p>
+<p>需要理解合并性、伪传递性、复合型。</p>
+<p>可以保证由<code>Amstrong</code>公理推出的函数依赖是<strong>正确</strong>和<strong>完备</strong>(可以推出所有逻辑蕴含的FD)的。</p>
+<blockquote>
+<p>函数依赖的用途</p>
+</blockquote>
+<p>（一）使用函数依赖来<strong>定义候选码和主码</strong>：设关系$R(U,F)$，$K\subseteq U$且<img no-lazy class="inline" src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526112048248.png" style="height:1.5em">，则K为候选码。若候选码多于1个，那么从多个候选码里面选择一个作为主码。</p>
+<p>要注意候选码取自<strong>完全函数依赖</strong>集里面的属性，这样候选码就可以决定每个属性了。证明如下：</p>
+<p>①由推理规则的分解性：$X\rightarrow \{A_1,A_2…A_n\}$，则$X\rightarrow A_i(i=1,2…n)$。（取完全函数依赖集里面的属性集）</p>
+<p>②由推理规则的合并性：$X\rightarrow A_i(i=1,2…n)$，则$X\rightarrow \{A_1,A_2…A_n\}$。（这个属性集可以推出其他所有属性）</p>
+<p>（二）由函数依赖<strong>定义外码</strong>。</p>
+<blockquote>
+<p>由函数依赖集F求最小依赖集G的算法？</p>
+</blockquote>
+<ol>
+<li>根据分解性，使FD右边的属性均为单属性。删去重复的函数依赖。</li>
+<li>根据传递性，删除冗余的FD。</li>
+<li>看看能否消除左边冗余的属性。</li>
+</ol>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526113817968.png" alt="image-20220526113817968"></p>
+<p>每个函数依赖集至少存在一个最小依赖集，但不一定唯一。</p>
+<blockquote>
+<p>模式分解？怎么进行无损分解？</p>
+</blockquote>
+<p>模式分解将一张<strong>冗余表</strong>分解为多张表。如果分解后的表通过自然连接能<strong>获得原始表</strong>，那么就是<mark>无损连接分解</mark>，否则称为<mark>损失分解</mark>。</p>
+<p>如$R(X,Y,X)$分解为$R1(X,Y)$和$R2(Y,Z)$，如果存在函数依赖$F={X\rightarrow Y,Y\rightarrow Z}$，则该分解是无损的。</p>
+<p>无损分解的一个算法为<strong>追逐法</strong>。</p>
+<blockquote>
+<p>范式是什么？种类？怎么判断？</p>
+</blockquote>
+<p>范式（NF）是一种关系的状态，是<strong>衡量关系模式好坏的标准</strong>。</p>
+<p>范式分为<strong>1NF、2NF、3NF、BCNF</strong>。我们需要掌握各范式的判断方法。</p>
+<ol>
+<li>1NF：每个属性值都是不可再分的<strong>原子值</strong>，即不能”表中有表”。</li>
+<li>2NF：关系模式R∈1NF，且每个<strong>非主属性完全函数依赖</strong>于候选码。如果主键只有一个，那么必定满足2NF；否则主键必须是函数依赖的最小属性集。</li>
+<li>3NF：关系模式R∈1NF，且每个<strong>非主属性</strong>都<strong>不传递依赖</strong>于候选码，而是直接依赖的。满足3NF的条件有两个：①R中的非主属性相互独立；②R中的非主属性完全函数依赖于主键。</li>
+<li>BCNF：关系模式R∈1NF，且 (包含主属性和非主属性)都<strong>不传递依赖</strong>于R的候选码。BCNF在3NF的基础上消除了<strong>主属性对码</strong>的可能存在的部分依赖和传递依赖。</li>
+</ol>
+<blockquote>
+<p>2NF、3NF分解算法</p>
+</blockquote>
+<p>（一）2NF分解算法</p>
+<p>$R(Dname, Pname,Dlevel,Dsal,Fsum)$中，$Dname,Pname$是候选码，存在FD：$( Dname,Pname)→Fsum$和$Dname →(Dlevel,Dsal)$，后者是部分函数依赖，不满足2NF。</p>
+<p>分解为两个表：</p>
+<ol>
+<li>$R1(Dname, Pname,Fsum)$，主键为$Dname,Pname$。这一步的属性取自部分函数依赖，主键取自部分函数依赖左边部分。</li>
+<li>$R2(Dname,Dlevel,Dsal)$，主键为$Dname$。这一步用U减去R1中的属性，如果是主键则需要考虑。</li>
+</ol>
+<p>（二）3NF分解算法</p>
+<p>$R2(Dname,Dlevel,Dsal)$存在$Dname →Dlevel$和$Dlevel→Dsal$，即存在传递函数依赖，不满足3NF。</p>
+<p>传递函数依赖：$Dname\rightarrow Dsal$，中间属性为$Dlevel$，分解为两个表:</p>
+<ol>
+<li>$R1(Dlevel,Dsal)$，主键为$Dlevel$选择中间属性和传递依赖的右边，中间属性为主键。</li>
+<li>$R2(Dname,Dlevel)$，主键仍为$Dname$，外键为中间属性。</li>
+</ol>
+<blockquote>
+<p>关于模式分解的几个事实？</p>
+</blockquote>
+<ol>
+<li><p>若要求<strong>分解保持完全函数依赖</strong>，那么模式分解<strong>总可以达到3NF</strong>，但不一定能达到BCNF；</p>
+</li>
+<li><p>若要求分解既保持函数依赖，<strong>又具有无损连接性</strong>，可以达到3NF，但不一定能达到BCNF；</p>
+</li>
+</ol>
+<h1 id="基础SQL语言"><a href="#基础SQL语言" class="headerlink" title="基础SQL语言"></a>基础SQL语言</h1><p>总的来说，SQL语言需要掌握以下9个动词：</p>
+<ol>
+<li>DDL：CREATE、DROP、ALTER</li>
+<li>DML：SELECT、INSERT、UPDATE、DELETE</li>
+<li>DCL：GRANT、REVOKE</li>
+</ol>
+<blockquote>
+<p>数据库的创建和、修改和删除？</p>
+</blockquote>
+<ol>
+<li><p>数据库的<strong>创建</strong></p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE <span class="operator">&lt;</span>数据库名<span class="operator">&gt;</span></span><br><span class="line">[<span class="operator">&lt;</span><span class="keyword">On</span>  <span class="keyword">Primary</span><span class="operator">&gt;</span> </span><br><span class="line">    ([Name <span class="operator">=</span> 系统使用的逻辑名],</span><br><span class="line">    [Filename <span class="operator">=</span> 完全限定的NT Server文件名], </span><br><span class="line">    [Size <span class="operator">=</span> 文件的初始大小],</span><br><span class="line">    [MaxSize <span class="operator">=</span> 最大的文件尺寸],</span><br><span class="line">    [FileGrowth <span class="operator">=</span> 系统的扩展文件量])…]</span><br><span class="line">    [<span class="operator">&lt;</span>Log <span class="keyword">On</span><span class="operator">&gt;</span></span><br><span class="line">    ([Name <span class="operator">=</span> 系统使用的逻辑名],</span><br><span class="line">    [Filename <span class="operator">=</span> 完全限定的NT Server文件名],</span><br><span class="line">    [Size <span class="operator">=</span> 文件的初始大小],</span><br><span class="line">    [FileGrowth <span class="operator">=</span> 系统的扩展文件量])]</span><br></pre></td></tr></table></figure>
+<p> 要区别这里参数的含义，如<code>Name</code>和<code>Filename</code>，前者指定的是逻辑名，后者指定的是文件名。可以缺省为<code>CREATE DATABASE &lt;数据库名&gt;;</code>。</p>
+</li>
+<li><p>数据库的<strong>修改</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> DATABASE <span class="operator">&lt;</span>数据库名<span class="operator">&gt;</span></span><br><span class="line">[<span class="operator">&lt;</span><span class="keyword">Add</span> File<span class="operator">&gt;</span></span><br><span class="line">(<span class="operator">&lt;</span>Name <span class="operator">=</span> 系统使用的逻辑名<span class="operator">&gt;</span>,</span><br><span class="line">[Filename <span class="operator">=</span> 完全限定的NT Server文件名], </span><br><span class="line">[Size <span class="operator">=</span> 文件的初始大小],</span><br><span class="line">[MaxSize <span class="operator">=</span> 最大的文件尺寸],</span><br><span class="line">[FileGrowth <span class="operator">=</span> 系统的扩展文件量])…]</span><br><span class="line">[<span class="operator">&lt;</span>Modify File<span class="operator">&gt;</span></span><br><span class="line">(<span class="operator">&lt;</span>Name <span class="operator">=</span> 系统使用的逻辑名<span class="operator">&gt;</span>,</span><br><span class="line">[Filename <span class="operator">=</span> 完全限定的NT Server文件名], </span><br><span class="line">[Size <span class="operator">=</span> 文件的初始大小],</span><br><span class="line">[MaxSize    <span class="operator">=</span> 最大的文件尺寸],</span><br><span class="line">[FileGrowth <span class="operator">=</span> 系统的扩展文件量])…]</span><br><span class="line">[<span class="operator">&lt;</span>Remove File<span class="operator">&gt;</span> <span class="operator">&lt;</span>系统使用文件的逻辑名<span class="operator">&gt;</span>,…]</span><br><span class="line">[<span class="operator">&lt;</span><span class="keyword">Add</span> Log File<span class="operator">&gt;</span></span><br><span class="line">(<span class="operator">&lt;</span>Name <span class="operator">=</span> 系统使用的逻辑名<span class="operator">&gt;</span>,</span><br><span class="line">[Filename <span class="operator">=</span> 完全限定的NT Server文件名], </span><br><span class="line">[Size <span class="operator">=</span> 文件的初始大小],</span><br><span class="line">[MaxSize <span class="operator">=</span> 最大的文件尺寸],</span><br><span class="line">[FileGrowth <span class="operator">=</span> 系统的扩展文件量])…]</span><br></pre></td></tr></table></figure>
+<p>可选的操作有<code>&lt;Add File&gt;</code>、<code>&lt;Modify File&gt;</code>、<code>&lt;Remove File&gt;</code>和<code>&lt;Add Log File&gt;</code>。</p>
+</li>
+<li><p>数据库的<strong>删除</strong>：<code>DROP DATABASE &lt;数据库名&gt;;</code></p>
+</li>
+</ol>
+<blockquote>
+<p>表的创建、修改和删除</p>
+</blockquote>
+<p>SQL SERVER中的<strong>数据类型</strong>：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>数据类型</strong></th>
+<th><strong>申明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数字类型</td>
+<td>NUMERIC, DECIMAL,   INTEGER, SMALLINT,  FLOAT, DOUBLE,   REAL</td>
+</tr>
+<tr>
+<td>字符串类型</td>
+<td>CHAR, VARCHAR,   TEXT</td>
+</tr>
+<tr>
+<td>二进制串类型</td>
+<td>BINARY,  VARBINARY,   BLOB</td>
+</tr>
+<tr>
+<td>布尔类型</td>
+<td>BOOLEAN</td>
+</tr>
+<tr>
+<td>日期时间类型</td>
+<td>DATE, TIME,   DATETIME, TIMESTAMP</td>
+</tr>
+<tr>
+<td>时间间隔类型</td>
+<td>INTERVAL</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol>
+<li><p>表的创建：<code>CREATE</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span>  基表名（</span><br><span class="line">    <span class="operator">&lt;</span>列名<span class="number">1</span><span class="operator">&gt;</span> <span class="operator">&lt;</span>列类型<span class="operator">&gt;</span> <span class="operator">&lt;</span>列约束<span class="operator">&gt;</span>,</span><br><span class="line">    <span class="operator">&lt;</span>列名<span class="number">2</span><span class="operator">&gt;</span> <span class="operator">&lt;</span>列类型<span class="operator">&gt;</span> <span class="operator">&lt;</span>列约束<span class="operator">&gt;</span>,</span><br><span class="line">    …</span><br><span class="line">    <span class="operator">&lt;</span>列名n<span class="operator">&gt;</span> <span class="operator">&lt;</span>列类型<span class="operator">&gt;</span> <span class="operator">&lt;</span>列约束<span class="operator">&gt;</span>,</span><br><span class="line">    <span class="operator">&lt;</span>表约束<span class="operator">&gt;</span> <span class="operator">|</span> [ &#123; <span class="keyword">PRIMARY</span> KEY <span class="operator">|</span> <span class="keyword">UNIQUE</span> &#125; [ ,…] ]</span><br><span class="line">）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>表的修改：<code>ALTER</code></p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> DATABASE <span class="operator">&lt;</span>数据库名<span class="operator">&gt;</span></span><br><span class="line">[<span class="operator">&lt;</span><span class="keyword">Add</span> File<span class="operator">&gt;</span></span><br><span class="line">(<span class="operator">&lt;</span>Name <span class="operator">=</span> 系统使用的逻辑名<span class="operator">&gt;</span>,</span><br><span class="line">[Filename <span class="operator">=</span> 完全限定的NT Server文件名], </span><br><span class="line">[Size <span class="operator">=</span> 文件的初始大小],</span><br><span class="line">[MaxSize <span class="operator">=</span> 最大的文件尺寸],</span><br><span class="line">[FileGrowth <span class="operator">=</span> 系统的扩展文件量])…]</span><br><span class="line">[<span class="operator">&lt;</span>Modify File<span class="operator">&gt;</span></span><br><span class="line">(<span class="operator">&lt;</span>Name <span class="operator">=</span> 系统使用的逻辑名<span class="operator">&gt;</span>,</span><br><span class="line">[Filename <span class="operator">=</span> 完全限定的NT Server文件名], </span><br><span class="line">[Size <span class="operator">=</span> 文件的初始大小],</span><br><span class="line">[MaxSize    <span class="operator">=</span> 最大的文件尺寸],</span><br><span class="line">[FileGrowth <span class="operator">=</span> 系统的扩展文件量])…]</span><br><span class="line">[<span class="operator">&lt;</span>Remove File<span class="operator">&gt;</span> <span class="operator">&lt;</span>系统使用文件的逻辑名<span class="operator">&gt;</span>,…]</span><br><span class="line">[<span class="operator">&lt;</span><span class="keyword">Add</span> Log File<span class="operator">&gt;</span></span><br><span class="line">(<span class="operator">&lt;</span>Name <span class="operator">=</span> 系统使用的逻辑名<span class="operator">&gt;</span>,</span><br><span class="line">[Filename <span class="operator">=</span> 完全限定的NT Server文件名], </span><br><span class="line">[Size <span class="operator">=</span> 文件的初始大小],</span><br><span class="line">[MaxSize <span class="operator">=</span> 最大的文件尺寸],</span><br><span class="line">[FileGrowth <span class="operator">=</span> 系统的扩展文件量])…]</span><br></pre></td></tr></table></figure>
+<p> 同样样注意<code>name</code>和<code>filename</code>。</p>
+</li>
+<li><p>表的删除：<code>DROP TABLE &lt;表名&gt;;</code></p>
+</li>
+</ol>
+<blockquote>
+<p>基本查询语句（重点）</p>
+</blockquote>
+<p>查询语句的基本结构为：(需要记住顺序……不然考试可能扣分……)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> [<span class="keyword">DISTINCT</span><span class="operator">|</span><span class="keyword">ALL</span>]&#123;<span class="operator">*</span><span class="operator">|</span>属性列表达式[<span class="keyword">AS</span> 新的属性列名][,…] &#125;</span><br><span class="line"><span class="keyword">FROM</span> <span class="operator">&lt;</span>基表名<span class="operator">|</span>视图名<span class="operator">&gt;</span>[别名][,…]</span><br><span class="line">[<span class="keyword">INTO</span> <span class="operator">&lt;</span>新表名<span class="operator">&gt;</span>]</span><br><span class="line">[<span class="keyword">WHERE</span> <span class="operator">&lt;</span>行选择条件<span class="operator">&gt;</span>]</span><br><span class="line">[<span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="operator">&lt;</span>分组依据列<span class="operator">&gt;</span>]</span><br><span class="line">[<span class="keyword">HAVING</span> <span class="operator">&lt;</span>分组选择条件<span class="operator">&gt;</span>]</span><br><span class="line">[<span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="operator">&lt;</span>排序依据列<span class="operator">&gt;</span>[<span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span>]];</span><br></pre></td></tr></table></figure>
+<p>顺序为：<code>from</code>、<code>where</code>、<code>group by</code>、<code>having</code>、<code>order by</code>。</p>
+<p><strong>Where</strong>后面的选择条件中，可以用的运算符：</p>
+<ol>
+<li>比较运算符：=、!=或&lt;&gt;、&lt;=、&gt;=、&lt;、&gt;。</li>
+<li>逻辑运算符：AND、OR、NOT。（优先级NOT&gt;AND&gt;OR)</li>
+<li>集合运算符：IN、NOT IN</li>
+<li>范围运算符：BETWEEN AND、NOT BETWEEN AND。</li>
+<li>模糊查询：LIKE、_(下划线)、%(百分号)。</li>
+<li>判空：IS NULL、IS NOT NULL。</li>
+</ol>
+<p>其他：</p>
+<ol>
+<li><p>聚集函数：<strong>SUM、COUNT、MAX、MIN、AVG</strong>。</p>
+</li>
+<li><p>ORDER BY语句分<strong>ASC升序</strong>和<strong>DESC降序</strong>两种排序方式，默认升序。</p>
+</li>
+<li>GROUP BY按照某列的值来分组，对其他列的选择<strong>必须使用聚集函数</strong></li>
+<li>HAVING对分组进行过滤，后面的条件也要使用聚集函数。如果没有分组，则having等同于where。</li>
+</ol>
+<blockquote>
+<p>对查询结果进行集合运算</p>
+</blockquote>
+<ol>
+<li>UNION实现集合并运算。</li>
+<li>EXCEPT实现差运算。</li>
+<li>INTERSECT实现交运算。</li>
+</ol>
+<blockquote>
+<p>对查询结果进行连接</p>
+</blockquote>
+<p>（一）内连接</p>
+<ol>
+<li><p><code>&lt;表1&gt; INNER JOIN &lt;表2&gt; ON &lt;条件&gt;</code>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Rno,Pno,D.Dno,Dname,Dsex,Dage,Ddeptno,Dlevel</span><br><span class="line">    <span class="keyword">FROM</span> RecipeMaster R <span class="keyword">JOIN</span> Doctor D <span class="keyword">ON</span> R.Dno <span class="operator">=</span> D.Dno</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>&lt;表1&gt; INNER JOIN &lt;表2&gt; USING &lt;列名&gt;</code>(两个表有相同名字的列):</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Rno,Pno,D.Dno,Dname, Dsex,Dage,Ddeptno,Dlevel</span><br><span class="line">   <span class="keyword">FROM</span> RecipeMaster R <span class="keyword">JOIN</span> Doctor D <span class="keyword">USING</span>(Dno)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>等值连接<code>where 表1.列1=表2.列2</code></p>
+</li>
+<li>自然连接<code>NATURAL JOIN</code></li>
+<li>自连接：需要使用别名来区分不同的副本。</li>
+</ol>
+<p>（二）外连接</p>
+<p>外连接分为<strong>左外连接</strong>、<strong>右外连接</strong>和<strong>全外连接</strong>三种。</p>
+<ol>
+<li><code>LEFT OUTER JOIN</code>：<strong>输出左表的所有记录相关列值</strong>，右表输出与左表匹配的记录，如果没有与左表匹配的记录，则使用NULL匹配输出。</li>
+<li><code>RIGHT OUTER JOIN</code>：<strong>输出右表的所有记录相关列值</strong>，左表输出与右表匹配的记录，如果没有与右表匹配的记录，则使用NULL匹配输出。</li>
+<li><code>FULL OUTER JOIN</code>：左外连接和右外连接的并集。</li>
+</ol>
+<h1 id="事务与并发控制"><a href="#事务与并发控制" class="headerlink" title="事务与并发控制"></a>事务与并发控制</h1><blockquote>
+<p>事务的定义与特点？</p>
+</blockquote>
+<p>事务是<strong>用户自定义</strong>的一个<strong>数据库操作序列</strong>。它可以显示定义，也可以缺省.</p>
+<p>事务的特性包括ACID四个：</p>
+<ol>
+<li><strong>原子性</strong>：事务的操作要么全做，要么全不做。</li>
+<li><strong>一致性</strong>：当事务完成时，必须使所有<strong>数据都处于一致的状态</strong>。</li>
+<li><strong>隔离性</strong>：事务<strong>并发执行</strong>时，一个事务的执行不能被其他事务干扰。</li>
+<li><strong>持续性</strong>：事务一旦提交，它对数据库的改变应该时永久性的。</li>
+</ol>
+<blockquote>
+<p>事务并发执行可能带来的问题？</p>
+</blockquote>
+<ol>
+<li><p><strong>读脏数据</strong>：一个事务读取了另一个事务修改但未提交的数据。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526144149208.png" alt="image-20220526144149208"></p>
+<p>若一个事务写在另一个事务的读前面，则需要注意。</p>
+</li>
+<li><p><strong>不可重复读</strong>：在一个事务内部前后多次读同一数据得到不一样的值</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526144619122.png" alt="image-20220526144619122"></p>
+<p>若一个事务对同一数据进行多次读取，则需要注意。</p>
+</li>
+<li><p><strong>丢失更新</strong>：一个事务的更新结果被另一个事务的结果覆盖，最后在数据库中没有得到体现。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526144803707.png" alt="image-20220526144803707"></p>
+</li>
+</ol>
+<p>​    若一个事务的读在另一个事务的写之前，则需要注意。</p>
+<blockquote>
+<p>可串行化调度是什么？有什么用？</p>
+</blockquote>
+<p>两个事务的<strong>串行调度</strong>的方案有2!=2种：(n个事务的串行调度方式有n!种)</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526145246363.png" alt="image-20220526145246363"></p>
+<p>这两种调度的顺序不同，最终写入数据库的结果也可能不同。但是我们认为这两种调度都是正确的，因为它保持了数据的一致性。</p>
+<p>若多个事务<strong>交叉调度的结果</strong>与<strong>某一个串行调度</strong>的<strong>结果相同</strong>，那么就称这个调度是可串行化的。</p>
+<p>可串行化的意义是，如果能证明<strong>一个调度是可串行化的</strong>，那么就能保持数据库的一致性，所以认为<strong>它是一个正确的调度</strong>。</p>
+<p>证明一个调度是否是可串行化，有<strong>冲突可串行化</strong>和<strong>视图可串行化</strong>两种方案.</p>
+<blockquote>
+<p>冲突可串行化？怎么判断？</p>
+</blockquote>
+<p>从事务并发执行的问题可以看出，如果多个事务的对于<strong>同一数据</strong>的操作序列中相邻两个操作出现了写操作，那么这就是一个<strong>冲突</strong>的指令；如果<strong>只读不写</strong>，那么就是不冲突的。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526151036479.png" alt="image-20220526151036479"></p>
+<p>需要注意冲突是不同事务对于同一个数据的读写导致的，不同数据则一定不冲突。</p>
+<p>我们将不同事务的非冲突指令交换顺序，若最终能化为串行调度，那么这个调度就是冲突可串行化的：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526151340014.png" alt="image-20220526151340014"></p>
+<p><strong>冲突可串行化是该调度可串行化的充分条件。</strong></p>
+<p><strong>使用前驱图可以方便的进行冲突可串行化的判定</strong>。前驱图中<code>Ti</code>→<code>Tj</code> 的边表示在调度S中<code>Ti</code> 和<code>Tj</code>之间<strong>存在一对冲突指令</strong>，并且<code>Ti</code>中的指令<strong>先于</strong><code>Tj</code> 中的指令执行：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526152254168.png" alt="image-20220526152254168"></p>
+<p>如果前驱图中<strong>存在环</strong>，那么就是<strong>不可串行化</strong>的，否则就是冲突可串行化。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526152431305.png" alt="image-20220526152431305"></p>
+<blockquote>
+<p>视图可串行化？怎么判断？</p>
+</blockquote>
+<p>如果两个调度S1和S2<strong>在任何时候</strong>都保证<strong>每个事务读取相同的值</strong>，<strong>写入数据库的最终状态也是一样的</strong>，则称调度S1和S2<mark>视图等价</mark>。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526151557203.png" alt="image-20220526151557203"></p>
+<p>对于上面的两个调度，<strong>T1读取的</strong>都是数据库的初始值，<strong>T2读取</strong>的都是T1修改后的值，数据库中<strong>最终状态都是由T2写入</strong>，所以两个调度视图等价。</p>
+<p>如果某个调度<strong>视图等价于一个串行调度</strong>，那么就称这调度<strong>视图可串行化</strong>。</p>
+<p>如果调度是<strong>冲突可串行化</strong>的，则它一定是<strong>视图可串行化</strong>的，反之不一定。</p>
+<blockquote>
+<p>封锁？锁的分类？</p>
+</blockquote>
+<p><strong>确保事务隔离性</strong>的方法之一是要求对数据的访问以互斥的方式进行。即，当<strong>一个事务访问某一数据时，其它事务不能对该数据进行修改</strong>。实现该需求最常用的方法就是在访问数据前先持有该数据上的锁。</p>
+<p>一个数据项的锁可以分为<strong>S锁和X锁</strong>：</p>
+<ol>
+<li><strong>共享锁</strong>(S锁)：只能读，不能写。</li>
+<li><strong>排他锁</strong>(X锁)：可以读和写。</li>
+</ol>
+<p>锁的相容矩阵如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526153116253.png" alt="image-20220526153116253"></p>
+<p>只有两个事务同时持有S锁时，才能对一个数据<strong>同时访问</strong>；否则后来的需要<strong>等待</strong>前面的事务释放锁后才能继续访问。</p>
+<blockquote>
+<p>两段锁协议？</p>
+</blockquote>
+<p>何时申请锁和释放锁的协议称为封锁协议。两段锁协议是一种比较常用的加锁协议。</p>
+<ol>
+<li><strong>增长阶段</strong>：在对任何数据进行读、写操作之前，首先申请并获得该数据的封锁。这阶段一直在加锁。</li>
+<li><strong>收缩阶段</strong>：在<strong>释放一个封锁</strong>后，事务不再申请和获得其它的任何封锁。这个阶段一直在释放锁。</li>
+</ol>
+<p><strong>两端锁协议是保证冲突可串行化的充分条件</strong>，但不保证不发生<strong>死锁</strong>。</p>
+<blockquote>
+<p>严格两段锁协议？</p>
+</blockquote>
+<p>严格两段锁协议：除要求满足两段锁协议规定外，还要求事务的<strong>排它锁必须在事务提交之后释放</strong>。</p>
+<p>严格两段锁协议可<strong>避免级联回滚</strong>，同时解决了脏读和丢失修改的问题。</p>
+<blockquote>
+<p>强两段锁协议？</p>
+</blockquote>
+<p>强两段锁协议：除要求满足两段锁协议规定外，还要求事务的<strong>所有锁都必须在事务提交之后释放</strong>。</p>
+<p>在严格两段锁的基础上，进一步解决了数据项<strong>不能重复读</strong>的问题。</p>
+<blockquote>
+<p>死锁的两种处理方式？</p>
+</blockquote>
+<ol>
+<li>进行死锁的预防，不让并发执行的事务出现死锁的状况，方法有：<ol>
+<li>顺序封锁法</li>
+<li>一次封锁法：事务在开始执行前先申请到所需的所有封锁</li>
+<li>时间戳</li>
+</ol>
+</li>
+<li>允许死锁的发生，在死锁出现后采取措施解决</li>
+</ol>
+<h1 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h1><p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526154752479.png" alt="image-20220526154752479"></p>
+<blockquote>
+<p>后像后写？</p>
+</blockquote>
+<p>后向后写是指<strong>后像在事务提交后才写入数据库</strong>。此时数据库恢复实行的是redo(重做)策略：<strong>重复执行已提交的事务</strong>，将所有的数据项设为新值；<strong>忽略未完成的事务</strong>。此时日志对写操作的记录为<code>&lt;T,X,V1&gt;</code>，V1为写入的新值。</p>
+<p>恢复处理的步骤为：</p>
+<ol>
+<li><p>从后向前扫描日志,将提交的事务放入队列redo-list(找提交操作命令)</p>
+</li>
+<li><p>从前往后扫描日志。对遇到的每一<T,X,V1>记录:</T,X,V1></p>
+<ol>
+<li>如果T不是redo-list中的事务，则什么也不做。</li>
+<li>如果T是redo-list中的事务，则为数据项X写入值V1</li>
+</ol>
+</li>
+<li><p>对每个未完成的事务，在日志中写入一个<strong><T,ABORT></T,ABORT></strong>记录并刷新日志</p>
+</li>
+</ol>
+<p><img src="https://cloud.fullcomb.top/private/source/image/db/review/image-20220526155220794.png" alt="image-20220526155220794"></p>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>数据库复习</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.fullcomb.top/post/eb3d82ea.html">https://blog.fullcomb.top/post/eb3d82ea.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Sato</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2022-05-26</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2022-05-26</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/fa15a220.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/opengl/review/cover.png" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">三维图形程序设计复习</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/avatar.JPG" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">祝愿我们都能够保持初心，做兴趣使然的英雄</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><a target="_blank" style="display:block;margin:0;padding:0;"href="https://music.fullcomb.top/"><p font-size="14px">来这里听听音乐应该会很有趣♬<p><img  src="https://cloud.fullcomb.top/private/source/image/3.png" / style="display:block;width:230px"></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">数据库系统概论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">关系模型和关系代数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E5%92%8C%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">数据库设计过程和方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E4%BD%93%E8%81%94%E7%B3%BB%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">实体联系模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E8%A7%84%E8%8C%83%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">关系规范化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80SQL%E8%AF%AD%E8%A8%80"><span class="toc-number">6.</span> <span class="toc-text">基础SQL语言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E4%B8%8E%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="toc-number">7.</span> <span class="toc-text">事务与并发控制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E6%81%A2%E5%A4%8D"><span class="toc-number">8.</span> <span class="toc-text">故障恢复</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/eb3d82ea.html" title="数据库复习"><img src="https://cloud.fullcomb.top/private/source/image/db/review/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="数据库复习"/></a><div class="content"><a class="title" href="/post/eb3d82ea.html" title="数据库复习">数据库复习</a><time datetime="2022-05-26T12:47:30.581Z" title="发表于 2022-05-26 20:47:30">2022-05-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/fa15a220.html" title="三维图形程序设计复习"><img src="https://cloud.fullcomb.top/private/source/image/opengl/review/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="三维图形程序设计复习"/></a><div class="content"><a class="title" href="/post/fa15a220.html" title="三维图形程序设计复习">三维图形程序设计复习</a><time datetime="2022-05-25T02:25:34.793Z" title="发表于 2022-05-25 10:25:34">2022-05-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/24242d9a.html" title="8086汇编入门【1】"><img src="https://cloud.fullcomb.top/private/source/image/asm/image-20220514114805665.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="8086汇编入门【1】"/></a><div class="content"><a class="title" href="/post/24242d9a.html" title="8086汇编入门【1】">8086汇编入门【1】</a><time datetime="2022-05-14T04:08:06.799Z" title="发表于 2022-05-14 12:08:06">2022-05-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://npm.elemecdn.com/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://npm.elemecdn.com/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://npm.elemecdn.com/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://npm.elemecdn.com/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.vemoji)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      document.getElementById('twikoo-count').innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://npm.elemecdn.com/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://npm.elemecdn.com/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: 'ef382e7e9e58164b99894ad411eed3f8',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://npm.elemecdn.com/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Twikoo' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://npm.elemecdn.com/artitalk@3.2.2"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script src="https://npm.elemecdn.com/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://npm.elemecdn.com/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://npm.elemecdn.com/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div></body></html>
