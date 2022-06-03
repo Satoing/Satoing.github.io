@@ -337,7 +337,7 @@
                 closeOnConfirm: true,
                 closeOnCancel: true,
                 confirmButtonText: '一库搜',
-                confirmButtonColor: '#fb7299',
+                confirmButtonColor: '#9393c7',
                 cancelButtonText: '口头哇路',
                 imageUrl: null,
                 imageSize: null,
@@ -1117,8 +1117,8 @@
                     $customIcon.style.backgroundImage = 'url(' + params.imageUrl + ')';
                     _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.show($customIcon);
 
-                    var _imgWidth = 80;
-                    var _imgHeight = 80;
+                    var _imgWidth = 141;
+                    var _imgHeight = 114;
 
                     if (params.imageSize) {
                         var dimensions = params.imageSize.toString().split('x');

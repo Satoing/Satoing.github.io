@@ -6,8 +6,8 @@ function welcome() {
     }
     swal({
         title: " Ciallo!✨",
-        text: '这里可以听到纯度100%的二次元音乐喏~♬', //欢迎文本，可自行修改
-        imageUrl: "https://thirdqq.qlogo.cn/g?b=sdk&k=GiaUWM9IAH7hSnDAXibKLt0Q&s=140&t=1644054638", //图片，自行修改位置
+        text: '这里可以听到超好听的音乐♬', //欢迎文本，可自行修改
+        imageUrl: "https://i.bandori.party/u/asset/9TMSoYRoselia-OHMORI-Visual-2S15q4.png", //图片，自行修改位置
         showConfirmButton: true,
         showCancelButton: true
     });
