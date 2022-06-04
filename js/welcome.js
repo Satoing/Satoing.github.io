@@ -7,7 +7,7 @@ function welcome() {
     swal({
         title: " Ciallo!✨",
         text: '这里可以听到超好听的音乐♬', //欢迎文本，可自行修改
-        imageUrl: "https://i.bandori.party/u/asset/9TMSoYRoselia-OHMORI-Visual-2S15q4.png", //图片，自行修改位置
+        imageUrl: "https://cloud.fullcomb.top/private/source/image/build/roselia/9TMSoYRoselia-OHMORI-Visual-2S15q4.webp", //图片，自行修改位置
         showConfirmButton: true,
         showCancelButton: true
     });
