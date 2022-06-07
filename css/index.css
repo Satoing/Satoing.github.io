@@ -3508,6 +3508,7 @@ h1.page-title + .tag-cloud-list {
 }
 #aside-content > .card-widget:first-child {
   margin-top: 0;
+  margin-bottom: 40px;
 }
 @media screen and (max-width: 900px) {
   #aside-content > .card-widget:first-child {
@@ -4266,22 +4267,22 @@ li.categoryBar-list-item:nth-child(6) {
   background: url('https://cloud.fullcomb.top/private/source/image/build/roselia/archive.webp');
 }
 li.categoryBar-list-item:nth-child(1)>span::after {
-  content: '来感受这种独特的体裁' !important;
+  content: '此生无悔二次元' !important;
 }
 li.categoryBar-list-item:nth-child(2)>span::after {
-  content: '大二上学习的课程' !important;
+  content: '大二上的学习' !important;
 }
 li.categoryBar-list-item:nth-child(3)>span::after {
-  content: 'Mine大二下，敬请期待！' !important;
+  content: '大二下的课内学习' !important;
 }
 li.categoryBar-list-item:nth-child(4)>span::after {
   content: '应该知道的二三事' !important;
 }
 li.categoryBar-list-item:nth-child(5)>span::after {
-  content: '这块暂时鸽了' !important;
+  content: '暂鸽，下次一定' !important;
 }
 li.categoryBar-list-item:nth-child(6)>span::after {
-  content: '图形学相关内容' !important;
+  content: '图形学和游戏相关' !important;
 }
 li.categoryBar-list-item {
   width: 32.3% !important;

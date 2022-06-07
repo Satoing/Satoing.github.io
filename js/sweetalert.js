@@ -338,7 +338,7 @@
                 closeOnCancel: true,
                 confirmButtonText: '一库搜',
                 confirmButtonColor: '#9393c7',
-                cancelButtonText: '口头哇路',
+                cancelButtonText: '搭嘎口头哇路',
                 imageUrl: null,
                 imageSize: null,
                 timer: null,
