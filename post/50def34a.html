@@ -1,0 +1,733 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>计组复习3:指令系统和CPU | Smile Diary × Roselia</title><meta name="keywords" content="计组,期末复习"><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="计算机组成原理知识点比较多，所以分多部分复习。本篇是第三部分，复习计算机的指令系统和CPU，重点是MIPS各指令的规则以及CU中与之对应的控制信号的取值。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计组复习3:指令系统和CPU">
+<meta property="og:url" content="https://blog.fullcomb.top/post/50def34a.html">
+<meta property="og:site_name" content="Smile Diary × Roselia">
+<meta property="og:description" content="计算机组成原理知识点比较多，所以分多部分复习。本篇是第三部分，复习计算机的指令系统和CPU，重点是MIPS各指令的规则以及CU中与之对应的控制信号的取值。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615113825087.png">
+<meta property="article:published_time" content="2022-06-15T05:23:16.569Z">
+<meta property="article:modified_time" content="2022-06-15T05:26:05.542Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="计算机组成原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615113825087.png"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/build/roselia/favicon.png"><link rel="canonical" href="https://blog.fullcomb.top/post/50def34a"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://npm.elemecdn.com/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://npm.elemecdn.com/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://npm.elemecdn.com/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计组复习3:指令系统和CPU',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-15 13:26:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><link href="https://npm.elemecdn.com/@fortawesome/fontawesome-free@6/css/all.min.css" rel="stylesheet"><script src="/js/SAO-Notify.js" async></script><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script><script type="text/javascript" src ="/js/welcome.js" ></script><script src="/js/sweetalert.js"></script><link rel="stylesheet" href="/css/sweetalert.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Smile Diary × Roselia" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/avatar.webp" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">46</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/log/"><i class="fa-fw fas fa-gear"></i><span> 女装记录</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615113825087.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/"> <br id="site-name"/><img id="site-name" src="https://cloud.fullcomb.top/private/source/image/build/roselia/Roselia.webp" style="width:40%;"/></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/log/"><i class="fa-fw fas fa-gear"></i><span> 女装记录</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计组复习3:指令系统和CPU</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-15T05:23:16.569Z" title="发表于 2022-06-15 13:23:16">2022-06-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-15T05:26:05.542Z" title="更新于 2022-06-15 13:26:05">2022-06-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8B/">大二下</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="章节一览"><a href="#章节一览" class="headerlink" title="章节一览"></a>章节一览</h1><div class="note info flat"><p>计算机组成原理知识点比较多，所以分多部分复习。本篇是第三部分，复习计算机的指令系统和CPU，重点是MIPS各指令的规则以及CU中与之对应的控制信号的取值。</p>
+</div>
+<div class="checkbox checked"><input type="checkbox" checked="checked">
+            <p>计算机系统概述</p>
+            </div>
+<div class="checkbox checked"><input type="checkbox" checked="checked">
+            <p>数据的表示和运算</p>
+            </div>
+<div class="checkbox checked"><input type="checkbox" checked="checked">
+            <p>指令系统</p>
+            </div>
+<div class="checkbox checked"><input type="checkbox" checked="checked">
+            <p>中央处理器（重点）</p>
+            </div>
+<div class="checkbox checked"><input type="checkbox" checked="checked">
+            <p>存储的分层体系结构（重点）</p>
+            </div>
+<div class="checkbox checked"><input type="checkbox" checked="checked">
+            <p>互联及输入输出设备</p>
+            </div>
+<hr>
+<h1 id="指令系统"><a href="#指令系统" class="headerlink" title="指令系统"></a>指令系统</h1><p>指令系统又称为指令集ISA，表示一台<strong>计算机所能执行的全部机器指令的集合</strong>，由该计算机的<strong>CPU决定</strong>。ISA是硬件设计的依据，因此指令系统的设计至关重要。</p>
+<blockquote>
+<p>指令格式的设计与原则？</p>
+</blockquote>
+<p>冯诺依曼结构的计算机采用<strong>存储程序</strong>的思想，给出一个程序（n多指令），计算机能够<strong>自动执行</strong>这些指令。为了自动执行，一条指令必须明确或隐含包含的信息有：<strong>操作码、源操作数的值或地址、结果的地址、下一条指令的地址</strong>。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614110939084.png" alt="image-20220614110939084"></p>
+<p>所以可以据此给指令分类：（<strong>假设操作数都有两个</strong>）</p>
+<ol>
+<li><p>四地址指令</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614111235173.png" alt="image-20220614111235173"></p>
+<p>这是最显然的形式，包含的地址有：<strong>两个源操作数的地址、一个结果的地址、下一条指令的地址</strong>。分析<strong>访问内存</strong>的次数：取指令1次+取两个操作数2次+存放结果1次，<strong>总共访问四次</strong>。</p>
+</li>
+<li><p>三地址指令</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614111619187.png" alt="image-20220614111619187"></p>
+<p>将下一条指令的地址隐含在程序计数器中，现在指令中包含的地址有：<strong>两个操作数的地址、结果的地址</strong>。分析<strong>访问内存</strong>的次数：根据PC的内容取指令1次+取两个操作数2次+存放结果1次，<strong>依然要访问四次</strong>。</p>
+</li>
+<li><p>二地址指令</p>
+<p>二地址是最常见的指令：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614111854170.png" alt="image-20220614111854170"></p>
+<p>A1作为源操作数地址的同时，也作为结果的地址。分析访问内存的次数：分析<strong>访问内存</strong>的次数：根据PC的内容取指令1次+取两个操作数2次+存放结果1次，<strong>还是要访问四次</strong>。</p>
+</li>
+<li><p>一地址指令</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614112101203.png" alt="image-20220614112101203"></p>
+<p>一地址指令用到了另一个寄存器：累加寄存器(ACC)。ACC既提供一个源操作数（注意是值不是地址），又存放运算结果。所以访问内存的次数只需要两次（取值+取1个操作数）</p>
+</li>
+</ol>
+<p>减少指令中地址个数的目的是增加寻址范围。假设指令共32位：</p>
+<ul>
+<li>四地址指令OP占8位，地址各6位，寻址范围为$2^{6}=64$</li>
+<li>三地址指令OP占8位，地址各8位，寻址范围为$2^{8}=256$</li>
+<li>二地址指令OP占8位，地址各12位，寻址范围为$2^{12}=4K$</li>
+<li>一地址指令OP占8位，地址24位，寻址范围为$2^{24}=16M$</li>
+</ul>
+<p>所以，指令系统设计的原则为：</p>
+<ol>
+<li><strong>指令要尽可能短</strong>，减少程序占用空间。</li>
+<li>操作码必须唯一，且要在指令中<strong>留足够的操作码位数</strong>，便于指令的扩充。</li>
+<li>指令长度应该是<strong>字节的整数倍</strong>，因为字节是内存的最小编址单位。</li>
+<li><strong>地址字段的个数应该要合理选择。</strong></li>
+</ol>
+<blockquote>
+<p>指令中常用的数据寻址的方式？</p>
+</blockquote>
+<ol>
+<li><p><mark>立即寻址</mark>：直接在字段中给出操作时的值，这样就不用访问内存了。</p>
+</li>
+<li><p><mark>直接寻址</mark>：给出操作数在内存中的地址，直接到内存寻址即可。（可能在Cache就命中）</p>
+</li>
+<li><p><mark>间接寻址</mark>：给出存放所需操作数地址的地址，相当于指针</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614113711952.png" alt="image-20220614113711952"></p>
+</li>
+<li><p><mark>寄存器间接寻址</mark>：用于间接寻址访问两次内存太慢，所以<strong>使用寄存器避免多次访问内存</strong></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614113802066.png" alt="image-20220614113802066"></p>
+</li>
+<li><p><mark>基址寻址</mark>：基址寄存器中存储的地址称为<strong>基址</strong>，同时在指令中给出一个<strong>偏移地址</strong>，以基址加上偏移地址作为有效地址从内存中取操作数。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614114110337.png" alt="image-20220614114110337"></p>
+<p>默认的基址寄存器位BR，如果给出了其他寄存器就使用给出的。</p>
+</li>
+</ol>
+<blockquote>
+<p>定长操作码编码与扩展操作码编码？</p>
+</blockquote>
+<ul>
+<li>定长操作码编码：指令中操作码的长度是固定，固定一段作为操作码。</li>
+<li>扩展操作码编码：指令中操作码长度是可变的。</li>
+</ul>
+<p>扩展操作码存在一个问题：因为一条指令都是一串二进制数，既然操作码长度是可变的，那么机器如何区分操作码和操作数呢？</p>
+<p>扩展操作码采用的策略是使用<strong>前缀码</strong>：不允许短码是长码的前缀。一个扩展操作码的例子如下：</p>
+<div class="fj-gallery"><p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614115357680.png" alt="image-20220614115357680"></p>
+          </div>
+<p>4位操作码留下1111作为长码的开始，8位操作码留下11111111作为长码的开始，12位操作码留下111111111111作为16位操作码的开始。一般地，<strong>短码可以留多位作为长码的开始</strong>：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614115840897.png" alt="image-20220614115840897"></p>
+<blockquote>
+<p>CISC和RISC？</p>
+</blockquote>
+<p>CISC即<strong>复杂指令系统计算机</strong>，它通过不断向指令系统中增加更多更复杂的指令，以适应不同应用领域的需求。其特点如下：</p>
+<ol>
+<li><strong>指令系统复杂庞大</strong>，指令数目一般200+</li>
+<li>指令的<strong>长度不固定</strong>，指令格式多，寻址方式多</li>
+<li>各指令的<strong>使用频度、执行时间都相差很大</strong></li>
+<li>由于有的指令比较复杂，<strong>无法采用硬布线</strong>的方式，所以<strong>大多采用微程序</strong>的方式来控制</li>
+<li><strong>难以优化编译</strong>以生成高效的目标程序</li>
+</ol>
+<p>RISC即<strong>精简指令系统计算机</strong>，它的中心思想是要求指令系统精简化，以提升程序性能。其特点如下：</p>
+<ol>
+<li><strong>只包含使用频率最高的一些简单指令</strong>，复杂指令的功能由简单指令的组和来实现</li>
+<li>指令<strong>长度固定</strong>，指令格式种类少，寻址方式种类少</li>
+<li><strong>访问内存的只有<code>Load/Store</code>(取数/存数)指令</strong>，其余指令都是在<strong>寄存器之间</strong>进行，所以很高效</li>
+<li>以<strong>硬布线控制为主</strong>，少用微程序控制</li>
+<li><strong>重视编译优化</strong>工作，减少程序执行时间</li>
+</ol>
+<blockquote>
+<p>MIPS汇编的指令分类？</p>
+</blockquote>
+<p>MIPS的指令按照操作类型可以分为三种：<strong>R型、I型、J型</strong></p>
+<ol>
+<li><p><mark>R型指令</mark>的格式如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614173051026.png" alt="image-20220614173051026"></p>
+<p>各字段的含义：</p>
+<ul>
+<li>R型指令<strong><code>OP</code>字段</strong>都为000000，不同指令的功能由<strong><code>func</code></strong>确定</li>
+<li><code>rs</code>、<code>rt</code>为两个源操作数所在的寄存器号</li>
+<li><code>rd</code>为目的操作数的寄存器号</li>
+<li><code>shamt</code>是位移量，当执行移位操作时指明要移动的位数</li>
+</ul>
+<p>不需要记<code>func</code>字段，但需要知道指令的功能：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614173513148.png" alt="image-20220614173513148"></p>
+<p>其中寄存器跳转就是将rs的寄存器号赋值给PC。</p>
+</li>
+<li><p>I型指令的格式如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614173936087.png" alt="image-20220614173936087"></p>
+<p>I型指令的一个源操作数来自于rs寄存器，另一个源操作数是立即数：</p>
+<p>$rt\leftarrow rs\ \ OP \ \ immediate$。 指令如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614174250930.png" alt="image-20220614174250930"></p>
+<p>运算时16位的立即数都要进行符号扩展或零扩展，表示为：$SignExt(imm)$和$ZeroExt(imm)$（算数运算符号扩展，逻辑运算零扩展）。要需要掌握这里比较常用的指令：lw、sw、beq和bne。</p>
+<ul>
+<li><p>取数指令$lw\  \ rt,(offset)rs$的功能是$rt\leftarrow mem[rs+SignExt(offset)]$</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614175304162.png" alt="image-20220614175304162"></p>
+</li>
+<li><p>存数指令$sw\  \ rt,(offset)rs$的功能是$mem[rs+SignExt(offset)]\leftarrow rt$</p>
+</li>
+<li><p>相等转移指令$beq\ \ rs,rt,imm$的功能是如果rs的内容等于rt的内容，那么PC转移到$𝑃𝐶 + 4 + 𝑆𝑖𝑔𝑛𝐸𝑥𝑡(𝑖𝑚𝑚)≪ 2$：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614180233988.png" alt="image-20220614180233988"></p>
+<p>符号扩展和最高位保持一致就行了。</p>
+</li>
+<li><p>不相等转移指令$bne\ \ rs,rt,imm$和beq方法差不多：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614180521207.png" alt="image-20220614180521207"></p>
+</li>
+</ul>
+</li>
+<li><p>J型指令的格式如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614181147935.png" alt="image-20220614181147935"></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614181313029.png" alt="image-20220614181313029"></p>
+<ul>
+<li><p>$j\ \ address$的功能是$𝑃𝐶 ← {𝑃𝐶 + 4 31: 28 , 𝑆𝑖𝑔𝑛𝐸𝑥𝑡 𝑎𝑑𝑑𝑟𝑒𝑠𝑠 ≪ 2}$，{}代表合并二进制位，图示为：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614181545450.png" alt="image-20220614181545450"></p>
+</li>
+<li><p>$jal\ \ address$的功能是先存储当前指令的下一条指令的地址，跳转执行后返回存储的地址，就是函数调用：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614181919994.png" alt="image-20220614181919994"></p>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>MIPS的寻址方式？</p>
+</blockquote>
+<p>之前学习了指令的寻址方式，这里再以MIPS为例来强化指令寻址。</p>
+<p>由于寻址就是访问内存，MIPS只有lw和sw两条指令能控制访问内存。</p>
+<ol>
+<li><p>立即数寻址</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614182335667.png" alt="image-20220614182335667"></p>
+<p>操作数就是给出的立即数。</p>
+</li>
+<li><p>寄存器寻址</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614182501411.png" alt="image-20220614182501411"></p>
+<p>操作数是存放在寄存器中的数。</p>
+</li>
+<li><p>基址寻址</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614182628514.png" alt="image-20220614182628514"></p>
+<p>指令括号中的l2就是给出的立即数。</p>
+</li>
+<li><p>PC相对寻址</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614182813525.png" alt="image-20220614182813525"></p>
+</li>
+</ol>
+<h1 id="中央处理器"><a href="#中央处理器" class="headerlink" title="中央处理器"></a>中央处理器</h1><blockquote>
+<p>CPU各部分的功能？需要的元件？</p>
+</blockquote>
+<p>CPU由<strong>运算器、控制器和寄存器</strong>组成。运算器进行算数和逻辑运算，控制器进行取指令、分析指令和执行指令。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614184831164.png" alt="image-20220614184831164"></p>
+<p>需要用到的<strong>组合逻辑元件</strong>有：</p>
+<div class="fj-gallery"><p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614190016315.png" alt="image-20220614190016315"></p><p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614190045282.png" alt="image-20220614190045282"></p><p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614190133717.png" alt="image-20220614190133717"></p><p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614190327785.png" alt="image-20220614190327785"></p>
+          </div>
+<p>需要用到的<strong>时序逻辑元件</strong>有：</p>
+<div class="fj-gallery"><p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614190549846.png" alt="image-20220614190549846"></p><p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220614190906082.png" alt="image-20220614190906082"></p><p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615110435086.png" alt="image-20220615110435086"></p>
+          </div>
+<p>需要知道暂存器和通用寄存器组的端口信息：</p>
+<ol>
+<li>暂存器：WE即写使能信号，WE=1时时钟下降沿向暂存器写入数据。</li>
+<li>通用寄存器组：有两个读口<strong>busA和busB</strong>，分别由输入端口<strong>Ra和Rb</strong>给出寄存器编号。这是读操作，不需要时钟控制。<strong>𝑅𝑒𝑔𝑊𝑟</strong>为写使能信号，当𝑅𝑒𝑔𝑊𝑟 = 1时，在时钟上升沿将<strong>Data</strong>写入<strong>Rw</strong>给出的寄存器。这是写操作，需要时钟控制。</li>
+</ol>
+<blockquote>
+<p>CPU的时序系统？</p>
+</blockquote>
+<p>早期计算机采用<strong>三级时序系统</strong>：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615111226741.png" alt="image-20220615111226741"></p>
+<p>一条指令包括一个或多个机器周期，而<strong>一个机器周期需要执行多个微操作</strong>，一个微操作的需要一个节拍（时钟周期）的时间，即<strong>时钟周期（节拍）是操作执行的最小时间单位</strong>。节拍可以由脉冲组合得到。</p>
+<p>现代计算机没有机器周期的概念了，一个定时信号就是一个时钟，了解即可。</p>
+<blockquote>
+<p>CPU数据通路的分类？</p>
+</blockquote>
+<ol>
+<li><p>单总线数据通路</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615112015708.png" alt="image-20220615112015708"></p>
+<p>执行$add\ R3,R1,R2$这样的算数运算指令，由于<strong>单总线只能同时传输一个数据</strong>，所以需要分两次获取操作数，把<strong>先获取到的操作数放在暂存器Y中</strong>；结果也要先存放在暂存器Z中，再送入目标寄存器。所以需要执行<strong>3个微操作</strong>，即<strong>3个时钟周期</strong>。</p>
+</li>
+<li><p>三总线数据通路</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615112408787.png" alt="image-20220615112408787"></p>
+<p>两个操作数、1个结果分别用一条总线传输，这样$add\ R3,R1,R2$<strong>一个时钟周期</strong>内即可完成。</p>
+</li>
+</ol>
+<blockquote>
+<p>取指电路的设计？</p>
+</blockquote>
+<p>设计分析：</p>
+<ol>
+<li>什么时候取指令？<strong>时钟周期</strong>的开始处（上升沿）。</li>
+<li>在哪里取？去存储器里取，<strong>地址由PC给出</strong>。</li>
+<li>取回来后存储在哪里？<strong>无需存储</strong>，直接从指令存储器<strong>输出端读取</strong>即可。</li>
+<li>PC的值如何修改？𝑃𝐶 ← <strong>𝑃𝐶 + 4</strong>（当程序顺序执行时）</li>
+</ol>
+<p><strong>PC的工作原理：</strong></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615112931367.png" alt="image-20220615112931367"></p>
+<p>时钟上升沿，如果<code>Reset=1</code>，PC=PC+4；如果<code>Reset=0</code>，PC=0。</p>
+<p><strong>取指电路的功能分析：</strong></p>
+<ol>
+<li>程序顺序执行：𝑃𝐶 ← 𝑃𝐶 + 4</li>
+<li><strong>分支跳转</strong>：𝑃𝐶 ← 𝑃𝐶 + 4 + 𝐵𝑟𝑎𝑛𝑐ℎ𝐴𝑑𝑑𝑟  || beq、bne</li>
+<li><strong>寄存器跳转</strong>：𝑃𝐶 ← 𝑅[𝑟𝑠] || jr</li>
+<li><strong>跳转</strong>：𝑃𝐶 ←(𝑃𝐶 + 4)[31:28] || 𝐽𝑢𝑚𝑝𝐴𝑑𝑑𝑟，𝑗、𝑗𝑎𝑙</li>
+</ol>
+<p><strong>取指电路</strong>的设计：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615113436116.png" alt="image-20220615113436116"></p>
+<blockquote>
+<p>数据通路的设计？</p>
+</blockquote>
+<ol>
+<li><p><strong>R型指令</strong>数据通路：𝑹[𝒓𝒅] ← 𝑹[𝒓𝒔] + 𝑹[𝒓𝒕]</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615113546565.png" alt="image-20220615113546565"></p>
+</li>
+<li><p>I型指令数据通路：</p>
+<ol>
+<li><p><strong>立即数算数逻辑运算</strong>：𝑹[𝒓𝒕]← 𝑹[𝒓𝒔]+𝑺𝒊𝒈𝒏𝑬𝒙𝒕[𝒊𝒎𝒎𝟏𝟔]、𝑹[𝒓𝒕] ← 𝑹[𝒓𝒔] | 𝒁𝒆𝒓𝒐𝑬𝒙𝒕[𝒊𝒎𝒎𝟏𝟔]，前者符号扩展，后者符号扩展：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615114459371.png" alt="image-20220615114459371"></p>
+<p>extOp表示进行零扩展还是符号扩展。</p>
+</li>
+<li><p><strong>取数指令<code>load</code></strong>：包括寄存器读(地址)和寄存器写(数据)以及内存读。立即数进行符号扩展。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615114603064.png" alt="image-20220615114603064"></p>
+</li>
+<li><p><strong>存数指令<code>store</code></strong>：包括寄存器读和内存写，imm进行符号扩展。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615114923677.png" alt="image-20220615114923677"></p>
+</li>
+</ol>
+</li>
+</ol>
+<ol>
+<li><p><strong>相等跳转指令<code>beq</code></strong>：检验ALU的ZF是否为0。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615115341196.png" alt="image-20220615115341196"></p>
+</li>
+</ol>
+<ol>
+<li><p><strong>J型指令</strong>的设计：直接跳转就是了。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615115711447.png" alt="image-20220615115711447"></p>
+</li>
+<li><p><strong>合并后的数据通路：</strong></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615113825087.png" alt="image-20220615113825087"></p>
+<p><mark>需要明白各控制信号的含义！</mark></p>
+</li>
+</ol>
+<blockquote>
+<p>ALU的设计？</p>
+</blockquote>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615115842927.png" alt="image-20220615115842927"></p>
+<p>不同指令的<code>ALUctr</code>如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615124729173.png" alt="image-20220615124729173"></p>
+<blockquote>
+<p>控制器的设计</p>
+</blockquote>
+<p>控制器分析指令，产生控制信号（将取指电路分离出去了）。不同指令控制信号的值如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615125500826.png" alt="image-20220615125500826"></p>
+<ol>
+<li><strong>RegDst</strong>：<strong>选择目的寄存器</strong>。对于R型指令，由于其目标寄存器是rd，所以RegDst为1。而I型指令设计到写回寄存器的指令都是写入rt，所以为0。而I和J不寄存器的指令则为x。</li>
+<li><strong>memtoDst</strong>：需要<strong>从内存写回寄存器</strong>为1，不能写为0。可写可不写为x。</li>
+<li><strong>memWr</strong>：<strong>内存写使能信号</strong>。只有store才为1。</li>
+<li><strong>ALUsrc</strong>：<strong>选择立即数或busB的输出作为ALU的操作数</strong>。R型指令都是来自busB，所以为0；I型设计到运算的指令操作数为立即数，所以为1；而beq指令需要将rs和rt的内容进行对比，所以为0。</li>
+<li><strong>RegWr</strong>：<strong>寄存器写信号</strong>。除了取数、跳转指令不需要写寄存器为0，其他都是1。</li>
+<li><strong>expOp</strong>：<strong>符号扩展</strong>位。为0表示零扩展，为1表示符号扩展，为x表示无需扩展。</li>
+</ol>
+<blockquote>
+<p>熟悉MIPS常用指令的数据通路！</p>
+</blockquote>
+<p>假设单周期<strong>各部件延时</strong>如下：</p>
+<ul>
+<li>存储读/写：200ps</li>
+<li>ALU、加法器：100ps</li>
+<li>寄存器堆读/写：50ps</li>
+<li>控制器 -忽略不计：0ps</li>
+<li>选择器-忽略不计：0ps</li>
+</ul>
+<p>问：各指令的执行所需的指令周期长度。</p>
+<ol>
+<li><p>R型指令：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615131447679.png" alt="image-20220615131447679"></p>
+<p>注意两个源操作数是并行取。</p>
+</li>
+<li><p>I型指令</p>
+<ol>
+<li><p>lw指令：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615131635185.png" alt="image-20220615131635185"></p>
+</li>
+<li><p>sw指令：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615131741282.png" alt="image-20220615131741282"></p>
+</li>
+<li><p>beq指令：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615131830733.png" alt="image-20220615131830733"></p>
+</li>
+</ol>
+</li>
+<li><p>J指令</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615131914541.png" alt="image-20220615131914541"></p>
+</li>
+</ol>
+<p>由于最长的时间为600𝑝𝑠，所以指令周期设置为600𝑝𝑠。</p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>计组复习3:指令系统和CPU</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.fullcomb.top/post/50def34a.html">https://blog.fullcomb.top/post/50def34a.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Sato</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2022-06-15</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2022-06-15</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/b34ce3d8.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/computer/review/4/image-20220614204942636.png" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计组复习4：总线与IO</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/avatar.webp" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">祝愿我们都能够保持初心，做兴趣使然的英雄</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">46</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me In Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><h3><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/favicon.webp"><u style="border-color:#9393c7;color:#9393c7;border-width:3px;">Roselia介绍</u></h3><p class="sideb">"Roselia"取自蔷薇的rose和茶花的camellia，蓝色蔷薇的花语为"完成不可能之事"。Roselia也如同蓝色蔷薇一样，以"到达音乐巅峰"为目标，不断地练习与成长。<p><a target="_blank" style="display:block;margin:0;padding:0;"href="https://music.fullcomb.top/"><img  src="https://cloud.fullcomb.top/private/source/image/build/roselia/sideba.webp" / style="display:block;width:250px"></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AB%A0%E8%8A%82%E4%B8%80%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">章节一览</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">指令系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E5%A4%AE%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">中央处理器</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/50def34a.html" title="计组复习3:指令系统和CPU"><img src="https://cloud.fullcomb.top/private/source/image/computer/review/3/image-20220615113825087.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="计组复习3:指令系统和CPU"/></a><div class="content"><a class="title" href="/post/50def34a.html" title="计组复习3:指令系统和CPU">计组复习3:指令系统和CPU</a><time datetime="2022-06-15T05:23:16.569Z" title="发表于 2022-06-15 13:23:16">2022-06-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/b34ce3d8.html" title="计组复习4：总线与IO"><img src="https://cloud.fullcomb.top/private/source/image/computer/review/4/image-20220614204942636.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="计组复习4：总线与IO"/></a><div class="content"><a class="title" href="/post/b34ce3d8.html" title="计组复习4：总线与IO">计组复习4：总线与IO</a><time datetime="2022-06-15T02:04:43.564Z" title="发表于 2022-06-15 10:04:43">2022-06-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/580436cc.html" title="计组复习2：存储器的分层体系结构"><img src="https://cloud.fullcomb.top/private/source/image/computer/review/2/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="计组复习2：存储器的分层体系结构"/></a><div class="content"><a class="title" href="/post/580436cc.html" title="计组复习2：存储器的分层体系结构">计组复习2：存储器的分层体系结构</a><time datetime="2022-06-13T12:26:20.011Z" title="发表于 2022-06-13 20:26:20">2022-06-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://npm.elemecdn.com/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://npm.elemecdn.com/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://npm.elemecdn.com/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://npm.elemecdn.com/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.vemoji)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      document.getElementById('twikoo-count').innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://npm.elemecdn.com/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://npm.elemecdn.com/gitalk/dist/gitalk.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: 'b200225cae8fe7b18f37c95c6ee9b877',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://npm.elemecdn.com/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Twikoo' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://npm.elemecdn.com/artitalk@3.2.2"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script src="https://npm.elemecdn.com/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://npm.elemecdn.com/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://npm.elemecdn.com/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://en.bang-dream.com/" style="margin-inline:5px" data-title="本站的主题来自次世代企划&quot;BanG Dream&quot;" title=""><img src="https://img.shields.io/badge/BanG-Dream-e50150?logo=Riseup&amp;label=BanG&amp;logoColor=e3004e&amp;labelColor=f0d200" alt=""/></a><a class="github-badge" target="_blank" href="https://zh.moegirl.org.cn/Roselia" style="margin-inline:5px" data-title="本站的主题为&quot;Roeslia&quot;" title=""><img src="https://img.shields.io/badge/%E7%BB%BD%E6%94%BE%E5%90%A7!-Roselia-686dea" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><!-- hexo injector body_end end --></body></html>
