@@ -1,0 +1,475 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Unix操作系统2:文件系统 | Smile Diary × Roselia</title><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Unix有三大抽象：文件对I&#x2F;O设备的抽象、进程与线程对执行过程的抽象和地址空间对内存的抽象。这篇文章将介绍文件对I&#x2F;O设备的抽象，后面两种抽象主要放在《操作系统》中讲，不是这门课的重点。  预备知识文件要长期保存，就必须存储在存储在硬盘这样的非易失性存储器中。以机械硬盘为例，一个硬盘包含多个盘片（记录面），每个记录面划分为若干磁道，每条磁道又可以划分为若干扇区。硬盘最小的读写单位就是一个扇区，通">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unix操作系统2:文件系统">
+<meta property="og:url" content="https://blog.fullcomb.top/post/7ef131a7.html">
+<meta property="og:site_name" content="Smile Diary × Roselia">
+<meta property="og:description" content="Unix有三大抽象：文件对I&#x2F;O设备的抽象、进程与线程对执行过程的抽象和地址空间对内存的抽象。这篇文章将介绍文件对I&#x2F;O设备的抽象，后面两种抽象主要放在《操作系统》中讲，不是这门课的重点。  预备知识文件要长期保存，就必须存储在存储在硬盘这样的非易失性存储器中。以机械硬盘为例，一个硬盘包含多个盘片（记录面），每个记录面划分为若干磁道，每条磁道又可以划分为若干扇区。硬盘最小的读写单位就是一个扇区，通">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/linux/2/cover.png">
+<meta property="article:published_time" content="2022-06-20T07:24:16.221Z">
+<meta property="article:modified_time" content="2022-06-20T07:27:37.050Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="Unix">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/linux/2/cover.png"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/build/roselia/favicon.png"><link rel="canonical" href="https://blog.fullcomb.top/post/7ef131a7"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://npm.elemecdn.com/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://npm.elemecdn.com/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://npm.elemecdn.com/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Unix操作系统2:文件系统',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-20 15:27:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><link href="https://npm.elemecdn.com/@fortawesome/fontawesome-free@6/css/all.min.css" rel="stylesheet"><script src="/js/SAO-Notify.js" async></script><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script><script type="text/javascript" src ="/js/welcome.js" ></script><script src="/js/sweetalert.js"></script><link rel="stylesheet" href="/css/sweetalert.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Smile Diary × Roselia" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/avatar.webp" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/log/"><i class="fa-fw fas fa-gear"></i><span> 女装记录</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/linux/2/cover.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/"> <br id="site-name"/><img id="site-name" src="https://cloud.fullcomb.top/private/source/image/build/roselia/Roselia.webp" style="width:40%;"/></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/log/"><i class="fa-fw fas fa-gear"></i><span> 女装记录</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Unix操作系统2:文件系统</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-20T07:24:16.221Z" title="发表于 2022-06-20 15:24:16">2022-06-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-20T07:27:37.050Z" title="更新于 2022-06-20 15:27:37">2022-06-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8B/">大二下</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div class="note info flat"><p>Unix有三大抽象：文件对I/O设备的抽象、进程与线程对执行过程的抽象和地址空间对内存的抽象。这篇文章将介绍文件对I/O设备的抽象，后面两种抽象主要放在《操作系统》中讲，不是这门课的重点。</p>
+</div>
+<h1 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h1><p>文件要长期保存，就必须存储在存储在硬盘这样的非易失性存储器中。以机械硬盘为例，一个硬盘包含多个<strong>盘片（记录面）</strong>，每个记录面划分为<strong>若干磁道</strong>，每条磁道又可以划分为<strong>若干扇区</strong>。硬盘最小的读写单位就是一个扇区，通常为512B。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/4/image-20220615004754515.png" alt></p>
+<p>但是，读写硬盘都是很耗时的。如果每次都512B地操作，那么硬盘的读写就会占用大量的时间。所以，又<strong>将硬盘分块，块的大小一般为4KB，即8个扇区的大小</strong>。</p>
+<p>这里的物理上的“分块”和虚拟存储器中的“分页”在逻辑上是一一对应的(地址空间对内存的抽象)：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/computer/review/2/image-20220613201506183.png" alt></p>
+<hr>
+<h1 id="Unix文件系统介绍"><a href="#Unix文件系统介绍" class="headerlink" title="Unix文件系统介绍"></a>Unix文件系统介绍</h1><p>Unix的文件分为<strong>普通文件</strong>、<strong>目录文件</strong>和<strong>特殊文件</strong>三种。普通文件包含字节序列，如代码、文本等；目录文件不是标准的ASCII文本文件，它包含了其中的各种文件的信息（包括子目录，套娃）；特殊文件包含外部设备的特定信息，如驱动等。一个外设对应一个文件。</p>
+<h2 id="文件系统的结构"><a href="#文件系统的结构" class="headerlink" title="文件系统的结构"></a>文件系统的结构</h2><p>上一篇中说了Unix的文件结构是下面这样的树形结构：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/image-20220619122158818.png" alt></p>
+<p>我们需要知道不同目录的主要功能：</p>
+<ol>
+<li><code>/</code>：系统的根目录，一切从这里开始</li>
+<li><code>/bin</code>：包含系统启动和运行必须的二进制文件（可执行程序）</li>
+<li><code>/boot</code>：Linux内核、系统启动时的加载程序和配置文件等</li>
+<li><code>/dev</code>：存放系统所能识别的所有设备的文件</li>
+<li><code>/etc</code>：存放系统的配置文件</li>
+<li><code>/home</code>：即<strong>用户目录</strong>。因为Unix是多用户操作系统，不同的用户拥有不同的权限；而每个用户都会在<code>home</code>目录下拥有一个自己的主目录，所以常常限制一般的用户只能在自己的主目录下创建文件，这样避免系统遭到用户行为的破坏。（超级用户的主目录为<code>/root</code>目录）</li>
+<li><code>lib</code>：存放系统核心程序使用的共享库文件。</li>
+<li><code>tmp</code>：存放临时文件，系统重启时失效。</li>
+<li><code>usr</code>：包含了许多其他面向用户的子目录，如<code>/usr/include</code>存储C和C++的头文件，<code>/usr/lib</code>存放程序的（动态）库文件，<code>/usr/bin</code>存放用户使用的Unix程序……</li>
+</ol>
+<div class="note warning flat"><p>这些目录的功能需要记忆，不要乱用。如果是超级用户特别要注意文件不能乱放，一般放到用户主目录下。</p>
+</div>
+<h2 id="文件的权限"><a href="#文件的权限" class="headerlink" title="文件的权限"></a>文件的权限</h2><h3 id="查看文件权限"><a href="#查看文件权限" class="headerlink" title="查看文件权限"></a>查看文件权限</h3><p>使用<code>ls -l</code>选项输出文件的信息详细，会发现这样的字段：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620004719817.png" alt="image-20220620004719817"></p>
+<p>这个字段称为<strong>文件模式</strong>，它主要表示了不同的用户对该文件的访问权限。</p>
+<p>文件模式包含10个字符，我们需要将其分为四组：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620005042490.png" alt="image-20220620005042490"></p>
+<ul>
+<li>第一组为第1个字符，表示<strong>文件类型</strong>。-代表普通文件，d代表目录文件。</li>
+<li>第二组为第2-4个字符，表示<strong>文件所有者</strong>的访问权限。</li>
+<li>第三组为第5-7个字符，表示<strong>与所有者同一用户组</strong>的访问权限。</li>
+<li>第四组为第8-10个字符，表示<strong>其他用户</strong>的访问权限。</li>
+</ul>
+<p>首先需要知道<strong>各字符的含义</strong>：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620010536525.png" alt="image-20220620010536525"></p>
+<p>所以<code>drwxr-xr-x</code>表示文件的类型为目录文件，文件所有者的访问权限为可读可写可执行（进入）、用户组的访问权限为可读不可写可进入、其他用户同用户组一样。</p>
+<p>然后需要知道<strong>用户的类型</strong>，在<code>ls -l</code>中也可以看到文件所有者和所在用户组：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620011347567.png" alt="image-20220620011347567"></p>
+<h3 id="更改文件权限"><a href="#更改文件权限" class="headerlink" title="更改文件权限"></a>更改文件权限</h3><p>更改文件权限，使用的是<code>chmod</code>命令。需要注意的是<strong>只有超级用户或该文件的创建者</strong>才有权力更改该文件的权限！</p>
+<p>更改文件权限的方式有两种：<strong>八进制表示法</strong>和<strong>符号表示法</strong>。</p>
+<ol>
+<li><p>八进制表示法</p>
+<p>三个字符的位置分别使用1和0表示有权限和无权限，那么就可以得到一个<strong>三位的二进制数</strong>，可以把它表示为八进制：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620012152647.png" alt="image-20220620012152647"></p>
+<p>1-3的权限实际上是不太合理的，更常使用的数字为0、4、6、7。如<code>chmod 666 a.cpp</code>。</p>
+</li>
+<li><p>符号表示法</p>
+<p>使用<code>u、g、o、a</code>分别表示文件所有者、用户组、其他用户和所有用户，使用+或-字符表示对指定的用户增加或减去列出的权限。如<code>chmod u+x g-w o-w</code>。</p>
+</li>
+</ol>
+<hr>
+<h1 id="文件系统高级操作"><a href="#文件系统高级操作" class="headerlink" title="文件系统高级操作"></a>文件系统高级操作</h1><div class="note purple flat"><p>要说Unix命令行最酷的一点是什么，我觉得就是重定向与管道。</p>
+</div>
+<p><strong>重定向</strong>可以把命令行的标准输入（键盘输入）重定向为从文件中获取内容，也可以把命令行的标准输出结果（显示在屏幕上）重定向到文件中。</p>
+<p><strong>管道</strong>可以把多个命令串联起来，将前面命令的输出作为后一个命令的输入。</p>
+<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><h3 id="标准输入与输出"><a href="#标准输入与输出" class="headerlink" title="标准输入与输出"></a>标准输入与输出</h3><p>说到标准输入与标准输出，我们首先想到的应该是C语言的<code>scanf</code>和<code>printf</code>函数。<code>scanf</code>的作用是接收来自键盘的输入，<code>printf</code>的作用是将结果输出到屏幕上。</p>
+<p>准确来说，<code>scanf</code>从标准输入<code>stdin</code>中按照特定格式读取输入；<code>printf</code>将结果输出到标准输出<code>stdout</code>中，再链接到屏幕上。</p>
+<p>Linux中一切皆文件，<code>stdin</code>和<code>stdout</code>也一样。它们不断地被输入，然后又不断地被读取，就像流一样，所以又被称为<strong>输入输出流</strong>。C++的<code>cin</code>和<code>cout</code>都很好地体现了这一点。</p>
+<p>除了标准输入<code>stdin</code>、标准输出<code>stdout</code>外，还有标准错误<code>stderr</code>。它们的文件描述符分别为0、1、2。标准输出和标准输入都是会显示到屏幕上的内容。</p>
+<h3 id="标准输出重定向"><a href="#标准输出重定向" class="headerlink" title="标准输出重定向"></a>标准输出重定向</h3><p>我们使用<code>ls</code>命令会在屏幕上显示当前目录下的文件，它的原理是将该目录的内容输出到<code>stdin</code>中，再显示到屏幕上。</p>
+<p>我们将<code>ls</code>的输出重定向到一个文件中：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620114548113.png" alt="image-20220620114548113"></p>
+<p>这里使用到了<code>&gt;</code>进行输出重定向，<code>&gt;&gt;</code>也能进行输出重定向，它们的区别是是否覆盖写。注意观察下面文件的大小：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620115322920.png" alt="image-20220620115322920"></p>
+<p>容易想到，<code>&gt;</code>重定向每次输入都会覆盖原来的内容，而<code>&gt;&gt;</code>重定向则是<strong>将输出添加到文件的末尾。</strong>所以根据情况我们可以选择不同的标准输出重定向方式。</p>
+<h2 id="标准错误重定向"><a href="#标准错误重定向" class="headerlink" title="标准错误重定向"></a>标准错误重定向</h2><p>如果我们<code>ls</code>一个不存在的目录，同时进行标准输出重定向。会发现，屏幕上仍然输出了内容，而重定向的文件却是空的。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620115833436.png" alt="image-20220620115833436"></p>
+<p>不奇怪吗？明明将输出重定向到了该文件中，却仍然输出到了屏幕上同时文件中什么内容都没有。实际上，这种错误信息用到的是另一种“缓冲”：标准错误<code>stdout</code>，它和<code>stdout</code>是相互独立的。如果执行出错，那么就会将<code>stdout</code>的内容显示在屏幕上。</p>
+<p>之前说过标准错误的文件描述符为2，所以要将标准错误重定向到文件中，只需要<code>2&gt;</code>或<code>2&gt;&gt;</code>就行了。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620120338119.png" alt="image-20220620120338119"></p>
+<h3 id="标准输入重定向"><a href="#标准输入重定向" class="headerlink" title="标准输入重定向"></a>标准输入重定向</h3><p>我们先来看一下<code>cat</code>命令，在shell中输入<code>cat</code>。然后我们从键盘上每输入一行，它聚会将输入打印到屏幕上。结合<code>stdin</code>和<code>stdout</code>可以知道，当不给<code>cat</code>提供参数时，它默认从<code>stdin</code>获取输入，再将输入送到<code>stdout</code>中。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620125549267.png" alt="image-20220620125549267"></p>
+<p>那么，我们可以使用<code>&lt;</code>对<code>cat</code>的标准输入进行重定向，使它输出的是某个文件的内容：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620130121528.png" alt="image-20220620130121528"></p>
+<p>实际上，<code>cat -n a.cpp</code>也可以得到同样的效果：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620130236345.png" alt="image-20220620130236345"></p>
+<p>所以<code>cat &lt; a.cpp</code>和<code>cat a.cpp</code>的区别是什么呢？我们尝试cat输出一个不存在的文件，会发现，前者是命令行报错，而后者是cat报错。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620130458191.png" alt="image-20220620130458191"></p>
+<p><code>cat &lt; a.cpp</code>和<code>cat a.cpp</code>的区别就是前者是shell打开文件，并将其作为标准输入传递给<code>cat</code>；后者是<code>cat</code>直接打开文件。</p>
+<h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h2><p>管道的作用是把多个命令串联起来，将前面命令的标准输出作为后一个命令的标准输入。使用<code>|</code>将命令从左至右连接起来，如<code>cat /usr/lib | less</code>的作用是以分页的方式查看/usr/lib目录下的内容，相当于<code>cat /usr/lib &gt; temp</code>再<code>less temp</code>。</p>
+<p>下面主要介绍一些管道的应用，希望能够抛砖引玉。</p>
+<h3 id="结果过滤"><a href="#结果过滤" class="headerlink" title="结果过滤"></a>结果过滤</h3><p>我们可以将结果进行一系列处理后再查看。</p>
+<ol>
+<li><p><code>ls /usr/bin | sort -r | less</code>将/usr/lib目录下的内容按照字母倒序的顺序分页查看：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620133611222.png" alt="image-20220620133611222"></p>
+</li>
+<li><p><code>ls -r | uniq | less</code>将当前目录和子目录下的内容去重后以分页的形式查看：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620133926401.png" alt="image-20220620133926401"></p>
+</li>
+</ol>
+<h3 id="结果搜索"><a href="#结果搜索" class="headerlink" title="结果搜索"></a>结果搜索</h3><p>第一篇中介绍的<code>grep [选项] [搜索的字符串] [文件]</code>可以从指定文件中搜索匹配的行。结合管道可以实现对结果的搜索。如搜索<code>/usr/include</code>中带<code>std</code>的头文件：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620134511286.png" alt="image-20220620134511286"></p>
+<p>管道的应用非常多，但因为我的知识水平有限，目前就想到这么多。遇到具体的情况再具体分析吧，使用管道是一种非常好的思路。</p>
+<hr>
+<h1 id="深入文件系统"><a href="#深入文件系统" class="headerlink" title="深入文件系统"></a>深入文件系统</h1><h2 id="什么是索引节点"><a href="#什么是索引节点" class="headerlink" title="什么是索引节点"></a>什么是索引节点</h2><p>本篇的最前面介绍了硬盘的基本知识，我们知道了文件数据都存储在硬盘上的一个个块中。除了存储文件本身的数据，还需要一个数据结构来存储文件的元信息，如文件的所有者、文件的创建日期、大小等。这个数据结构就是<code>inode</code>，即<strong>索引结点</strong>。</p>
+<p>从“索引”和“结点”两个词我们就可以猜得八九不离十了：Unix使用树（堆）的结构来记录索引，索引中的数据以键值对的形式存储。通过索引可以找到文件数据在硬盘中的位置。</p>
+<p>我们可以使用<code>stat [文件名]</code>来查看该文件名对应的<code>inode</code>的信息：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620141621785.png" alt="image-20220620141621785"></p>
+<h2 id="软硬链接"><a href="#软硬链接" class="headerlink" title="软硬链接"></a>软硬链接</h2><p>这里的链接类似于Windows上的快捷方式。Unix链接的实现有<strong>硬链接和软链接</strong>两种方式，它们的原理和特点不同。</p>
+<h3 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接"></a>硬链接</h3><p>Unix系统的一个文件对应一个<code>inode</code>，但<code>inode</code>和文件名可以是一对多的关系。这意味着我们可以创建多个文件名都指向该<code>inode</code>，使用这些文件名都可以访问到同一个索引结点，进而访问同一个文件。</p>
+<p>使用<code>ln [源文件名] [硬链接文件名]</code>可以创建一个硬链接：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620143024751.png" alt="image-20220620143024751"></p>
+<p>现在使用a.cpp和使用b.cpp都是一样的，因为它们都指向了同一个<code>inode</code>。甚至删除原来的a.cpp，依然能使用b.cpp访问文件，二者地位是平等的：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620143206770.png" alt="image-20220620143206770"></p>
+<h3 id="软链接"><a href="#软链接" class="headerlink" title="软链接"></a>软链接</h3><p>软链接和原来文件的<code>inode</code>不同，但是软链接的内容是原文件的路径。访问软链接时将会根据路径自动访问原文件。</p>
+<p>使用<code>ln -s [源文件名] [软链接文件名]</code>可以创建一个软链接：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620144043753.png" alt="image-20220620144043753"></p>
+<p>如果删除了a.cpp，那么访问b.cpp就会报错：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/2/image-20220620144141133.png" alt="image-20220620144141133"></p>
+<h2 id="探讨文件操作的原理"><a href="#探讨文件操作的原理" class="headerlink" title="探讨文件操作的原理"></a>探讨文件操作的原理</h2><p>通过前面的学习我们知道了什么是<code>inode</code>，然后使用软链接和硬链接加深了对<code>inode</code>的理解。现在，我们结合<code>inode</code>来进一步探讨文件创建、删除、移动等操作的原理。</p>
+<h3 id="创建文件"><a href="#创建文件" class="headerlink" title="创建文件"></a>创建文件</h3><p>创建文件就是为该文件的数据分配一块硬盘的空间，同时将文件的元信息存储在对应的<code>inode</code>中。由于创建文件的时候指定了一个文件名，所以再将该文件名硬链接到该<code>inode</code>结点即可。</p>
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h3><p>当<code>inode</code>的link数减到0时（即没有文件名指向该<code>inode</code>结点了），文件无法被访问，相当于删除。</p>
+<p>以后创建文件时如果发现一个<code>inode</code>的link数为0，那么就可以把它以及文件数据的空间覆盖掉了。</p>
+<h3 id="移动-重命名文件"><a href="#移动-重命名文件" class="headerlink" title="移动/重命名文件"></a>移动/重命名文件</h3><p>移动文件或重命名文件，只是改变文件名（创建一个硬链接，再删除原文件名），不影响<code>inode</code>号码。</p>
+<p>特别要注意的是移动操作，它并不会进行数据的拷贝。我们平时Window用的比较多，它将不同的磁盘挂载到不同区，不同区间的移动需要进行数据的拷贝；而Unix不同，<strong>整个文件系统就是一颗树</strong>，所以无需进行繁琐的文件拷贝操作。</p>
+<h3 id="目录的本质"><a href="#目录的本质" class="headerlink" title="目录的本质"></a>目录的本质</h3><p>前面说过，目录包含了其中的各种文件的信息。实际上，这些信息并没有保存在目录中。目录只是维护了文件名和对应<code>inode</code>的映射关系。</p>
+<p>目录就相当于一个<code>map</code>，它包含了文件名和<code>inode</code>号的键值对。通过文件名这个键得到<code>inode</code>号这个值，然后访问到<code>inode</code>，进一步访问到文件数据本身。</p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>Unix操作系统2:文件系统</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.fullcomb.top/post/7ef131a7.html">https://blog.fullcomb.top/post/7ef131a7.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Sato</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2022-06-20</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2022-06-20</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unix/">Unix</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/76c9c58a.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/linux/cover.png" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Unix操作系统1:常用命令</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/avatar.webp" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">祝愿我们都能够保持初心，做兴趣使然的英雄</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me In Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><h3><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/favicon.webp"><u style="border-color:#9393c7;color:#9393c7;border-width:3px;">Roselia介绍</u></h3><p class="sideb">"Roselia"取自蔷薇的rose和茶花的camellia，蓝色蔷薇的花语为"完成不可能之事"。Roselia也如同蓝色蔷薇一样，以"到达音乐巅峰"为目标，不断地练习与成长。<p><a target="_blank" style="display:block;margin:0;padding:0;"href="https://music.fullcomb.top/"><img  src="https://cloud.fullcomb.top/private/source/image/build/roselia/sideba.webp" / style="display:block;width:250px"></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">预备知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unix%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.</span> <span class="toc-text">Unix文件系统介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">文件系统的结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E6%9D%83%E9%99%90"><span class="toc-number">2.2.</span> <span class="toc-text">文件的权限</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-number">2.2.1.</span> <span class="toc-text">查看文件权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-number">2.2.2.</span> <span class="toc-text">更改文件权限</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C"><span class="toc-number">3.</span> <span class="toc-text">文件系统高级操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">3.1.</span> <span class="toc-text">重定向</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E4%B8%8E%E8%BE%93%E5%87%BA"><span class="toc-number">3.1.1.</span> <span class="toc-text">标准输入与输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">3.1.2.</span> <span class="toc-text">标准输出重定向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E9%94%99%E8%AF%AF%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">3.2.</span> <span class="toc-text">标准错误重定向</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">3.2.1.</span> <span class="toc-text">标准输入重定向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E9%81%93"><span class="toc-number">3.3.</span> <span class="toc-text">管道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E8%BF%87%E6%BB%A4"><span class="toc-number">3.3.1.</span> <span class="toc-text">结果过滤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E6%90%9C%E7%B4%A2"><span class="toc-number">3.3.2.</span> <span class="toc-text">结果搜索</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">4.</span> <span class="toc-text">深入文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%B4%A2%E5%BC%95%E8%8A%82%E7%82%B9"><span class="toc-number">4.1.</span> <span class="toc-text">什么是索引节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E7%A1%AC%E9%93%BE%E6%8E%A5"><span class="toc-number">4.2.</span> <span class="toc-text">软硬链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E9%93%BE%E6%8E%A5"><span class="toc-number">4.2.1.</span> <span class="toc-text">硬链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-number">4.2.2.</span> <span class="toc-text">软链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A2%E8%AE%A8%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">4.3.</span> <span class="toc-text">探讨文件操作的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="toc-number">4.3.1.</span> <span class="toc-text">创建文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="toc-number">4.3.2.</span> <span class="toc-text">删除文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8-%E9%87%8D%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6"><span class="toc-number">4.3.3.</span> <span class="toc-text">移动&#x2F;重命名文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="toc-number">4.3.4.</span> <span class="toc-text">目录的本质</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/7ef131a7.html" title="Unix操作系统2:文件系统"><img src="https://cloud.fullcomb.top/private/source/image/linux/2/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="Unix操作系统2:文件系统"/></a><div class="content"><a class="title" href="/post/7ef131a7.html" title="Unix操作系统2:文件系统">Unix操作系统2:文件系统</a><time datetime="2022-06-20T07:24:16.221Z" title="发表于 2022-06-20 15:24:16">2022-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/76c9c58a.html" title="Unix操作系统1:常用命令"><img src="https://cloud.fullcomb.top/private/source/image/linux/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="Unix操作系统1:常用命令"/></a><div class="content"><a class="title" href="/post/76c9c58a.html" title="Unix操作系统1:常用命令">Unix操作系统1:常用命令</a><time datetime="2022-06-19T08:06:59.190Z" title="发表于 2022-06-19 16:06:59">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/62c4b567.html" title="腾讯公开课面试准备"><img src="https://cloud.fullcomb.top/private/source/image/interview/1/cover.jpg" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="腾讯公开课面试准备"/></a><div class="content"><a class="title" href="/post/62c4b567.html" title="腾讯公开课面试准备">腾讯公开课面试准备</a><time datetime="2022-06-18T02:52:48.123Z" title="发表于 2022-06-18 10:52:48">2022-06-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://npm.elemecdn.com/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://npm.elemecdn.com/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://npm.elemecdn.com/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.vemoji)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      document.getElementById('twikoo-count').innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://npm.elemecdn.com/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://npm.elemecdn.com/gitalk/dist/gitalk.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: '8e44c720022aea88ecd16fb704cb47aa',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://npm.elemecdn.com/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Twikoo' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://npm.elemecdn.com/artitalk@3.2.2"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script src="https://npm.elemecdn.com/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://npm.elemecdn.com/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://npm.elemecdn.com/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://en.bang-dream.com/" style="margin-inline:5px" data-title="本站的主题来自次世代企划&quot;BanG Dream&quot;" title=""><img src="https://img.shields.io/badge/BanG-Dream-e50150?logo=Riseup&amp;label=BanG&amp;logoColor=e3004e&amp;labelColor=f0d200" alt=""/></a><a class="github-badge" target="_blank" href="https://zh.moegirl.org.cn/Roselia" style="margin-inline:5px" data-title="本站的主题为&quot;Roeslia&quot;" title=""><img src="https://img.shields.io/badge/%E7%BB%BD%E6%94%BE%E5%90%A7!-Roselia-686dea" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><!-- hexo injector body_end end --></body></html>
