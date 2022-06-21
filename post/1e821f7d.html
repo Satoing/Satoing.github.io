@@ -1,0 +1,475 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Unix操作系统4:Shell编程 | Smile Diary × Roselia</title><meta name="author" content="Sato"><meta name="copyright" content="Sato"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="认识Shell之前我们一直在说shell，也一直在使用shell。那么shell到底是什么？ 实际上，shell自身也是一个应用程序，它负责用户与操作系统之间的通信。当用户登录到shell时，系统会将一个shell程序调入内存——每个用户都有一个默认的shell，记录在&#x2F;etc&#x2F;passwd文件(口令文件)中。 如我(root用户)现在默认的shell为zsh，那么&#x2F;etc&#x2F;passwd中的记录就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unix操作系统4:Shell编程">
+<meta property="og:url" content="https://blog.fullcomb.top/post/1e821f7d.html">
+<meta property="og:site_name" content="Smile Diary × Roselia">
+<meta property="og:description" content="认识Shell之前我们一直在说shell，也一直在使用shell。那么shell到底是什么？ 实际上，shell自身也是一个应用程序，它负责用户与操作系统之间的通信。当用户登录到shell时，系统会将一个shell程序调入内存——每个用户都有一个默认的shell，记录在&#x2F;etc&#x2F;passwd文件(口令文件)中。 如我(root用户)现在默认的shell为zsh，那么&#x2F;etc&#x2F;passwd中的记录就">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cloud.fullcomb.top/private/source/image/linux/4/cover.png">
+<meta property="article:published_time" content="2022-06-21T10:50:21.993Z">
+<meta property="article:modified_time" content="2022-06-21T10:52:57.397Z">
+<meta property="article:author" content="Sato">
+<meta property="article:tag" content="Unix">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cloud.fullcomb.top/private/source/image/linux/4/cover.png"><link rel="shortcut icon" href="https://cloud.fullcomb.top/private/source/image/build/roselia/favicon.png"><link rel="canonical" href="https://blog.fullcomb.top/post/1e821f7d"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://npm.elemecdn.com/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://npm.elemecdn.com/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://npm.elemecdn.com/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Unix操作系统4:Shell编程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-21 18:52:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"  media="defer" onload="this.media='all'"><link href="https://npm.elemecdn.com/@fortawesome/fontawesome-free@6/css/all.min.css" rel="stylesheet"><script src="/js/SAO-Notify.js" async></script><script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script><script type="text/javascript" src ="/js/welcome.js" ></script><script src="/js/sweetalert.js"></script><link rel="stylesheet" href="/css/sweetalert.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script async src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Smile Diary × Roselia" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/avatar.webp" onerror="onerror=null;src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">51</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/log/"><i class="fa-fw fas fa-gear"></i><span> 女装记录</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cloud.fullcomb.top/private/source/image/linux/4/cover.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/"> <br id="site-name"/><img id="site-name" src="https://cloud.fullcomb.top/private/source/image/build/roselia/Roselia.webp" style="width:40%;"/></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list-ul"></i><span> ACGN</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/galgame/"><i class="fa-fw fas fa-book"></i><span> gal图书馆</span></a></li><li><a class="site-page child" href="/novel/"><i class="fa-fw fas fa-bookmark"></i><span> 轻小说</span></a></li><li><a class="site-page child" href="/bangumis/"><i class="fa-fw fas fa-play-circle"></i><span> 追番啦</span></a></li><li><a class="site-page child" href="/OST/"><i class="fa-fw fas fa-headphones"></i><span> OST</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-capsules"></i><span> 实验室</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-tasks"></i><span> todo..</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://cloud.fullcomb.top/public/"><i class="fa-fw fas fa-cloud"></i><span> Cloud</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://music.fullcomb.top/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 大佬们</span></a></div><div class="menus_item"><a class="site-page" href="/log/"><i class="fa-fw fas fa-gear"></i><span> 女装记录</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Unix操作系统4:Shell编程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-21T10:50:21.993Z" title="发表于 2022-06-21 18:50:21">2022-06-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-21T10:52:57.397Z" title="更新于 2022-06-21 18:52:57">2022-06-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8B/">大二下</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="认识Shell"><a href="#认识Shell" class="headerlink" title="认识Shell"></a>认识Shell</h1><p>之前我们一直在说shell，也一直在使用shell。那么shell到底是什么？</p>
+<p>实际上，shell自身也是一个<strong>应用程序</strong>，它负责用户与操作系统之间的通信。当用户登录到shell时，系统会将一个shell程序调入内存——每个用户都有一个默认的shell，记录在<code>/etc/passwd</code>文件(口令文件)中。</p>
+<p>如我(root用户)现在默认的shell为<code>zsh</code>，那么<code>/etc/passwd</code>中的记录就为：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621142626630.png" alt="image-20220621142626630"></p>
+<p>有些特殊用户的记录可以不是shell程序，如上图中的第二个。</p>
+<div class="note info flat"><p>zsh是mac os自带的一个shell，以高度定制化和有众多的主题闻名，Linux需要安装。</p>
+</div>
+<p>用户登录、shell执行和用户退出的过程如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621141543783.png" alt="image-20220621141543783"></p>
+<ol>
+<li><strong>用户登录</strong>：<code>init</code>进程<code>fork/exec</code>一个<code>login</code>程序，输入用户名和密码。如果验证成功，则按照口令文件为用户<code>fork/exec</code>默认的shell程序。</li>
+<li><strong>shell执行</strong>：shell内置了解释器如<code>sh</code>，它可以解释用户输入的正确的命令。如果命令为shell内置命令，那么直接由shell完成即可；如果命令为可执行程序，那么<code>fork/exec</code>一个新的进程来执行该程序；如果命令为脚本文本，那么shell先解析脚本，再按照相应的命令选择执行方式。    <img src="https://cloud.fullcomb.top/private/source/image/linux/image-20220619110646543.png" alt></li>
+<li><strong>用户退出</strong>：发送退出信号，<code>shell</code>、<code>login</code>程序依次退出。</li>
+</ol>
+<p>shell对各种命令的解析和执行依赖于shell内置的解释器<code>sh</code>/<code>bash</code>。它和python的解释器一样，可以处理脚本程序——shell提供了一种比较简单和实用的脚本语言供用户使用，我们可以把这些命令整合起来编写为脚本程序。</p>
+<hr>
+<h1 id="shell编程"><a href="#shell编程" class="headerlink" title="shell编程"></a>shell编程</h1><h2 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h2><p>shell是一种语言，就和python一样。一个shell脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Hello,master!&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Have a nice day~&quot;</span></span><br></pre></td></tr></table></figure>
+<p>第一行的<code>#!</code>是一个约定的标记，它告诉系统这个脚本需要什么解释器来执行。这里指定使用<code>bash</code>作为解释器来执行。</p>
+<p>如果我们指定了文件的脚本的解释器，那么使用<code>./a.sh</code>的方式即可运行它，但前提是给文件添加了可执行权限。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621150030043.png" alt="image-20220621150030043"></p>
+<p>也可以不在文件中指定解释器，而是在shell中指定解释器来执行它：<code>bash a.sh</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Hello,master!&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Have a nice day~&quot;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621150241475.png" alt="image-20220621150241475"></p>
+<p>同理，我们也可以为<code>python</code>程序在文件中指定解释器，然后通过<code>./</code>的方式运行。(平时都是使用<code>python3.9 b.py</code>的方式运行)</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621150635253.png" alt="image-20220621150635253"></p>
+<p>在文件开始指定解释器，也<strong>便于shell识别文件类型</strong>：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621151707522.png" alt="image-20220621151707522"></p>
+<h2 id="变量定义与使用"><a href="#变量定义与使用" class="headerlink" title="变量定义与使用"></a>变量定义与使用</h2><h3 id="变量的定义"><a href="#变量的定义" class="headerlink" title="变量的定义"></a>变量的定义</h3><p>使用<code>[变量名]=[值]</code>的方式来创建一个变量，需要注意<code>=</code>两边不能由空格，比如下面的情况就是<code>=</code>两边加了空格的BUG。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621153143375.png" alt="image-20220621153143375"></p>
+<p>总之变量的定义还是太简单的。也可以定义一个数组：<code>[数组名]=&#123;元素1 元素2 元素3 …&#125;</code>，如<code>nums=&#123;0 1 2 3 4&#125;</code>。</p>
+<p>上面的方式创建的变量是一个<strong>全局变量</strong>，它在当前的整个 Shell 进程中都有效。但是不同的shell进程间的全局变量是相互独立的。</p>
+<p>如果想要让一个变量在其他进程中生效，就要使用<code>export</code>命令将它导出，那么它就在所有的<mark>子进程</mark>中也有效了。这称为“<strong>环境变量</strong>”。</p>
+<p>此外还有局部变量，它涉及到shell中的函数，且只在函数内部生效。需要使用<code>local</code>加以限定，不然它也是全局变量：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621161033638.png" alt="image-20220621161033638"></p>
+<h3 id="变量的使用"><a href="#变量的使用" class="headerlink" title="变量的使用"></a>变量的使用</h3><p>定义了变量后可以通过<code>$&#123;变量名&#125;</code>的方式来使用变量：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621154308032.png" alt="image-20220621154308032"></p>
+<p>使用上面的方式来访问数组所有的元素还是有点繁琐，可以使用<script type="math/tex">{array[@]}</script>直接打印所有元素：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621154609899.png" alt="image-20220621154609899"></p>
+<p>一些常用的操作总结如下：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621155409987.png" alt="image-20220621155409987"></p>
+<h3 id="变量的删除"><a href="#变量的删除" class="headerlink" title="变量的删除"></a>变量的删除</h3><p>使用<code>unset var</code>可以删除某个变量。</p>
+<p>我们可以把变量设置为只读变量，使用关键字<code>readonly</code>。只读变量不能修改，也不能删除。</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621155909307.png" alt="image-20220621155909307"></p>
+<h3 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h3><p>shell还有一种特殊的变量：<strong>位置参数</strong>。它是一种特殊的变量，用于表示命令行参数。使用<code>set</code>命令可以设置命令行参数，不同参数用空格隔开：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> hello “I love bash” world</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$2</span></span><br><span class="line"><span class="built_in">echo</span> $*</span><br></pre></td></tr></table></figure>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621162105044.png" alt="image-20220621162105044"></p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><p>shell中的<strong>运算符和C语言的很相似</strong>，所以简要介绍：</p>
+<ol>
+<li>算数运算符：<code>++</code>、<code>--</code>、<code>+</code>、<code>-</code>、<code>\*</code>、<code>/</code>、<code>\%</code>等(<code>*</code>和<code>%</code>需要转义)</li>
+<li>关系运算符：<code>=</code>、<code>!=</code>、<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code></li>
+<li>逻辑运算符：<code>&amp;&amp;</code>、<code>||</code></li>
+</ol>
+<p>但是，运算符的使用却和C语言大相径庭，如下面的程序，运行结果就和我们想的不一样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x=100</span><br><span class="line">x=<span class="variable">$x</span>+1</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$x</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621163825906.png" alt="image-20220621163825906"></p>
+<p>是不是感觉很头疼？bash默认<strong>把变量当成了字符串处理</strong>。要进行算术、逻辑运算，需要使用特定的命令：</p>
+<ol>
+<li>使用<code>let</code>命令处理算数运算：<code>let x=x+1</code>，再<code>echo $x</code>输出的就是101。需要注意<code>let</code>命令会自动使用变量的值，所以直接键入<code>x</code>即可，且<code>let</code>后面的<strong>表达式不能有空格！</strong></li>
+<li>使用<code>expr</code>命令处理<strong>算数、关系和逻辑运算</strong>，下面详细阐述。</li>
+</ol>
+<p>首先<code>expr</code>可以<strong>当作计算器一样使用</strong>，注意运算符两边需要空格隔开：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">expr 100 + 2 <span class="comment"># 加</span></span><br><span class="line">expr 100 - 2 <span class="comment"># 减</span></span><br><span class="line">expr 100 \* 2 <span class="comment"># 乘</span></span><br><span class="line">expr 100 / 2 <span class="comment"># 除</span></span><br><span class="line">expr 100 \% 2 <span class="comment"># 模</span></span><br></pre></td></tr></table></figure>
+<p>然后<code>expr</code>可以返回运算结果，这时需要使用``将<code>expr</code>命令包起来：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x=`expr 100 + 2`</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$x</span> <span class="comment"># 输出102</span></span><br></pre></td></tr></table></figure>
+<p>关系和逻辑运算同理。<strong>返回1表示真，返回0表示假。</strong></p>
+<h2 id="分支与循环"><a href="#分支与循环" class="headerlink" title="分支与循环"></a>分支与循环</h2><p>和其他语言一样，shell也提供了循环和分支语句，包括<code>if</code>语句、<code>for</code>循环、<code>while</code>循环和<code>until</code>循环。</p>
+<h3 id="if条件分支"><a href="#if条件分支" class="headerlink" title="if条件分支"></a>if条件分支</h3><h4 id="基本格式"><a href="#基本格式" class="headerlink" title="基本格式"></a>基本格式</h4><p><code>if</code>语句的基本格式为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ 测试条件 ];<span class="keyword">then</span></span><br><span class="line">	执行的命令</span><br><span class="line"><span class="keyword">elif</span> [测试条件];<span class="keyword">then</span></span><br><span class="line">	执行的命令</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	执行的命令</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>需要注意：</p>
+<ol>
+<li>测试条件表达式需要用<code>[]</code>围起来，且它内部的<strong>前后都要留空格</strong>。</li>
+<li>代码缩进不是必要的，但可以提高可读性。</li>
+<li>结尾的<code>fi</code>就是<code>if</code>的反写，表示<code>if</code>语句结束。</li>
+<li>如果要将<code>then</code>和<code>if</code>或<code>elif</code>写在同一行，必须在<code>]</code>后面加<code>;</code>！换行则不用。</li>
+<li>测试条件中的运算符记得要在<strong>两边加上空格</strong>！</li>
+</ol>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621173615817.png" alt="image-20220621173615817"></p>
+<h4 id="使用test命令"><a href="#使用test命令" class="headerlink" title="使用test命令"></a>使用test命令</h4><p>实际上，我们判断条件是否成立更常用的是<code>test</code>命令。test命令是shell环境中测试条件表达式的工具，基本格式为：<code>test $value1 -op $value2</code>。如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Are you ok?&quot;</span></span><br><span class="line"><span class="built_in">read</span> ans</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> ans = y;<span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">&quot;Glad to hear that!&quot;</span></span><br><span class="line"><span class="keyword">else</span> <span class="built_in">echo</span> <span class="string">&quot;Sorry to hear that.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面的代码使用<code>read</code>来获取输入，送入<code>ans</code>变量中。</p>
+</blockquote>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621175322721.png" alt="image-20220621175322721"></p>
+<p><code>test</code>可以<strong>对数字、字符和文件进行测试</strong>。</p>
+<ol>
+<li><p><strong>数字测试</strong></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621175708258.png" alt="image-20220621175708258"></p>
+</li>
+<li><p><strong>字符测试</strong></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621175802781.png" alt="image-20220621175802781"></p>
+</li>
+<li><p><strong>文件测试</strong></p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621175931894.png" alt="image-20220621175931894"></p>
+</li>
+</ol>
+<p>需要记住常用的测试参数，包括数字测试的<code>-eq</code>、<code>-ne</code>、<code>-gt</code>、<code>-lt</code>、<code>-ge</code>、<code>-le</code>；字符测试的<code>=</code>、<code>!=</code>；文件测试的<code>-e</code>、<code>-r</code>、<code>-w</code>、<code>-x</code>。</p>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p>for循环的结构可简单描述为<code>for-in-done</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> vars;<span class="keyword">do</span></span><br><span class="line">	循环体</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621181045866.png" alt="image-20220621181045866"></p>
+<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><p><code>while</code>循环的结构可简单描述为<code>while-do-done</code>结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> [ 条件表达式 ];<span class="keyword">do</span></span><br><span class="line">	循环体</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>同理，可以使用test命令来代替条件表达式：</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621182119880.png" alt="image-20220621182119880"></p>
+<h3 id="until循环"><a href="#until循环" class="headerlink" title="until循环"></a>until循环</h3><p><code>until</code>循环与<code>while</code>循环类似，只是它在条件为假时执行循环体。它的结构可简单描述为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">until [ 条件表达式 ];<span class="keyword">do</span></span><br><span class="line">	循环体</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>注意将<code>until</code>循环的条件表达式与<code>while</code>循环进行对比（实际上就是取反）</p>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621182654586.png" alt="image-20220621182654586"></p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>前面提到过，shell也支持函数。函数的定义方式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">func</span></span>()&#123;</span><br><span class="line">	函数体</span><br><span class="line">	<span class="built_in">return</span> 返回值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>调用的时候，可以给函数<strong>提供若干参数</strong>：<code>func arg1 arg2 …</code></p>
+</li>
+<li><p>函数要访问到这些参数，<strong>使用位置参数</strong><code>$1</code>、<code>$2</code>……即可。</p>
+</li>
+<li>函数外面要访问到函数的返回值，使用<code>$?</code>即可得到上一个函数返回的值。</li>
+</ol>
+<p>如下面的脚本实现了函数对提供的参数求和：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">add</span></span>()&#123;</span><br><span class="line">        sum=0</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> $*;<span class="keyword">do</span></span><br><span class="line">                <span class="built_in">let</span> sum=sum+num</span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line">        <span class="built_in">return</span> <span class="variable">$sum</span></span><br><span class="line">&#125;</span><br><span class="line">add 1 8 9</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;加法的结果为$?&quot;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://cloud.fullcomb.top/private/source/image/linux/4/image-20220621184050428.png" alt="image-20220621184050428"></p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>Unix操作系统4:Shell编程</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://blog.fullcomb.top/post/1e821f7d.html">https://blog.fullcomb.top/post/1e821f7d.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Sato</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2022-06-21</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2022-06-21</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unix/">Unix</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/3acff9a3.html"><img class="next-cover" src="https://cloud.fullcomb.top/private/source/image/linux/3/cover.png" onerror="onerror=null;src='https://satoing.gitee.io/source/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Unix操作系统3:VIM与正则表达式</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div id="comment-switch"><span class="first-comment">Twikoo</span><span class="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/avatar.webp" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Sato</div><div class="author-info__description">祝愿我们都能够保持初心，做兴趣使然的英雄</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">51</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Satoing"><i class="fab fa-github"></i><span>Follow Me In Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Satoing" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3524336191@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content"><h3><img src="https://cloud.fullcomb.top/private/source/image/build/roselia/favicon.webp"><u style="border-color:#9393c7;color:#9393c7;border-width:3px;">Roselia介绍</u></h3><p class="sideb">"Roselia"取自蔷薇的rose和茶花的camellia，蓝色蔷薇的花语为"完成不可能之事"。Roselia也如同蓝色蔷薇一样，以"到达音乐巅峰"为目标，不断地练习与成长。<p><a target="_blank" style="display:block;margin:0;padding:0;"href="https://music.fullcomb.top/"><img  src="https://cloud.fullcomb.top/private/source/image/build/roselia/sideba.webp" / style="display:block;width:250px"></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86Shell"><span class="toc-number">1.</span> <span class="toc-text">认识Shell</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#shell%E7%BC%96%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">shell编程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell%E8%84%9A%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">shell脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">变量定义与使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.2.1.</span> <span class="toc-text">变量的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.2.</span> <span class="toc-text">变量的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%88%A0%E9%99%A4"><span class="toc-number">2.2.3.</span> <span class="toc-text">变量的删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.4.</span> <span class="toc-text">特殊变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">2.3.</span> <span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E4%B8%8E%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.4.</span> <span class="toc-text">分支与循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#if%E6%9D%A1%E4%BB%B6%E5%88%86%E6%94%AF"><span class="toc-number">2.4.1.</span> <span class="toc-text">if条件分支</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.4.1.1.</span> <span class="toc-text">基本格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8test%E5%91%BD%E4%BB%A4"><span class="toc-number">2.4.1.2.</span> <span class="toc-text">使用test命令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.4.2.</span> <span class="toc-text">for循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#while%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.4.3.</span> <span class="toc-text">while循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#until%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.4.4.</span> <span class="toc-text">until循环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">2.5.</span> <span class="toc-text">函数</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/1e821f7d.html" title="Unix操作系统4:Shell编程"><img src="https://cloud.fullcomb.top/private/source/image/linux/4/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="Unix操作系统4:Shell编程"/></a><div class="content"><a class="title" href="/post/1e821f7d.html" title="Unix操作系统4:Shell编程">Unix操作系统4:Shell编程</a><time datetime="2022-06-21T10:50:21.993Z" title="发表于 2022-06-21 18:50:21">2022-06-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/3acff9a3.html" title="Unix操作系统3:VIM与正则表达式"><img src="https://cloud.fullcomb.top/private/source/image/linux/3/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="Unix操作系统3:VIM与正则表达式"/></a><div class="content"><a class="title" href="/post/3acff9a3.html" title="Unix操作系统3:VIM与正则表达式">Unix操作系统3:VIM与正则表达式</a><time datetime="2022-06-21T03:09:50.245Z" title="发表于 2022-06-21 11:09:50">2022-06-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7ef131a7.html" title="Unix操作系统2:文件系统"><img src="https://cloud.fullcomb.top/private/source/image/linux/2/cover.png" onerror="this.onerror=null;this.src='https://satoing.gitee.io/source/img/404.jpg'" alt="Unix操作系统2:文件系统"/></a><div class="content"><a class="title" href="/post/7ef131a7.html" title="Unix操作系统2:文件系统">Unix操作系统2:文件系统</a><time datetime="2022-06-20T07:24:16.221Z" title="发表于 2022-06-20 15:24:16">2022-06-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022  <i id="heartbeat" class="fa fas fa-heartbeat"></i> Sato</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/img/beian.png"/><span>蜀ICP备2022000086号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20220015"><img class="icp-icon" src="/img/moe.png"/><span>萌ICP备20220015号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://npm.elemecdn.com/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://npm.elemecdn.com/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://npm.elemecdn.com/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.vemoji)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    twikoo.getCommentsCount({
+      envId: 'https://twiko-phi.vercel.app/',
+      region: 'AWS / N. Virginia (us-east-1)',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      document.getElementById('twikoo-count').innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://npm.elemecdn.com/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://npm.elemecdn.com/gitalk/dist/gitalk.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3283f5673f05c76ebe1d',
+      clientSecret: 'e9c8969656918eceba066db974a5bbc1d208d282',
+      repo: 'gitalk',
+      owner: 'Satoing',
+      admin: ['Satoing'],
+      id: '2bb87b9f88ea77e5545d1f4f6fdc3253',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://npm.elemecdn.com/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Twikoo' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script type="text/javascript" src="https://npm.elemecdn.com/artitalk@3.2.2"></script><script defer src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script src="https://npm.elemecdn.com/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://npm.elemecdn.com/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script src="https://npm.elemecdn.com/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://en.bang-dream.com/" style="margin-inline:5px" data-title="本站的主题来自次世代企划&quot;BanG Dream&quot;" title=""><img src="https://img.shields.io/badge/BanG-Dream-e50150?logo=Riseup&amp;label=BanG&amp;logoColor=e3004e&amp;labelColor=f0d200" alt=""/></a><a class="github-badge" target="_blank" href="https://zh.moegirl.org.cn/Roselia" style="margin-inline:5px" data-title="本站的主题为&quot;Roeslia&quot;" title=""><img src="https://img.shields.io/badge/%E7%BB%BD%E6%94%BE%E5%90%A7!-Roselia-686dea" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><!-- hexo injector body_end end --></body></html>
