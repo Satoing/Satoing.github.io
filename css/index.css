@@ -15,7 +15,7 @@ img {
 }
 @font-face {
   font-family: 'HY';
-  src: url("../font/HY.woff2") format('truetype');
+  src: url("https://cloud.fullcomb.top/private/source/fonts/HY.woff2") format('truetype');
   font-display: swap;
 }
 .gt-comments p,
