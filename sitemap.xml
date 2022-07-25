@@ -672,7 +672,7 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/key/</loc>
+    <loc>https://blog.fullcomb.top/tags/OpenGL%E7%BC%96%E7%A8%8B/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -693,7 +693,7 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/OpenGL%E7%BC%96%E7%A8%8B/</loc>
+    <loc>https://blog.fullcomb.top/tags/key/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -721,20 +721,6 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/Minecraft/</loc>
-    <lastmod>2022-07-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.fullcomb.top/tags/%E9%97%B2%E8%B0%88/</loc>
-    <lastmod>2022-07-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.fullcomb.top/tags/Unix/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -749,7 +735,14 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/RSS/</loc>
+    <loc>https://blog.fullcomb.top/tags/Minecraft/</loc>
+    <lastmod>2022-07-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.fullcomb.top/tags/%E9%97%B2%E8%B0%88/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -777,6 +770,13 @@
   </url>
   
   <url>
+    <loc>https://blog.fullcomb.top/tags/RSS/</loc>
+    <lastmod>2022-07-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.fullcomb.top/tags/%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -785,6 +785,13 @@
   
   <url>
     <loc>https://blog.fullcomb.top/tags/Plex/</loc>
+    <lastmod>2022-07-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.fullcomb.top/tags/%E6%95%B0%E7%AB%9E/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -805,7 +812,7 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/%E6%95%B0%E7%AB%9E/</loc>
+    <loc>https://blog.fullcomb.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -813,13 +820,6 @@
   
   <url>
     <loc>https://blog.fullcomb.top/tags/English/</loc>
-    <lastmod>2022-07-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.fullcomb.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -891,7 +891,7 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/categories/%E4%BA%8C%E6%AC%A1%E5%85%83/</loc>
+    <loc>https://blog.fullcomb.top/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -905,7 +905,7 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/categories/%E6%B8%B8%E6%88%8F%E4%B8%8E3D/</loc>
+    <loc>https://blog.fullcomb.top/categories/%E4%BA%8C%E6%AC%A1%E5%85%83/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
