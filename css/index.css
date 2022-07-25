@@ -15,7 +15,7 @@ img {
 }
 @font-face {
   font-family: 'HY';
-  src: url("https://gcore.jsdelivr.net/npm/satotang@0.0.1/HY.woff2") format('truetype');
+  src: url("https://jsdelivr.bobodns1.ga/npm/satotang@0.0.1/HY.woff2") format('truetype');
   font-display: swap;
 }
 .gt-comments p,

@@ -623,13 +623,6 @@
 
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/git/</loc>
-    <lastmod>2022-07-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.fullcomb.top/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -652,6 +645,13 @@
   
   <url>
     <loc>https://blog.fullcomb.top/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</loc>
+    <lastmod>2022-07-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.fullcomb.top/tags/git/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -791,13 +791,6 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/%E6%95%B0%E7%AB%9E/</loc>
-    <lastmod>2022-07-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.fullcomb.top/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -812,7 +805,7 @@
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/</loc>
+    <loc>https://blog.fullcomb.top/tags/%E6%95%B0%E7%AB%9E/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -820,6 +813,13 @@
   
   <url>
     <loc>https://blog.fullcomb.top/tags/English/</loc>
+    <lastmod>2022-07-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.fullcomb.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -870,14 +870,14 @@
 
   
   <url>
-    <loc>https://blog.fullcomb.top/categories/%E5%B8%B8%E8%AF%86/</loc>
+    <loc>https://blog.fullcomb.top/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.fullcomb.top/categories/%E5%A4%A7%E4%BA%8C%E4%B8%8A/</loc>
+    <loc>https://blog.fullcomb.top/categories/%E5%B8%B8%E8%AF%86/</loc>
     <lastmod>2022-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
