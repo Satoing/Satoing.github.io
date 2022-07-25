@@ -4273,22 +4273,22 @@ li.categoryBar-list-item:nth-child(6) {
   background: url('https://cloud.fullcomb.top/private/source/image/build/roselia/archive.webp');
 }
 li.categoryBar-list-item:nth-child(1)>span::after {
-  content: '此生无悔二次元' !important;
+  content: '专业课程的扩展与深入' !important;
 }
 li.categoryBar-list-item:nth-child(2)>span::after {
-  content: '大二上的学习' !important;
+  content: '计科专业课' !important;
 }
 li.categoryBar-list-item:nth-child(3)>span::after {
-  content: '大二下的课内学习' !important;
+  content: '一曝十寒的兴趣' !important;
 }
 li.categoryBar-list-item:nth-child(4)>span::after {
-  content: '应该知道的二三事' !important;
+  content: '值得分享的操作' !important;
 }
 li.categoryBar-list-item:nth-child(5)>span::after {
-  content: '暂鸽，下次一定' !important;
+  content: '图形学和游戏相关' !important;
 }
 li.categoryBar-list-item:nth-child(6)>span::after {
-  content: '图形学和游戏相关' !important;
+  content: '虽然还有点早' !important;
 }
 li.categoryBar-list-item {
   width: 32.3% !important;
