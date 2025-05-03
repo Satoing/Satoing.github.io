@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>关于 on Jup的博客</title>
+    <link>https://satoing.github.io/about/</link>
+    <description>Recent content in 关于 on Jup的博客</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="https://satoing.github.io/about/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>
