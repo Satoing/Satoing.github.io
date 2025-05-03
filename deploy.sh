@@ -8,6 +8,6 @@ hugo -D --destination docs
 echo "📦 提交到 main 分支..."
 git add .
 git commit -m "Update site $(date)"
-git push -f origin main
+git push origin main
 
 echo "✅ 部署完成！访问 https://satoing.github.io"
