@@ -1,0 +1,659 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>博客配置 - Jup的博客</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="搭建静态博客需要考虑以下方面：
+
+选择什么框架和主题？几个流行的静态博客框架，各自有哪些优缺点？
+部署在哪？部署在云服务器上，还是直接使用静态网站托管平台？
+图床的搭建？使用对象存储，或者其他奇技淫巧？
+
+一、框架和主题
+
+  
+      
+          框架
+          语言
+          特点
+          适合人群
+      
+  
+  
+      
+          Hugo
+          Go
+          生成速度最快（毫秒级）
+          追求极速构建
+      
+      
+          Jekyll
+          Ruby
+          GitHub Pages 原生支持
+          新手/小型博客
+      
+      
+          Hexo
+          Node.js
+          插件生态丰富
+          前端开发者
+      
+      
+          Gatsby
+          React
+          支持动态数据（GraphQL）
+          React 开发者
+      
+      
+          Astro
+          JS/TS
+          混合静态&#43;动态渲染
+          现代 Web 项目
+      
+  
+
+作为一个后台程序员，自然首选hugo。主题选择以简洁为主的Paper。
+配置
+在hugo.toml中，增加导航栏和基本信息的配置：
+baseURL = &#39;https://satoing.github.io&#39;
+languageCode = &#39;en-us&#39;
+title = &#39;Jup的博客&#39;
+theme = &#34;paper&#34;
+
+[menu]
+  [[menu.main]]
+    name = &#34;首页&#34;
+    url = &#34;/&#34;
+    weight = 1
+  [[menu.main]]
+    name = &#34;文章&#34;
+    url = &#34;/posts/&#34;
+    weight = 2
+  [[menu.main]]
+    name = &#34;分类&#34;
+    url = &#34;/categories&#34;
+    weight = 3
+  [[menu.main]]
+    name = &#34;标签&#34;
+    url = &#34;/tags&#34;
+    weight = 4
+
+[outputs]
+  home = [&#34;HTML&#34;, &#34;JSON&#34;]  # 允许生成JSON
+
+[params]
+  # color style
+  color = &#39;linen&#39;                 # linen, wheat, gray, light
+
+  # header social icons
+  github = &#39;satoing&#39;              # github.com/YOUR_GITHUB_ID
+  rss = true                      # show rss icon
+
+  # home page profile
+  avatar = &#39;xxx&#39;                  # gravatar email or image url
+  name = &#39;jup&#39;
+  bio = &#39;青山旧歌谣&#39;
+
+
+  # misc
+  disableHLJS = true               # disable highlight.js
+  disablePostNavigation = true     # disable post navigation
+  monoDarkIcon = true              # show monochrome dark mode icon
+  math = false                     # enable KaTeX math typesetting globally
+  localKatex = false               # use local KaTeX js/css instead of CDN
+  favicon = &#34;xxx&#34;                  # customize the default favicon
+  appleTouchIcon = &#34;xxx&#34;   				 # customize the default Apple touch icon
+问题
+尝试新增一篇文章：hugo new posts/first-post.md，然后hugo server运行http服务器。" />
+  <meta name="author" content="jup" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_72%2Ch_72%2Fformat%2Cpng" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" /><link rel="preload" as="image" href="http://localhost:1313/rss.svg" />
+
+  
+
+  
+  <link
+    rel="icon"
+    href="https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"
+  />
+
+  <meta name="generator" content="Hugo 0.147.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center">
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a class="-translate-y-[1px] text-2xl font-medium" href="http://localhost:1313/">Jup的博客</a>
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button" aria-label="Dark"></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button" aria-label="Menu"></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"><nav class="lg:ml-12 lg:flex lg:flex-row lg:items-center lg:space-x-10 rtl:space-x-reverse"><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/">首页</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/posts/">文章</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/categories">分类</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/tags">标签</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/about">关于</a></nav><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert">
+      <a class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/satoing"
+        target="_blank" rel="me">github</a>
+      <a class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href="http://localhost:1313/index.xml"
+        target="_blank" rel="alternate">rss</a>
+    </nav>
+  </div>
+</header><main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">博客配置</h1><div class="text-xs antialiased opacity-60"><time>May 4, 2025</time>&nbsp;&nbsp; <a class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+        href="http://localhost:1313/categories/%E5%8D%9A%E5%AE%A2%E6%9B%B4%E6%96%B0%E8%AE%B0%E5%BD%95">博客更新记录</a></div></header>
+
+  <section><p>搭建静态博客需要考虑以下方面：</p>
+<ol>
+<li>选择什么框架和主题？几个流行的静态博客框架，各自有哪些优缺点？</li>
+<li>部署在哪？部署在云服务器上，还是直接使用静态网站托管平台？</li>
+<li>图床的搭建？使用对象存储，或者其他奇技淫巧？</li>
+</ol>
+<h2 id="一框架和主题">一、框架和主题</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">框架</th>
+          <th style="text-align: center">语言</th>
+          <th style="text-align: center">特点</th>
+          <th style="text-align: center">适合人群</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center"><strong>Hugo</strong></td>
+          <td style="text-align: center">Go</td>
+          <td style="text-align: center">生成速度最快（毫秒级）</td>
+          <td style="text-align: center">追求极速构建</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>Jekyll</strong></td>
+          <td style="text-align: center">Ruby</td>
+          <td style="text-align: center">GitHub Pages 原生支持</td>
+          <td style="text-align: center">新手/小型博客</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>Hexo</strong></td>
+          <td style="text-align: center">Node.js</td>
+          <td style="text-align: center">插件生态丰富</td>
+          <td style="text-align: center">前端开发者</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>Gatsby</strong></td>
+          <td style="text-align: center">React</td>
+          <td style="text-align: center">支持动态数据（GraphQL）</td>
+          <td style="text-align: center">React 开发者</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>Astro</strong></td>
+          <td style="text-align: center">JS/TS</td>
+          <td style="text-align: center">混合静态+动态渲染</td>
+          <td style="text-align: center">现代 Web 项目</td>
+      </tr>
+  </tbody>
+</table>
+<p>作为一个后台程序员，自然首选hugo。主题选择以简洁为主的Paper。</p>
+<h3 id="配置">配置</h3>
+<p>在<code>hugo.toml</code>中，增加导航栏和基本信息的配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">baseURL</span> = <span style="color:#e6db74">&#39;https://satoing.github.io&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">languageCode</span> = <span style="color:#e6db74">&#39;en-us&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">title</span> = <span style="color:#e6db74">&#39;Jup的博客&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">theme</span> = <span style="color:#e6db74">&#34;paper&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">menu</span>]
+</span></span><span style="display:flex;"><span>  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;首页&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span> = <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">weight</span> = <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;文章&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span> = <span style="color:#e6db74">&#34;/posts/&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">weight</span> = <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;分类&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span> = <span style="color:#e6db74">&#34;/categories&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">weight</span> = <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;标签&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span> = <span style="color:#e6db74">&#34;/tags&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">weight</span> = <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">outputs</span>]
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">home</span> = [<span style="color:#e6db74">&#34;HTML&#34;</span>, <span style="color:#e6db74">&#34;JSON&#34;</span>]  <span style="color:#75715e"># 允许生成JSON</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">params</span>]
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># color style</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">color</span> = <span style="color:#e6db74">&#39;linen&#39;</span>                 <span style="color:#75715e"># linen, wheat, gray, light</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># header social icons</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">github</span> = <span style="color:#e6db74">&#39;satoing&#39;</span>              <span style="color:#75715e"># github.com/YOUR_GITHUB_ID</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">rss</span> = <span style="color:#66d9ef">true</span>                      <span style="color:#75715e"># show rss icon</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># home page profile</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">avatar</span> = <span style="color:#e6db74">&#39;xxx&#39;</span>                  <span style="color:#75715e"># gravatar email or image url</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#39;jup&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">bio</span> = <span style="color:#e6db74">&#39;青山旧歌谣&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># misc</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">disableHLJS</span> = <span style="color:#66d9ef">true</span>               <span style="color:#75715e"># disable highlight.js</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">disablePostNavigation</span> = <span style="color:#66d9ef">true</span>     <span style="color:#75715e"># disable post navigation</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">monoDarkIcon</span> = <span style="color:#66d9ef">true</span>              <span style="color:#75715e"># show monochrome dark mode icon</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">math</span> = <span style="color:#66d9ef">false</span>                     <span style="color:#75715e"># enable KaTeX math typesetting globally</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">localKatex</span> = <span style="color:#66d9ef">false</span>               <span style="color:#75715e"># use local KaTeX js/css instead of CDN</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">favicon</span> = <span style="color:#e6db74">&#34;xxx&#34;</span>                  <span style="color:#75715e"># customize the default favicon</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">appleTouchIcon</span> = <span style="color:#e6db74">&#34;xxx&#34;</span>   				 <span style="color:#75715e"># customize the default Apple touch icon</span>
+</span></span></code></pre></div><h3 id="问题">问题</h3>
+<p>尝试新增一篇文章：<code>hugo new posts/first-post.md</code>，然后<code>hugo server</code>运行http服务器。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>title: &#34;第一篇博客&#34;
+</span></span><span style="display:flex;"><span>date: 2023-10-20
+</span></span><span style="display:flex;"><span>categories: [&#34;技术&#34;, &#34;Hugo&#34;]  # 必须添加这行
+</span></span><span style="display:flex;"><span>tags: [&#34;教程&#34;]                # 已有tags
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## 欢迎
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>这是我的第一篇 Hugo 博客！
+</span></span></code></pre></div><p>文章的末尾显示出了标签，但是分类并没有正常显示。</p>
+<p>导航栏的分类、标签下面的内容也是空的，需要使用者在主题的基础上进行一些魔改。</p>
+<h3 id="魔改">魔改</h3>
+<h4 id="文章显示分类">文章显示分类</h4>
+<p>预期效果是分类显示在文章最上面，标签显示在最下面。</p>
+<p><img src="https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746338312987-4e92688c-8119-4416-8ff7-eeb47c027813.png" alt=""></p>
+<p>修改<code>themes/paper/layouts/_default/single.html</code>，新增如下内容。重新启动http服务器，成功显示。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">header</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mb-14&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">h1</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;my-0! pb-2.5&#34;</span>&gt;{{- .Title -}}&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  {{- if ne .Type &#34;page&#34; -}}
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text-xs antialiased opacity-60&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    {{- if .Date -}}
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">time</span>&gt;{{- .Date | time.Format &#34;:date_medium&#34; -}}&lt;/<span style="color:#f92672">time</span>&gt;&amp;nbsp;&amp;nbsp; <span style="color:#75715e">&lt;!-- 增加两个空格 --&gt;</span>
+</span></span><span style="display:flex;"><span>    {{- end -}}
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- start add --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- Post Categories --&gt;</span>
+</span></span><span style="display:flex;"><span>    {{- if .Params.categories -}}
+</span></span><span style="display:flex;"><span>    {{- range .Params.categories -}}
+</span></span><span style="display:flex;"><span>    {{- $href := print (absURL &#34;categories/&#34;) (urlize .) -}}
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{- $href -}}&#34;</span>&gt;{{- . -}}&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>    {{- end -}}
+</span></span><span style="display:flex;"><span>    {{- end -}}
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- end add --&gt;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  {{- end -}}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">header</span>&gt;
+</span></span></code></pre></div><h4 id="显示分类和标签页">显示分类和标签页</h4>
+<p>点击文章的分类：/categories/hugo/ 能正常访问。但是/categories 就是空的。排查下来，是因为/categories没有绑定到html。下面开始修改&mdash;</p>
+<ol>
+<li>新增_index.md：<code>hugo new categories/_index.md</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>title: &#34;分类&#34;
+</span></span><span style="display:flex;"><span>layout: &#34;categories&#34;  # 关键！强制指定模板类型
+</span></span><span style="display:flex;"><span>---
+</span></span></code></pre></div><ol start="2">
+<li>新建<code>themes/paper/layouts/_default/categories.html</code>：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>{{ define &#34;main&#34; }}
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;taxonomy-page&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">h1</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;taxonomy-title&#34;</span>&gt;{{ .Title }}&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    {{ if .Data.Terms }}
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;categories-grid&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        {{ range .Data.Terms.Alphabetical }}
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;category-card&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{ .Page.Permalink }}&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;category-link&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>                &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;category-name&#34;</span>&gt;{{ .Page.Title }}&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>                &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;category-count&#34;</span>&gt;{{ .Count }}&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>        {{ end }}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    {{ else }}
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;empty-state&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">svg</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;empty-icon&#34;</span> <span style="color:#a6e22e">xmlns</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.w3.org/2000/svg&#34;</span> <span style="color:#a6e22e">viewBox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 24 24&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">path</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">d</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">svg</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;empty-text&#34;</span>&gt;暂无分类数据&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    {{ end }}
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>{{ end }}
+</span></span></code></pre></div><ol start="3">
+<li>美化样式：<code>themes/paper/assets/custom.css</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-css" data-lang="css"><span style="display:flex;"><span><span style="color:#75715e">/* Place custom css here. */</span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">reference</span> <span style="color:#e6db74">&#39;./app.css&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 分类页主容器 */</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">taxonomy-page</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">max-width</span>: <span style="color:#ae81ff">800</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin</span>: <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">auto</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">2</span><span style="color:#66d9ef">rem</span> <span style="color:#ae81ff">1</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 标题样式（匹配截图中的黑色大标题） */</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">taxonomy-title</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">2</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">font-weight</span>: <span style="color:#ae81ff">600</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">text-align</span>: <span style="color:#66d9ef">center</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin-bottom</span>: <span style="color:#ae81ff">2</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">position</span>: <span style="color:#66d9ef">relative</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">taxonomy-title</span>::<span style="color:#a6e22e">after</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">content</span>: <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">block</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">width</span>: <span style="color:#ae81ff">60</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">height</span>: <span style="color:#ae81ff">3</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">background</span>: <span style="color:#ae81ff">#ddd</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin</span>: <span style="color:#ae81ff">1</span><span style="color:#66d9ef">rem</span> <span style="color:#66d9ef">auto</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 分类网格布局 */</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">categories-grid</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">grid</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">grid-template-columns</span>: <span style="color:#a6e22e">repeat</span>(<span style="color:#66d9ef">auto</span><span style="color:#f92672">-</span><span style="color:#66d9ef">fill</span>, <span style="color:#a6e22e">minmax</span>(<span style="color:#ae81ff">200</span><span style="color:#66d9ef">px</span>, <span style="color:#ae81ff">1</span>fr));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">gap</span>: <span style="color:#ae81ff">1.5</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin-top</span>: <span style="color:#ae81ff">1</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 分类卡片（匹配截图中的白底黑框样式） */</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">category-card</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">background</span>: <span style="color:#66d9ef">white</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">border</span>: <span style="color:#ae81ff">1</span><span style="color:#66d9ef">px</span> <span style="color:#66d9ef">solid</span> <span style="color:#ae81ff">#e0e0e0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">border-radius</span>: <span style="color:#ae81ff">8</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">transition</span>: <span style="color:#66d9ef">all</span> <span style="color:#ae81ff">0.3</span><span style="color:#66d9ef">s</span> <span style="color:#66d9ef">ease</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">box-shadow</span>: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span><span style="color:#66d9ef">px</span> <span style="color:#ae81ff">4</span><span style="color:#66d9ef">px</span> rgba(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.03</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">category-card</span>:<span style="color:#a6e22e">hover</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">transform</span>: translateY(<span style="color:#ae81ff">-3</span><span style="color:#66d9ef">px</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">box-shadow</span>: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">4</span><span style="color:#66d9ef">px</span> <span style="color:#ae81ff">12</span><span style="color:#66d9ef">px</span> rgba(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.08</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">border-color</span>: <span style="color:#ae81ff">#c9c9c9</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 分类链接样式 */</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">category-link</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">display</span>: <span style="color:#66d9ef">flex</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">justify-content</span>: <span style="color:#66d9ef">space-between</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">align-items</span>: <span style="color:#66d9ef">center</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">1.25</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">color</span>: <span style="color:#ae81ff">#333</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">text-decoration</span>: <span style="color:#66d9ef">none</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">category-name</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">1.1</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">font-weight</span>: <span style="color:#ae81ff">500</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">category-count</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">background</span>: <span style="color:#ae81ff">#f5f5f5</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">color</span>: <span style="color:#ae81ff">#666</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">0.9</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">0.25</span><span style="color:#66d9ef">rem</span> <span style="color:#ae81ff">0.5</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">border-radius</span>: <span style="color:#ae81ff">12</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 空状态样式 */</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">empty-state</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">text-align</span>: <span style="color:#66d9ef">center</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">3</span><span style="color:#66d9ef">rem</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">empty-icon</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">width</span>: <span style="color:#ae81ff">60</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">height</span>: <span style="color:#ae81ff">60</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin</span>: <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">auto</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">opacity</span>: <span style="color:#ae81ff">0.5</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">empty-text</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">color</span>: <span style="color:#ae81ff">#888</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin-top</span>: <span style="color:#ae81ff">1</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">1.1</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* 移动端适配 */</span>
+</span></span><span style="display:flex;"><span>@<span style="color:#66d9ef">media</span> <span style="color:#f92672">(</span><span style="color:#f92672">max-width</span><span style="color:#f92672">:</span> <span style="color:#f92672">640px</span><span style="color:#f92672">)</span> {
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">categories-grid</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">grid-template-columns</span>: <span style="color:#ae81ff">1</span>fr;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">taxonomy-title</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">1.5</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">about-page</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">max-width</span>: <span style="color:#ae81ff">800</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">margin</span>: <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">auto</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">2</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">about-page</span> <span style="color:#f92672">h1</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">border-bottom</span>: <span style="color:#ae81ff">2</span><span style="color:#66d9ef">px</span> <span style="color:#66d9ef">solid</span> <span style="color:#ae81ff">#eee</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>效果预览：</p>
+<p><img src="https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746338931174-9ac94209-a06d-41d3-bbf4-7f63a93c98f6.png" alt=""></p>
+<p>tag页的修改同理：</p>
+<ol>
+<li><code>hugo new tags/_index.md</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>title: &#34;# 标签&#34;
+</span></span><span style="display:flex;"><span>layout: &#34;tags&#34;  # 关键！强制指定模板类型
+</span></span><span style="display:flex;"><span>---
+</span></span></code></pre></div><ol start="2">
+<li><code>themes/paper/layouts/_default/tags.html</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>{{ define &#34;main&#34; }}
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container mx-auto px-4 py-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">h1</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text-3xl font-bold mb-6&#34;</span>&gt;{{ .Title }}&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    {{ if .Data.Terms }}
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;flex flex-wrap gap-2&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        {{ range .Data.Terms.Alphabetical }}
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{ .Page.Permalink }}&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 transition&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>            {{ .Page.Title }} &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text-sm text-gray-500&#34;</span>&gt;({{ .Count }})&lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>        {{ end }}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    {{ else }}
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;empty-state&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">svg</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;w-12 h-12 mx-auto text-gray-400&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;none&#34;</span> <span style="color:#a6e22e">stroke</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;currentColor&#34;</span> <span style="color:#a6e22e">viewBox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 24 24&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">path</span> <span style="color:#a6e22e">stroke-linecap</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;round&#34;</span> <span style="color:#a6e22e">stroke-linejoin</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;round&#34;</span> <span style="color:#a6e22e">stroke-width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">d</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;/<span style="color:#f92672">path</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">svg</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mt-4 text-center text-gray-500&#34;</span>&gt;暂无标签数据&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    {{ end }}
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>{{ end }}
+</span></span></code></pre></div><p>效果预览：</p>
+<p><img src="https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746338951383-0cd44eb2-53f0-4212-8aeb-4ae6a2752872.png" alt=""></p>
+<h2 id="二部署">二、部署</h2>
+<p>对外服务自然需要一个域名。使用域名访问国内的服务器都需要繁琐的备案，直接pass。</p>
+<p>综合便捷性和稳定性，最后选择使用github pages作为托管。</p>
+<ol>
+<li>新建一个&lt;用户名&gt;.github.io的仓库。</li>
+<li>设置pages部署目录为docs。<br>
+<img src="https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746339159554-ab25e717-fe43-41b8-92a6-4988e6ade837.png" alt=""></li>
+<li>在博客根目录初始化仓库，设置远程仓库为该仓库。并配置ssh免密登录，避免push时输入密码。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git init
+</span></span><span style="display:flex;"><span>git remote add origin git@github.com:Satoing/Satoing.github.io.git
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// 设置免密登录后
+</span></span><span style="display:flex;"><span>ssh -T git@github.com
+</span></span></code></pre></div><p>怎么设置免密登录？</p>
+<p><img src="https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746339394787-f5539eec-7979-402d-90a5-508c117a47aa.png" alt=""></p>
+<p>最后编写一个shell脚本<code>deploy.sh</code>，用于生成静态文件-&gt;提交github部署。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 生成 Hugo 静态文件到 docs/</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;🚀 生成 Hugo 静态文件...&#34;</span>
+</span></span><span style="display:flex;"><span>hugo -D --destination docs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 提交并推送</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;📦 提交到 main 分支...&#34;</span>
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;Update site </span><span style="color:#66d9ef">$(</span>date<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>git push origin main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;✅ 部署完成！访问 https://satoing.github.io&#34;</span>
+</span></span></code></pre></div><h2 id="三图床">三、图床</h2>
+<p>图床可以说才是博客的核心。简单介绍下我图床的骚操作。</p>
+<p>首先，我的文章一般会在语雀上编写。写完后，导出为markdown。图片的链接如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>![](https://cdn.nlark.com/yuque/0/2024/png/2648742/1727863047799-9e824d6a-29c2-4f37-a5b6-2952257b0cfc.png)
+</span></span></code></pre></div><p>麻烦的点是图片设置了防盗链，需要在http请求头中设置<code>Referer: https://yuque.com</code>，才能正常访问图片。</p>
+<p>于是在云服务器上使用Nginx进行反向代理：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">server</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">listen</span> <span style="color:#ae81ff">7326</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">http2</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server_name</span> <span style="color:#e6db74">image.lulukiko.top</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 只代理图片请求
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">location</span> ~ <span style="color:#e6db74">^/(.*\.(jpg|jpeg|png|gif|webp|svg))$</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">valid_referers</span> ~<span style="color:#e6db74">localhost:1313</span> ~<span style="color:#e6db74">127.0.0.1:1313</span> ~<span style="color:#e6db74">satoing\.github\.io;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">if</span> <span style="color:#e6db74">(</span>$invalid_referer<span style="color:#e6db74">)</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">return</span> <span style="color:#ae81ff">403</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">https://cdn.nlark.com/</span>$1;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Referer</span> <span style="color:#e6db74">&#34;https://www.yuque.com/&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Host</span> <span style="color:#e6db74">&#34;cdn.nlark.com&#34;</span>;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_cache_valid</span> <span style="color:#ae81ff">200</span> <span style="color:#ae81ff">302</span> <span style="color:#e6db74">1d</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_cache_key</span> <span style="color:#e6db74">&#34;</span>$scheme$proxy_host$request_uri&#34;;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_ssl_server_name</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_ssl_session_reuse</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_buffering</span> <span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_connect_timeout</span> <span style="color:#e6db74">5s</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_read_timeout</span> <span style="color:#e6db74">10s</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 其他请求返回 404
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">return</span> <span style="color:#ae81ff">404</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">access_log</span>  <span style="color:#e6db74">/www/wwwlogs/image.lulukiko.top.log</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">error_log</span>  <span style="color:#e6db74">/www/wwwlogs/image.lulukiko.top.error.log</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样把<code>https://cdn.nlark.com</code>替换为<code>http://image.lulukiko.top:7326</code>就可以访问到图片了。</p>
+<p>当然我这里也设置了防盗链，Referer需要满足<code>~localhost:1313 ~127.0.0.1:1313 ~satoing\.github\.io</code>才能使用，否则返回403错误。</p>
+<p>当然最好还是使用https。申请Let&rsquo;s Encrypt证书后，在Nginx中指定证书位置即可。</p>
+</section>
+
+  </article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2025
+    <a class="link" href="http://localhost:1313/">Jup的博客</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>
