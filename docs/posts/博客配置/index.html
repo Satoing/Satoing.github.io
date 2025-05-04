@@ -664,7 +664,7 @@ baseURL = &#39;https://satoing.github.io&#39; languageCode = &#39;en-us&#39; tit
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">error_log</span>  <span style="color:#e6db74">/www/wwwlogs/image.lulukiko.top.error.log</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>这样把<code>https://cdn.nlark.com</code>替换为<code>http://image.lulukiko.top:7326</code>就可以访问到图片了。</p>
-<p>当然我这里也设置了防盗链，Referer需要满足<code>~localhost:1313 ~127.0.0.1:1313 ~satoing\.github\.io</code>才能使用，否则返回403错误。</p>
+<p>我这里也设置了防盗链，Referer需要满足<code>~localhost:1313 ~127.0.0.1:1313 ~satoing\.github\.io</code>才能使用，否则返回403错误。</p>
 <p>当然最好还是使用https。申请Let&rsquo;s Encrypt证书后，在Nginx中指定证书位置即可。</p>
 </section>
 
