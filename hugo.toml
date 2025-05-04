@@ -36,7 +36,7 @@ theme = "paper"
   github = 'satoing'                 # github.com/YOUR_GITHUB_ID
 
   # home page profile
-  avatar = 'https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_72%2Ch_72%2Fformat%2Cpng'                 # gravatar email or image url
+  avatar = 'https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_72%2Ch_72%2Fformat%2Cpng'                 # gravatar email or image url
   name = 'jup'
   bio = '青山旧歌谣'
 
@@ -47,6 +47,6 @@ theme = "paper"
   monoDarkIcon = true                       # show monochrome dark mode icon
   math = false                               # enable KaTeX math typesetting globally
   localKatex = false                        # use local KaTeX js/css instead of CDN
-  favicon = "https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"                   # customize the default favicon
-  appleTouchIcon = "https://image.lulukiko.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"   # customize the default Apple touch icon
+  favicon = "https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"                   # customize the default favicon
+  appleTouchIcon = "https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"   # customize the default Apple touch icon
 
