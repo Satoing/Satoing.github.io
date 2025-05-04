@@ -17,29 +17,7 @@
     <loc>http://localhost:1313/posts/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AE/</loc>
     <lastmod>2025-05-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/%E6%8B%86%E8%A7%A3%E8%A5%BF%E6%99%AE%E5%A4%A7%E9%99%86%E6%89%8B%E6%B8%B8/</loc>
-    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/%E6%B8%B8%E6%88%8F%E4%BD%93%E9%AA%8C/</loc>
-    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/%E8%A5%BF%E6%99%AE%E5%A4%A7%E9%99%86/</loc>
-    <lastmod>2024-10-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/hugo/</loc>
-    <lastmod>2023-10-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2023-10-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/%E6%95%99%E7%A8%8B/</loc>
-    <lastmod>2023-10-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/first-post/</loc>
-    <lastmod>2023-10-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/about/</loc>
   </url>
