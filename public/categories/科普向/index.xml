@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>科普向 on Jup的博客</title>
+    <link>http://localhost:1313/categories/%E7%A7%91%E6%99%AE%E5%90%91/</link>
+    <description>Recent content in 科普向 on Jup的博客</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 05 May 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/%E7%A7%91%E6%99%AE%E5%90%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【科普向】视频编解码</title>
+      <link>http://localhost:1313/posts/%E7%A7%91%E6%99%AE%E5%90%91%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81/</link>
+      <pubDate>Mon, 05 May 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/%E7%A7%91%E6%99%AE%E5%90%91%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81/</guid>
+      <description>&lt;p&gt;玩nas经常听到视频编码、解码、转码这些词，然后又和CPU、显卡关联，有点让人摸不着头脑。&lt;/p&gt;&#xA;&lt;p&gt;下面这篇文章对一些关键概念解释的比较清楚：&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://post.smzdm.com/p/alldz028/&#34;&gt;科普向:一文搞懂什么是串流、硬解、转码，你的nas真的需要硬解吗？&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746416314180-8e76cafd-8a05-4b67-a66f-4966fdc52329.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;但是里面还是有很多不严谨的地方，&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746416395493-8300fca4-e456-4789-acda-4c77e8c5149d.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;正好这里又涉及到码率（容易和帧率混淆）等一知半解的概念，不妨在这篇文章中一起探索探索。&lt;/p&gt;&#xA;&lt;h2 id=&#34;一图像和视频&#34;&gt;一、图像和视频&lt;/h2&gt;&#xA;&lt;h3 id=&#34;11-图像&#34;&gt;1.1 图像&lt;/h3&gt;&#xA;&lt;p&gt;图像由像素组成，彩色图像的每个像素一般包含RGB三个通道（也有A通道表示透明度）。每个通道通常的位深是8bit，即每个通道能表示256中颜色，三个通道总共能表示1677万种颜色。&lt;/p&gt;&#xA;&lt;p&gt;图像的清晰度可以由分辨率来衡量。日常中熟悉的分辨率有&lt;!-- raw HTML omitted --&gt; 360P（640x360）、720P（1280x720）、1080P（1920x1080）、4K（3840x2160）、8K（7680x4320）。&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;!-- raw HTML omitted --&gt;那么问题来了，一张1080P的彩色图像，按照上面的算法，图片的大小应该恒等于 3B&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;✖️&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;1920&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;✖️&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;1080 = 5.93MB。而实际使用感知是，相同分辨率，色彩越简单，图片越小。这是因为常用的图片格式会对图片进行压缩。不过图片的压缩算法不在本篇的讨论范围内。&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746417802695-16986586-c58f-4766-8339-14ee134a3344.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;读着不妨用opencv验证验证：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;其实最好用png测试，因为jpg的有损压缩是不可逆的。但是还原出的位图也是1080p，问题不大~&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746418023006-5d3d6a5d-6f5f-47e6-9db2-5757c9a92533.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

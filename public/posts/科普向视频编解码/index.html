@@ -1,0 +1,368 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>【科普向】视频编解码 - Jup的博客</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="玩nas经常听到视频编码、解码、转码这些词，然后又和CPU、显卡关联，有点让人摸不着头脑。
+下面这篇文章对一些关键概念解释的比较清楚：
+科普向:一文搞懂什么是串流、硬解、转码，你的nas真的需要硬解吗？
+
+但是里面还是有很多不严谨的地方，
+
+正好这里又涉及到码率（容易和帧率混淆）等一知半解的概念，不妨在这篇文章中一起探索探索。
+一、图像和视频
+1.1 图像
+图像由像素组成，彩色图像的每个像素一般包含RGB三个通道（也有A通道表示透明度）。每个通道通常的位深是8bit，即每个通道能表示256中颜色，三个通道总共能表示1677万种颜色。
+图像的清晰度可以由分辨率来衡量。日常中熟悉的分辨率有 360P（640x360）、720P（1280x720）、1080P（1920x1080）、4K（3840x2160）、8K（7680x4320）。
+那么问题来了，一张1080P的彩色图像，按照上面的算法，图片的大小应该恒等于 3B✖️1920✖️1080 = 5.93MB。而实际使用感知是，相同分辨率，色彩越简单，图片越小。这是因为常用的图片格式会对图片进行压缩。不过图片的压缩算法不在本篇的讨论范围内。
+
+读着不妨用opencv验证验证：
+
+其实最好用png测试，因为jpg的有损压缩是不可逆的。但是还原出的位图也是1080p，问题不大~
+" />
+  <meta name="author" content="jup" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_72%2Ch_72%2Fformat%2Cpng" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+
+  
+
+  
+  <link
+    rel="icon"
+    href="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"
+  />
+
+  <meta name="generator" content="Hugo 0.147.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center">
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a class="-translate-y-[1px] text-2xl font-medium" href="http://localhost:1313/">Jup的博客</a>
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button" aria-label="Dark"></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button" aria-label="Menu"></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"><nav class="lg:ml-12 lg:flex lg:flex-row lg:items-center lg:space-x-10 rtl:space-x-reverse"><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/">首页</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/posts/">文章</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/categories">分类</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/tags">标签</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/about">关于</a></nav><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert">
+      <a class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/satoing"
+        target="_blank" rel="me">github</a>
+    </nav>
+  </div>
+</header><main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">【科普向】视频编解码</h1><div class="text-xs antialiased opacity-60"><time>May 5, 2025</time>&nbsp;&nbsp; <a class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+        href="http://localhost:1313/categories/%E7%A7%91%E6%99%AE%E5%90%91">科普向</a><a class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+        href="http://localhost:1313/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91">音视频开发</a></div></header>
+
+  <section><p>玩nas经常听到视频编码、解码、转码这些词，然后又和CPU、显卡关联，有点让人摸不着头脑。</p>
+<p>下面这篇文章对一些关键概念解释的比较清楚：</p>
+<p><a href="https://post.smzdm.com/p/alldz028/">科普向:一文搞懂什么是串流、硬解、转码，你的nas真的需要硬解吗？</a></p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746416314180-8e76cafd-8a05-4b67-a66f-4966fdc52329.png" alt=""></p>
+<p>但是里面还是有很多不严谨的地方，</p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746416395493-8300fca4-e456-4789-acda-4c77e8c5149d.png" alt=""></p>
+<p>正好这里又涉及到码率（容易和帧率混淆）等一知半解的概念，不妨在这篇文章中一起探索探索。</p>
+<h2 id="一图像和视频">一、图像和视频</h2>
+<h3 id="11-图像">1.1 图像</h3>
+<p>图像由像素组成，彩色图像的每个像素一般包含RGB三个通道（也有A通道表示透明度）。每个通道通常的位深是8bit，即每个通道能表示256中颜色，三个通道总共能表示1677万种颜色。</p>
+<p>图像的清晰度可以由分辨率来衡量。日常中熟悉的分辨率有<!-- raw HTML omitted --> 360P（640x360）、720P（1280x720）、1080P（1920x1080）、4K（3840x2160）、8K（7680x4320）。<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->那么问题来了，一张1080P的彩色图像，按照上面的算法，图片的大小应该恒等于 3B<!-- raw HTML omitted --><!-- raw HTML omitted -->✖️<!-- raw HTML omitted --><!-- raw HTML omitted -->1920<!-- raw HTML omitted --><!-- raw HTML omitted -->✖️<!-- raw HTML omitted --><!-- raw HTML omitted -->1080 = 5.93MB。而实际使用感知是，相同分辨率，色彩越简单，图片越小。这是因为常用的图片格式会对图片进行压缩。不过图片的压缩算法不在本篇的讨论范围内。<!-- raw HTML omitted --></p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746417802695-16986586-c58f-4766-8339-14ee134a3344.png" alt=""></p>
+<p>读着不妨用opencv验证验证：</p>
+<blockquote>
+<p>其实最好用png测试，因为jpg的有损压缩是不可逆的。但是还原出的位图也是1080p，问题不大~</p></blockquote>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746418023006-5d3d6a5d-6f5f-47e6-9db2-5757c9a92533.png" alt=""></p>
+<h3 id="12-视频">1.2 视频</h3>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746418366533-1512a87e-aa07-4298-b4f9-cceac639ba25.png" alt=""></p>
+<h4 id="121-帧率">1.2.1 帧率</h4>
+<p>视频由一帧帧“连续”的图像组成。当然这里的连续，是相对肉眼的连续，实际上还是离散的。一秒内图像的数量，就是视频的帧率。</p>
+<p>电影的帧率一般是24fps，再往上，增加的流畅度的收益很小，但是需要更高的硬件性能和带宽流量。所以帧率适度就好了。</p>
+<h4 id="122-码率">1.2.2 码率</h4>
+<p><!-- raw HTML omitted -->单用帧率还不足以衡量单位时间内视频的大小，因为每帧的图像大小也是不同的。可以使用码率来描述。<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->码率是指视频在单位时间内的数据量的大小，一般是 1 秒钟内的数据量，单位一般是 Kbps 或者 Mbps。<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->在视频传输中，码率这个参数尤其重要。<!-- raw HTML omitted --></p>
+<h4 id="123-yuv">1.2.3 YUV</h4>
+<p>YUV和RGB一样，也是一种颜色空间，但更多用于视频领域。RGB可用于更精细的颜色控制，但是三个通道同等重要，不太好进行压缩。</p>
+<p><!-- raw HTML omitted -->跟 RGB 图像中 R、G、B 三个通道都跟色彩信息相关这种特点不同，<!-- raw HTML omitted --><strong><!-- raw HTML omitted -->YUV 图像将亮度信息 Y 与色彩信息 U、V 分离开来。Y 表示亮度，是图像的总体轮廓，称之为 Y 分量。U、V 表示色度，主要描绘图像的色彩等信息，分别称为 U 分量和 V 分量<!-- raw HTML omitted --></strong><!-- raw HTML omitted -->。这样一张图像如果没有了色度信息 U、V，只剩下亮度 Y，则依旧是一张图像，只不过是一张黑白图像。<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->最初的YUV颜色空间的使用，是为了兼容黑白电视机。因为视频可能是彩色视频，黑白电视机只提取其中的Y分量就好了：<!-- raw HTML omitted --></p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746420314533-d6c30f5e-1f27-4354-bff1-fe33a3a5dd02.png" alt=""></p>
+<p>为什么只用UV两个分量就足以表示色度信息了呢？类比经纬度（2个坐标）能定位地球任意位置，无需第三个维度（海拔）也能表示平面位置。YUV 的 UV 色度分量同理，是色彩定位的“经纬度”。YUV可由RGB线性计算而来：</p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746420516994-a9897c14-47a9-4e28-8eb9-1470313e30ba.png" alt=""></p>
+<p>YUV允许对UV分量降采样，且降采样后人眼几乎看不出来（人眼对色度信息不敏感）。常用YUV 4:2:0，即每2✖️2像素块共用一个UV分量。降采后数据量降至一半。</p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746421843832-2601885e-4b0e-4450-abc6-32d891bd23bd.png" alt=""></p>
+<h2 id="二视频编码">二、视频编码</h2>
+<p>视频中的图像一般是YUV格式，假设一个视频分辨率1080P、帧率25fps、时长2小时，那么它的大小等于1920✖️1080✖️25✖️1.5B✖️2✖️3600=521.4GB，显然太大了。这就需要对视频进行<strong>编码压缩</strong>。</p>
+<p><!-- raw HTML omitted -->现在市面上常见的编码标准有 <!-- raw HTML omitted --><strong><!-- raw HTML omitted -->H264、H265、VP8、VP9 和 AV1<!-- raw HTML omitted --></strong><!-- raw HTML omitted -->。目前 H264 和 VP8 是最常用的编码标准，且两者的标准非常相似。H265 和 VP9 分别是他们的下一代编码标准，这两个标准也非常相似。AV1 是 VP9 的下一代编码标准。<!-- raw HTML omitted --></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center"><strong>编码标准</strong></th>
+          <th style="text-align: center"><strong>压缩效率</strong></th>
+          <th style="text-align: center"><strong>编码速度</strong></th>
+          <th style="text-align: center"><strong>典型应用场景</strong></th>
+          <th style="text-align: center"><strong>适用原因</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center"><strong>H.264</strong></td>
+          <td style="text-align: center">中等</td>
+          <td style="text-align: center"><strong>快</strong></td>
+          <td style="text-align: center">视频会议、蓝光光盘、流媒体</td>
+          <td style="text-align: center">兼容性极佳，硬件支持广泛，编码速度快，适合实时传输和通用播放</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>H.265</strong></td>
+          <td style="text-align: center">高</td>
+          <td style="text-align: center"><strong>中等</strong></td>
+          <td style="text-align: center">4K流媒体、监控存储</td>
+          <td style="text-align: center">比H.264节省50%码率，适合高分辨率视频，但需支付专利费</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>VP8</strong></td>
+          <td style="text-align: center">中等</td>
+          <td style="text-align: center"><strong>快</strong></td>
+          <td style="text-align: center">- WebRTC 实时通信（Discord）   - 早期Web视频（2015年前的YouTube）</td>
+          <td style="text-align: center">免版税，编码速度快，但效率已落后，逐渐被VP9取代</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>VP9</strong></td>
+          <td style="text-align: center">较高</td>
+          <td style="text-align: center"><strong>较慢</strong></td>
+          <td style="text-align: center">YouTube、WebM格式</td>
+          <td style="text-align: center">免版税，效率接近H.265，Google生态强制推广，但对硬件加速支持有限</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>AV1</strong></td>
+          <td style="text-align: center"><strong>最高</strong></td>
+          <td style="text-align: center"><strong>最慢</strong></td>
+          <td style="text-align: center">Netflix、8K流媒体</td>
+          <td style="text-align: center">免版税且效率最高，长期替代H.265，但编码极慢，依赖新硬件（40系显卡）</td>
+      </tr>
+  </tbody>
+</table>
+<p>尝试使用Python进行视频编码。首先安装av库(ffmpeg的python绑定）：</p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746430748743-c1341b63-2256-43d8-bc34-6a1da8ae258c.png" alt=""></p>
+<p>使用h.264编码。其中container.add_stream指定编码和帧率，stream.width、stream.height指定分辨率，stream.pix_fmt设置编码器输出的像素格式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> av
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;output_h264.mp4&#34;</span>
+</span></span><span style="display:flex;"><span>width, height <span style="color:#f92672">=</span> <span style="color:#ae81ff">640</span>, <span style="color:#ae81ff">480</span>
+</span></span><span style="display:flex;"><span>fps <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>container <span style="color:#f92672">=</span> av<span style="color:#f92672">.</span>open(output_file, mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;w&#34;</span>)
+</span></span><span style="display:flex;"><span>stream <span style="color:#f92672">=</span> container<span style="color:#f92672">.</span>add_stream(<span style="color:#e6db74">&#34;h264&#34;</span>, rate<span style="color:#f92672">=</span>fps)  <span style="color:#75715e"># H.264 编码</span>
+</span></span><span style="display:flex;"><span>stream<span style="color:#f92672">.</span>width <span style="color:#f92672">=</span> width
+</span></span><span style="display:flex;"><span>stream<span style="color:#f92672">.</span>height <span style="color:#f92672">=</span> height
+</span></span><span style="display:flex;"><span>stream<span style="color:#f92672">.</span>pix_fmt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yuv420p&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 创建蓝色背景（RGB格式：第三通道是蓝色）</span>
+</span></span><span style="display:flex;"><span>    frame <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((height, width, <span style="color:#ae81ff">3</span>), dtype<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>uint8)
+</span></span><span style="display:flex;"><span>    frame[:, :, <span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>  <span style="color:#75715e"># 将蓝色通道设为最大值255</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 转换为VideoFrame并编码</span>
+</span></span><span style="display:flex;"><span>    video_frame <span style="color:#f92672">=</span> av<span style="color:#f92672">.</span>VideoFrame<span style="color:#f92672">.</span>from_ndarray(frame, format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rgb24&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> packet <span style="color:#f92672">in</span> stream<span style="color:#f92672">.</span>encode(video_frame):
+</span></span><span style="display:flex;"><span>        container<span style="color:#f92672">.</span>mux(packet)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 刷新缓冲区</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> packet <span style="color:#f92672">in</span> stream<span style="color:#f92672">.</span>encode():
+</span></span><span style="display:flex;"><span>    container<span style="color:#f92672">.</span>mux(packet)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>container<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;H.264 视频（蓝色背景）已保存至 </span><span style="color:#e6db74">{</span>output_file<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>使用vp8编码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> av
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;output_vp8.webm&#34;</span>
+</span></span><span style="display:flex;"><span>width, height <span style="color:#f92672">=</span> <span style="color:#ae81ff">640</span>, <span style="color:#ae81ff">480</span>
+</span></span><span style="display:flex;"><span>fps <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>container <span style="color:#f92672">=</span> av<span style="color:#f92672">.</span>open(output_file, mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;w&#34;</span>)
+</span></span><span style="display:flex;"><span>stream <span style="color:#f92672">=</span> container<span style="color:#f92672">.</span>add_stream(<span style="color:#e6db74">&#34;vp8&#34;</span>, rate<span style="color:#f92672">=</span>fps)  <span style="color:#75715e"># VP8 编码</span>
+</span></span><span style="display:flex;"><span>stream<span style="color:#f92672">.</span>width <span style="color:#f92672">=</span> width
+</span></span><span style="display:flex;"><span>stream<span style="color:#f92672">.</span>height <span style="color:#f92672">=</span> height
+</span></span><span style="display:flex;"><span>stream<span style="color:#f92672">.</span>pix_fmt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yuv420p&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
+</span></span><span style="display:flex;"><span>    frame <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((height, width, <span style="color:#ae81ff">3</span>), dtype<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>uint8)
+</span></span><span style="display:flex;"><span>    frame[:, :, <span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>  <span style="color:#75715e"># 蓝色通道设为255（RGB格式）</span>
+</span></span><span style="display:flex;"><span>    video_frame <span style="color:#f92672">=</span> av<span style="color:#f92672">.</span>VideoFrame<span style="color:#f92672">.</span>from_ndarray(frame, format<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rgb24&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> packet <span style="color:#f92672">in</span> stream<span style="color:#f92672">.</span>encode(video_frame):
+</span></span><span style="display:flex;"><span>        container<span style="color:#f92672">.</span>mux(packet)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 刷新缓冲区</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> packet <span style="color:#f92672">in</span> stream<span style="color:#f92672">.</span>encode():
+</span></span><span style="display:flex;"><span>    container<span style="color:#f92672">.</span>mux(packet)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>container<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;VP8 视频已保存至 </span><span style="color:#e6db74">{</span>output_file<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>输出蓝色背景的视频：</p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746431251459-5c1dcd49-37f3-4ad5-9b92-590ac98d4ba5.png" alt=""></p>
+<h2 id="三视频封装">三、视频封装</h2>
+<p>视频封装和视频编码可以类比成箱子和内容的关系。封装格式称为Container，取决于文件拓展名。</p>
+<p>之前的代码，如果output不加拓展名（封装格式），运行到<code>av.open</code>的时候就会报错。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>output_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;output_h264_mov&#34;</span>
+</span></span><span style="display:flex;"><span>width, height <span style="color:#f92672">=</span> <span style="color:#ae81ff">640</span>, <span style="color:#ae81ff">480</span>
+</span></span><span style="display:flex;"><span>fps <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>container <span style="color:#f92672">=</span> av<span style="color:#f92672">.</span>open(output_file, mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;w&#34;</span>)
+</span></span></code></pre></div><p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746435886329-21b0b5bc-66a0-4ff2-bf33-63f487cc7f68.png" alt=""></p>
+<p>封装格式适配的编码格式如下：</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center"><strong>封装格式</strong></th>
+          <th style="text-align: center"><strong>最佳适配的视频编码</strong></th>
+          <th style="text-align: center"><strong>最佳适配的音频编码</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center"><strong>MP4</strong></td>
+          <td style="text-align: center">H.264、H.265</td>
+          <td style="text-align: center">AAC、AC-3</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>MKV</strong></td>
+          <td style="text-align: center">H.265、AV1、VP9</td>
+          <td style="text-align: center">FLAC、DTS-HD、Opus</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>AVI</strong></td>
+          <td style="text-align: center">DivX/Xvid、MJPEG</td>
+          <td style="text-align: center">MP3、PCM</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>MOV</strong></td>
+          <td style="text-align: center">ProRes、H.264</td>
+          <td style="text-align: center">AAC、ALAC</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>WebM</strong></td>
+          <td style="text-align: center">VP9、AV1</td>
+          <td style="text-align: center">Opus</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>TS</strong></td>
+          <td style="text-align: center">H.264、MPEG-2</td>
+          <td style="text-align: center">AAC、AC-3</td>
+      </tr>
+  </tbody>
+</table>
+<p>如果指定的封装格式不支持设置的编码，会在<code>container.add_stream</code>的时候报错。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>output_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;output_h264_mov.webm&#34;</span>
+</span></span><span style="display:flex;"><span>width, height <span style="color:#f92672">=</span> <span style="color:#ae81ff">640</span>, <span style="color:#ae81ff">480</span>
+</span></span><span style="display:flex;"><span>fps <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>container <span style="color:#f92672">=</span> av<span style="color:#f92672">.</span>open(output_file, mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;w&#34;</span>)
+</span></span><span style="display:flex;"><span>stream <span style="color:#f92672">=</span> container<span style="color:#f92672">.</span>add_stream(<span style="color:#e6db74">&#34;h264&#34;</span>, rate<span style="color:#f92672">=</span>fps)  <span style="color:#75715e"># H.264 编码</span>
+</span></span></code></pre></div><p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746435993914-46338b61-d32a-4220-9ee7-36a12a76df2b.png" alt=""></p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/%E9%9F%B3%E8%A7%86%E9%A2%91">音视频</a></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2025
+    <a class="link" href="http://localhost:1313/">Jup的博客</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>
