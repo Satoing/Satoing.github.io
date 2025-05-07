@@ -1,0 +1,298 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html
+  class="not-ready lg:text-base"
+  style="--bg:#faf8f1"
+  lang="en-us"
+  dir="ltr"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>【科普向】直播系统（上） - Jup的博客</title>
+
+  
+  <meta name="theme-color" />
+
+  <meta name="description" content="上篇文章中简单学习了视频编码，有了一定的基础知识。这篇文章来来看看直播系统的架构。
+本篇文章讨论的直播，指的是B站、抖音上的传统直播；而不是腾讯会议、视频通话这样的实时互动直播。后者主要考虑传输的实时性，通常将UDP作为底层协议；前者更注重画面质量和流畅度，对延迟的容忍性相对较高，通常使用TCP。
+一、直播系统基础架构
+1.1 实现分析
+不妨先分析分析直播系统的需求。主播需要将自己的直播画面推送给直播间的观众，直播间的观众可以进行文字聊天和打赏。
+主播将自己的直播画面推给观众，其实就是“采集-&gt;编码-&gt;推流 || -&gt; || 拉流-&gt;解码-&gt;播放”的过程。
+1.1.1 主播侧
+主播侧要完成画面采集-&gt;编码-&gt;推流。摄像头、麦克风采集到音视频数据后，由客户端进行编码。编码可以纯软件实现，由CPU进行编码；但是最好还是辅以GPU硬件加速，所以一般对主播的设备要求较高。最后将主播的音视频数据推送给服务器，这就是推流。主播侧的客户端，要实现的基本功能就是编码和推流，如哔哩哔哩直播姬。
+
+1.1.2 观众侧
+观众侧完成直播流的拉取-&gt;解码-&gt;播放。拉取到的直播流是经过编码压缩的，所以需要在本地解码，转换为YUV视频帧后，再由本地播放器播放。实际上，解码-&gt;播放的过程，目前已有很多开源的实现，如VLC，支持直接播放各种协议的直播流。通常把这些项目接入即可实现观众侧客户端。
+
+1.1.3 业务侧
+除了上面的音视频技术，直播系统还需要对房间进行维护，以及实现直播间的聊天和打赏等。这属于直播中业务系统的范畴，称为信令服务器。
+在直播的场景下，用户量可以非常庞大。业务不仅需要考虑高并发，还需要考虑服务器转发消息的数量级。如A发送的聊天，直播间中所有观众都要看到，需要服务器主动往客户端推送。如果主播说扣1抽奖，直播间1W个观众都发了1，那么需要转发1W✖️1W条消息。这种场景如何避免消息洪泛，还是很有挑战性的，但是不在本篇的讨论范围内。
+1.2 流程总结
+
+
+主播使用PC、手机都可以创建直播间。向信令服务器发送创建房间的请求，信令服务器返回推流的地址。图中1、3所示。
+主播将自己采集、编码的音视频数据推送到推流地址，如图中2、4所示。
+观众加入直播间。向信令服务器发送加入房间的请求，信令服务器返回直播流的地址。如图中5、6所示。
+观众在直播间中聊天、打赏，直接和信令服务器交互。
+
+二、CDN
+CDN即内容分发网络。将静态资源缓存到边缘节点，用户从最近的节点获取资源，减少物理距离带来的延迟。
+CDN网络如下图所示。源节点是CDN网络的入口；主干节点通常用于缓存和跨运营商传输；边缘节点数量众多，一般部署到各地级市，用于解决“网络最后一公里”的问题。
+
+在直播系统中，CDN的作用不仅仅是降低延迟，其分布式架构能有效解决直播中的一系列技术挑战：
+
+负载均衡：将观众的请求分散到多个边缘节点，避免源站过载。源站只需要推送一路流到CDN源节点，CDN内部分发到各个节点。
+带宽分摊：源站只需维持一路流，6Mbps基本能满足需求。
+多级缓存、故障切换：缓存热门直播流，即使CDN节点短暂网络波动，也能正常提供数据。若某个节点故障，CDN自动将观众迁移到健康节点。
+动态扩容：CDN节点可以非常方便地横向拓展，应对赛事等突发热门直播的场景。
+
+三、HLS
+HLS协议在直播和点播中都应用得非常广泛。它的核心是将视频流分割成一系列短时长的ts文件，同时生成m3u8索引文件，通过http协议传输，兼容性极强。
+同时编码器可以将不同分辨率的视频流各自分片生成对应的m3u8文件，实现分辨率的切换。
+3.1 生成HLS流
+使用ffmpeg将test.mp4转换成HLS切片和索引：
+ffmpeg -i test.mp4 -c copy -start_number 0 -hls_time 10 -hls_list_size 0 -hls_segment_filename test%03d.ts index.m3u
+关键参数说明：
+
+-c copy，表示只是进行封装格式的转换，不需要转码。因为mp4和hls使用的都是H.264编码。
+-hls_time，表示每个ts文件的最大时长，单位是秒。但是由于没有重新编码，所以这个时长并不准确。
+-hls_segment_filename，表示指定ts文件的名称。
+
+3.2 m3u8格式分析
+生成的m3u8及注释如下：" />
+  <meta name="author" content="jup" /><link rel="preload stylesheet" as="style" href="http://localhost:1313/main.min.css" />
+
+  
+  <link rel="preload" as="image" href="http://localhost:1313/theme.svg" />
+
+  <link rel="preload" as="image" href="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_72%2Ch_72%2Fformat%2Cpng" />
+
+  <link rel="preload" as="image" href="http://localhost:1313/github.svg" />
+
+  
+
+  
+  <link
+    rel="icon"
+    href="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746202337716-avatar/7a5519fa-173b-4d39-ac28-a1c6894a08f2.png?x-oss-process=image%2Fresize%2Cm_fill%2Cw_48%2Ch_48%2Fformat%2Cpng"
+  />
+
+  <meta name="generator" content="Hugo 0.147.1">
+</head>
+<body
+    class="bg-(--bg) text-black antialiased duration-200 ease-out [-webkit-tap-highlight-color:transparent] dark:text-white"
+  ><header class="mx-auto flex h-[4.5rem] max-w-(--w) px-8 whitespace-nowrap lg:justify-center">
+  <div class="relative z-50 flex items-center ltr:mr-auto rtl:ml-auto">
+    <a class="-translate-y-[1px] text-2xl font-medium" href="http://localhost:1313/">Jup的博客</a>
+    <div
+      class="btn-dark text-[0px] ltr:ml-4 rtl:mr-4 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+      role="button" aria-label="Dark"></div>
+  </div>
+
+  <div
+    class="btn-menu relative z-50 flex h-[4.5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden ltr:-mr-8 rtl:-ml-8"
+    role="button" aria-label="Menu"></div>
+
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = '#faf8f1'.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full flex-col justify-center bg-(--bg) pb-16 duration-200 select-none lg:static lg:h-auto lg:flex-row lg:bg-transparent! lg:pb-0 lg:transition-none"><nav class="lg:ml-12 lg:flex lg:flex-row lg:items-center lg:space-x-10 rtl:space-x-reverse"><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/">首页</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/posts/">文章</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/categories">分类</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/tags">标签</a><a class="block text-center text-xl leading-[5rem] lg:text-base lg:font-normal" href="/about">关于</a></nav><nav
+      class="mt-12 flex justify-center space-x-10 lg:mt-0 lg:items-center ltr:lg:ml-14 rtl:space-x-reverse rtl:lg:mr-14 dark:invert">
+      <a class="h-7 w-7 text-[0px] [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href="https://github.com/satoing"
+        target="_blank" rel="me">github</a>
+    </nav>
+  </div>
+</header><main
+      class="prose prose-neutral dark:prose-invert relative mx-auto min-h-[calc(100vh-9rem)] max-w-(--w) px-8 pt-14 pb-16"
+    ><article>
+  <header class="mb-14">
+    <h1 class="my-0! pb-2.5">【科普向】直播系统（上）</h1><div class="text-xs antialiased opacity-60"><time>May 7, 2025</time>&nbsp;&nbsp; <a class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+        href="http://localhost:1313/categories/%E7%A7%91%E6%99%AE%E5%90%91">科普向</a><a class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+        href="http://localhost:1313/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91">音视频开发</a></div></header>
+
+  <section><p>上篇文章中简单学习了视频编码，有了一定的基础知识。这篇文章来来看看直播系统的架构。</p>
+<p>本篇文章讨论的直播，指的是B站、抖音上的传统直播；而不是腾讯会议、视频通话这样的实时互动直播。后者主要考虑传输的实时性，通常将UDP作为底层协议；前者更注重画面质量和流畅度，对延迟的容忍性相对较高，通常使用TCP。</p>
+<h2 id="一直播系统基础架构">一、直播系统基础架构</h2>
+<h3 id="11-实现分析">1.1 实现分析</h3>
+<p>不妨先分析分析直播系统的需求。主播需要将自己的直播画面推送给直播间的观众，直播间的观众可以进行文字聊天和打赏。</p>
+<p>主播将自己的直播画面推给观众，其实就是“采集-&gt;编码-&gt;推流 || -&gt; || 拉流-&gt;解码-&gt;播放”的过程。</p>
+<h4 id="111-主播侧">1.1.1 主播侧</h4>
+<p><strong>主播侧要完成画面采集-&gt;编码-&gt;推流</strong>。摄像头、麦克风采集到音视频数据后，由客户端进行编码。编码可以纯软件实现，由CPU进行编码；但是最好还是辅以GPU硬件加速，所以一般对主播的设备要求较高。最后将主播的音视频数据推送给服务器，这就是推流。主播侧的客户端，要实现的基本功能就是编码和推流，如哔哩哔哩直播姬。</p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746547646694-fa82abaa-22e3-4f37-a679-3e6caa708944.png" alt=""></p>
+<h4 id="112-观众侧">1.1.2 观众侧</h4>
+<p><strong>观众侧完成直播流的拉取-&gt;解码-&gt;播放</strong>。拉取到的直播流是经过编码压缩的，所以需要在本地解码，转换为YUV视频帧后，再由本地播放器播放。实际上，解码-&gt;播放的过程，目前已有很多开源的实现，如VLC，支持直接播放各种协议的直播流。通常把这些项目接入即可实现观众侧客户端。</p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746548605617-d565330d-20ac-4eb1-af9f-2b9d3619f01a.png" alt=""></p>
+<h4 id="113-业务侧">1.1.3 业务侧</h4>
+<p>除了上面的音视频技术，直播系统还需要对房间进行维护，以及实现直播间的聊天和打赏等。这属于直播中业务系统的范畴，称为信令服务器。</p>
+<p>在直播的场景下，用户量可以非常庞大。业务不仅需要考虑高并发，还需要考虑服务器转发消息的数量级。如A发送的聊天，直播间中所有观众都要看到，需要服务器主动往客户端推送。如果主播说扣1抽奖，直播间1W个观众都发了1，那么需要转发1W✖️1W条消息。这种场景如何避免消息洪泛，还是很有挑战性的，但是不在本篇的讨论范围内。</p>
+<h3 id="12-流程总结">1.2 流程总结</h3>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746546414872-fe6551c0-9797-4aa3-a9b7-ffa44f858bd5.png" alt=""></p>
+<ol>
+<li>主播使用PC、手机都可以创建直播间。向信令服务器发送创建房间的请求，信令服务器返回推流的地址。图中1、3所示。</li>
+<li>主播将自己采集、编码的音视频数据推送到推流地址，如图中2、4所示。</li>
+<li>观众加入直播间。向信令服务器发送加入房间的请求，信令服务器返回直播流的地址。如图中5、6所示。</li>
+<li>观众在直播间中聊天、打赏，直接和信令服务器交互。</li>
+</ol>
+<h2 id="二cdn">二、CDN</h2>
+<p>CDN即内容分发网络。将静态资源缓存到边缘节点，用户从最近的节点获取资源，减少物理距离带来的延迟。</p>
+<p>CDN网络如下图所示。源节点是CDN网络的入口；主干节点通常用于缓存和跨运营商传输；边缘节点数量众多，一般部署到各地级市，用于解决“网络最后一公里”的问题。</p>
+<p><img src="https://img.jupng.top:7326/yuque/0/2025/png/2648742/1746625973079-041efea7-1e11-41cb-beb5-6f63b1421648.png" alt=""></p>
+<p>在直播系统中，CDN的作用不仅仅是降低延迟，其分布式架构能有效解决直播中的一系列技术挑战：</p>
+<ol>
+<li>负载均衡：将观众的请求分散到多个边缘节点，避免源站过载。源站只需要推送一路流到CDN源节点，CDN内部分发到各个节点。</li>
+<li>带宽分摊：源站只需维持一路流，6Mbps基本能满足需求。</li>
+<li>多级缓存、故障切换：缓存热门直播流，即使CDN节点短暂网络波动，也能正常提供数据。若某个节点故障，CDN自动将观众迁移到健康节点。</li>
+<li>动态扩容：CDN节点可以非常方便地横向拓展，应对赛事等突发热门直播的场景。</li>
+</ol>
+<h2 id="三hls">三、HLS</h2>
+<p>HLS协议在直播和点播中都应用得非常广泛。它的核心是<strong>将视频流分割成一系列短时长的ts文件，同时生成m3u8索引文件</strong>，通过http协议传输，兼容性极强。</p>
+<p>同时编码器可以将不同分辨率的视频流各自分片生成对应的m3u8文件，实现分辨率的切换。</p>
+<h3 id="31-生成hls流">3.1 生成HLS流</h3>
+<p>使用ffmpeg将test.mp4转换成HLS切片和索引：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ffmpeg -i test.mp4 -c copy -start_number <span style="color:#ae81ff">0</span> -hls_time <span style="color:#ae81ff">10</span> -hls_list_size <span style="color:#ae81ff">0</span> -hls_segment_filename test%03d.ts index.m3u
+</span></span></code></pre></div><p>关键参数说明：</p>
+<ul>
+<li><!-- raw HTML omitted -->-c copy，表示只是进行封装格式的转换，不需要转码。因为mp4和hls使用的都是H.264编码。<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->-hls_time，表示每个ts文件的最大时长，单位是秒。但是由于没有重新编码，所以这个时长并不准确。<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->-hls_segment_filename，表示指定ts文件的名称。<!-- raw HTML omitted --></li>
+</ul>
+<h3 id="32-m3u8格式分析">3.2 m3u8格式分析</h3>
+<p>生成的m3u8及注释如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-latex" data-lang="latex"><span style="display:flex;"><span>#EXTM3U
+</span></span><span style="display:flex;"><span>#EXT-X-VERSION:3 // 版本信息
+</span></span><span style="display:flex;"><span>#EXT-X-TARGETDURATION:10 // 每个分片的目标时长
+</span></span><span style="display:flex;"><span>#EXT-X-MEDIA-SEQUENCE:0 // 分片起始编号
+</span></span><span style="display:flex;"><span>#EXTINF:10.021300, // 第一个分片实际时长
+</span></span><span style="display:flex;"><span>test000.ts // 第一个分片文件
+</span></span><span style="display:flex;"><span>#EXTINF:9.979533, // 第二个分片实际时长
+</span></span><span style="display:flex;"><span>test001.ts // 第二个分片文件
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>#EXT-X-ENDLIST // 流结束标记
+</span></span></code></pre></div><p>ts分片这里使用的是路径，一般使用url。可以使用web服务器（如Nginx）进行分发。</p>
+<p>此外还有一些高级标签：</p>
+<table>
+  <thead>
+      <tr>
+          <th>标签</th>
+          <th>作用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>#EXT-X-STREAM-INF:BANDWIDTH=800000,RESOLUTION=1280x720</code></td>
+          <td>指定子流带宽（bps）、分辨率等参数，后跟多码率索引文件路径。实现多码率适配。</td>
+      </tr>
+      <tr>
+          <td><code>#EXT-X-MEDIA:TYPE=AUDIO</code></td>
+          <td>定义多音轨（如多语言）</td>
+      </tr>
+      <tr>
+          <td><code>#EXT-X-PLAYLIST-TYPE:VOD</code></td>
+          <td>点播（VOD）流，表示完整文件；<code>EVENT</code> 表示直播流（无结束标记）。</td>
+      </tr>
+      <tr>
+          <td><code>#EXT-X-KEY:METHOD=AES-128</code></td>
+          <td>分片加密方式（如AES-128），需指定密钥URL和IV（初始化向量）。</td>
+      </tr>
+  </tbody>
+</table>
+<p>示例1：多码率适配索引文件（MissAV中亦有记载）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-latex" data-lang="latex"><span style="display:flex;"><span>#EXTM3U
+</span></span><span style="display:flex;"><span>#EXT-X-VERSION:3
+</span></span><span style="display:flex;"><span>#EXT-X-STREAM-INF:BANDWIDTH=1500000,RESOLUTION=1280x720
+</span></span><span style="display:flex;"><span>high.m3u8
+</span></span><span style="display:flex;"><span>#EXT-X-STREAM-INF:BANDWIDTH=800000,RESOLUTION=854x480
+</span></span><span style="display:flex;"><span>medium.m3u8
+</span></span><span style="display:flex;"><span>#EXT-X-STREAM-INF:BANDWIDTH=400000,RESOLUTION=640x360
+</span></span><span style="display:flex;"><span>low.m3u8
+</span></span></code></pre></div><p>示例2：加密索引文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-latex" data-lang="latex"><span style="display:flex;"><span>#EXTM3U
+</span></span><span style="display:flex;"><span>#EXT-X-VERSION:3
+</span></span><span style="display:flex;"><span>#EXT-X-TARGETDURATION:10
+</span></span><span style="display:flex;"><span>#EXT-X-KEY:METHOD=AES-128,URI=&#34;https://example.com/key.bin&#34;,IV=0x1234567890ABCDEF
+</span></span><span style="display:flex;"><span>#EXTINF:9.0,
+</span></span><span style="display:flex;"><span>video1.ts
+</span></span><span style="display:flex;"><span>#EXTINF:10.0,
+</span></span><span style="display:flex;"><span>video2.ts
+</span></span></code></pre></div><p>m3u8下载器的原理，也就是从m3u8中逐个获取ts文件，最后拼接到一起。在限速的情况下，并发下载可以提高效率；缓存切片可以实现断点续传……这里可以操作的就很多了。</p>
+</section>
+
+  <footer class="mt-12 flex flex-wrap"><a class="mb-1.5 rounded-lg bg-black/[3%] px-5 py-1 no-underline hover:bg-black/[6%] ltr:mr-1.5 rtl:ml-1.5 dark:bg-white/[8%] dark:hover:bg-white/[12%]"
+      href="http://localhost:1313/tags/%E9%9F%B3%E8%A7%86%E9%A2%91">音视频</a></footer></article></main><footer
+  class="mx-auto flex h-[4.5rem] max-w-(--w) items-center px-8 text-xs tracking-wider uppercase opacity-60"
+>
+  <div class="mr-auto">&copy;2025
+    <a class="link" href="http://localhost:1313/">Jup的博客</a></div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >powered by hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >hugo-paper</a
+  >
+</footer>
+</body>
+</html>
